@@ -161,10 +161,10 @@ namespace Blackjack
                 return false;
         }
 
-        public int player_set_active()
+        public int player_get_column()
         {            
             short nr_of_columns = 4;
-
+            short s = players.Active_Player;
             if (players.Active_Player >= 0)
             {
                 return (nr_of_columns - players.Active_Player);
@@ -176,13 +176,30 @@ namespace Blackjack
 
         public int player_change()
         {
+            
             if (players.Active_Player < 4)
             {
                 players.Active_Player++;
-                return player_set_active();
+                players.set_active_player();
+                return player_get_column();
             }
             else 
                 return -1;
+        }
+
+        internal void set_active_player()
+        {
+            players.set_active_player();
+        }
+
+        internal short player_get_active_player_nr()
+        {           
+           return players.Active_Player;
+        }
+
+        internal short player_get_active_hand()
+        {
+            return players.get_active_hand();
         }
 
         internal void player_place_bet()
@@ -241,10 +258,20 @@ namespace Blackjack
             return players.stand();
         }
 
+        internal bool player_hit()
+        {
+            return players.hit();
+        }
         internal void player_split()
         {
             players.split();
         }
+       
+        internal double[] player_split_coordinates()
+        {
+            return players.player_split_coord();
+        }
+
         /*
          * Dealer functions 
          */
@@ -273,11 +300,10 @@ namespace Blackjack
             return dealer.Hidden_Card;
         }
 
-        internal double[] player_split_coordinates()
-        {
-            return players.player_split_coord();
-        }
-
        
+
+
+
+        
     }
 }

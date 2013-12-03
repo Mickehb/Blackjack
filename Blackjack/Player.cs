@@ -11,8 +11,15 @@ namespace Blackjack
     {
         List<Card>[] hand;
         
-        short active_hand;
-        short nr_of_hands;
+        private short active_hand;
+        private short nr_of_hands;
+        private Card active_card;
+
+        private short[] value;
+        private string[] status;
+        private const short ACE_LOW = 1;
+        private const short ACE_HIGH = 11;
+        private const short BUST = 21;
 
         private string name;
         private short money;
@@ -32,6 +39,9 @@ namespace Blackjack
           nr_of_hands = 0;
           hand = new List<Card>[4];
           hand[0] = new List<Card>();
+          value = new short[4];
+          status = new string[4];
+          
 
           this.money = 100;
           this.name = "Player";
@@ -49,6 +59,17 @@ namespace Blackjack
         /*
          * Set and Get
          */ 
+
+      public string Player_Status
+      {
+          get { return status[active_hand]; }
+          set
+          {
+              status[active_hand] = value;
+              OnPropertyChanged("Player_Status");
+          }
+      }
+      
       public string Player_Name
       {
           get { return name; }
@@ -77,6 +98,12 @@ namespace Blackjack
               bet = value;
               OnPropertyChanged("Player_Bet");
           }
+      }
+
+        public short Player_Hand
+      {
+          get { return active_hand; }
+          set { active_hand = value; }
       }
 
       public void set_Xcord(double x)
@@ -182,9 +209,7 @@ namespace Blackjack
               handler(this, new PropertyChangedEventArgs(name));
           }
       }
-
-
-     
+            
 
       internal void split_logic()
       {
@@ -221,6 +246,10 @@ namespace Blackjack
          */
       internal bool stand_logic()
       {
+          set_value();
+          short s = active_hand;
+          short si = value[active_hand];
+          string str = Player_Status;
 
           if (active_hand < nr_of_hands)
           {
@@ -234,6 +263,85 @@ namespace Blackjack
           }
 
               
+      }
+        /*
+         * returns true if we are to play again
+         */ 
+      public bool hit_logic()
+      {
+
+          set_value();
+          short s = value[active_hand];
+          short si = active_hand;
+          string str = Player_Status;
+
+          active_card = hand[active_hand].Last();
+          if (active_card.Card_Value == ACE_LOW)
+          {
+              if (bust(ACE_LOW))
+              {
+                  Player_Status = "Bust\n!";
+                  if (nr_of_hands > active_hand)
+                  {
+                      active_hand++;                      
+                  }
+                  else
+                      return false;
+              }
+
+              else if (!bust(ACE_HIGH))
+              {
+                  value[active_hand] += ACE_HIGH;
+                  Player_Status = value[active_hand].ToString();
+              }
+              else
+              {
+                  value[active_hand] += ACE_LOW;
+                  Player_Status = value[active_hand].ToString();
+              }
+              return true;
+          }
+          else
+          {
+              if (bust(active_card.Card_Value))
+              {
+                  Player_Status = "Bust\n!";
+                  if (nr_of_hands > active_hand)
+                  {
+                      active_hand++;               
+                  }
+                  else
+                      return false;
+              }
+              else
+              {
+                  value[active_hand] += active_card.Card_Value;
+                  Player_Status = value.ToString();
+              }
+
+              return true;
+          }
+
+      }
+
+      internal void set_value()
+      {
+          value[active_hand] = 0;
+          short s = active_hand;
+          for (short i = 0; i < hand.Count() -2 ; ++i)
+          {
+              value[active_hand] += hand[active_hand].ElementAt(i).Card_Value;
+          }
+
+          Player_Status = value[active_hand].ToString();
+          
+      }
+      private bool bust(short s)
+      {
+          if (value[active_hand] + s > BUST)
+              return true;
+
+          return false;
       }
  
     }

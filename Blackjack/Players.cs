@@ -22,20 +22,11 @@ namespace Blackjack
 
         public short Active_Player
         {
-            get {
-                    for (short i = active_player; i < max_players; i++)
-                    {
-                        if (players[i] != null)
-                        {
-                            active_player = (short)i;
-                            return active_player;
-                        }
-                     }
-                      return -1;
-                 }
+            get { return active_player; }
             set { active_player = value; }
         }
 
+        
         public short Active_Players
         {
             get { return active_players; }
@@ -113,6 +104,11 @@ namespace Blackjack
             return players[active_player].get_active_image();
         }
 
+        internal short get_active_hand()
+        {
+            return players[active_player].Player_Hand;
+        }
+
         internal bool double_down()
         {
             return players[active_player].double_down_logic();
@@ -126,6 +122,11 @@ namespace Blackjack
         internal void split()
         {
             players[active_player].split_logic();
+        }
+
+        internal bool hit()
+        {
+            return players[active_player].hit_logic();
         }
 
         // Animation
@@ -175,9 +176,21 @@ namespace Blackjack
                     //players.ElementAt(i).Player_Offset = 0;
             }
         }
+        
 
+        internal void set_active_player()
+        {
+            for(short i = active_player; i < max_players; ++i)
+            {
+                if (isactive(i))
+                {
+                    active_player = i;
+                    return;
+                }
+                
+            }
 
-
-       
+            active_player = -1;
+        }
     }
 }
