@@ -1,0 +1,221 @@
+﻿<Window x:Name="main_window" x:Class="Blackjack.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        Title="MainWindow" Height="900" Width="1600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <!-- BUTTON STYLES -->
+        <Style x:Key="buttonstyle1" TargetType="Button">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="PlayBill"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="images/buttonsmall1.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource buttonstyle1}"
+               x:Key="five_style1" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,200,100"/>
+            <Setter Property="Content" Value="5"/>
+        </Style>
+        <Style BasedOn="{StaticResource buttonstyle1}"
+               x:Key="ten_style1" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,0,100"/>
+            <Setter Property="Content" Value="10"/>
+        </Style>
+        <Style BasedOn="{StaticResource buttonstyle1}"
+               x:Key="twenty_style1" TargetType="Button">
+            <Setter Property="Margin" Value="200,0,0,100"/>
+            <Setter Property="Content" Value="20"/>
+        </Style>
+        <Style BasedOn="{StaticResource buttonstyle1}"
+               x:Key="clear_bet_style1" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,100,0"/>
+            <Setter Property="Content" Value="Clear Bet"/>
+        </Style>
+        <Style BasedOn="{StaticResource buttonstyle1}"
+               x:Key="place_bet_style1" TargetType="Button">
+            <Setter Property="Margin" Value="100,0,0,0"/>
+            <Setter Property="Content" Value="Place Bet"/>
+        </Style>
+        <Style BasedOn="{StaticResource buttonstyle1}"
+               x:Key="leave_game_style1" TargetType="Button">
+            <Setter Property="Margin" Value="200,100,0,0"/>
+            <Setter Property="Content" Value="Leave Game"/>
+        </Style>
+        <Style BasedOn="{StaticResource buttonstyle1}"
+               x:Key="big_button_style" TargetType="Button">
+            <Setter Property="Width" Value="160"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="FontSize" Value="40"/>
+        </Style>
+        <!-- TEXTBLOCK STYLES -->
+        <Style x:Key="textblock1" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontFamily" Value="PlayBill"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
+        <Style BasedOn="{StaticResource textblock1}"
+               TargetType="TextBlock"
+               x:Key="bet_style1">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+        </Style>
+        <Style BasedOn="{StaticResource textblock1}"
+               TargetType="TextBlock"
+               x:Key="money_style1">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="20,0,0,0"/>
+        </Style>
+        <Style BasedOn="{StaticResource textblock1}"
+               TargetType="TextBlock"
+               x:Key="name_style1">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="20,0,0,10"/>
+            <Setter Property="Width" Value="180"/>
+        </Style>
+        <!-- MENU STYLES-->
+        <Style x:Key="menustyle1" TargetType="Menu">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="images/buttonsmall1.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="menuitemstyle1" TargetType="MenuItem">
+            <Setter Property="FontFamily" Value="PlayBill"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+        </Style>
+        <Style BasedOn="{StaticResource menuitemstyle1}"
+               x:Key="menuitemstyle2" TargetType="MenuItem">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="images/buttonsmall1.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="blackjack">
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/Matta01.png"/>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="160"/>
+        </Grid.RowDefinitions>
+
+        <Menu Style="{StaticResource menustyle1}" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0">
+            <MenuItem Style="{StaticResource menuitemstyle1}" Header="File">
+                <MenuItem Style="{StaticResource menuitemstyle2}" Header="Exit" Click="MenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Style="{StaticResource menuitemstyle1}" Header="Help">
+                <MenuItem Style="{StaticResource menuitemstyle2}" Header="About"/>
+            </MenuItem>
+        </Menu>
+
+        <Button x:Name="deal" Style="{StaticResource big_button_style}" Content="Deal" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="deal_Click"/>
+
+        <Button x:Name="p5_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="0" Click="p5_add_Click"/>
+        <Button x:Name="p4_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="1" Click="p4_add_Click"/>
+        <Button x:Name="p3_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="2" Click="p3_add_Click"/>
+        <Button x:Name="p2_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="3" Click="p2_add_Click"/>
+        <Button x:Name="p1_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="4" Click="p1_add_Click"/>
+
+        <Grid x:Name="p5_betting" Grid.Column="0" Grid.Row="3">
+            <Button x:Name="p5_five" Style="{StaticResource five_style1}" Click="p5_five_Click"/>
+            <Button x:Name="p5_ten" Style="{StaticResource ten_style1}" Click="p5_ten_Click"/>
+            <Button x:Name="p5_twenty" Style="{StaticResource twenty_style1}" Click="p5_twenty_Click"/>
+            <Button x:Name="p5_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p5_clear_bet_Click"/>
+            <Button x:Name="p5_place_bet" Style="{StaticResource place_bet_style1}" Click="p5_place_bet_Click"/>
+            <Button x:Name="p5_leave" Style="{StaticResource leave_game_style1}" Click="p5_leave_Click"/>
+        </Grid>
+
+        <Grid x:Name="p4_betting" Grid.Column="1" Grid.Row="3">
+            <Button x:Name="p4_five" Style="{StaticResource five_style1}" Click="p4_five_Click"/>
+            <Button x:Name="p4_ten" Style="{StaticResource ten_style1}" Click="p4_ten_Click"/>
+            <Button x:Name="p4_twenty" Style="{StaticResource twenty_style1}" Click="p4_twenty_Click"/>
+            <Button x:Name="p4_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p4_clear_bet_Click"/>
+            <Button x:Name="p4_place_bet" Style="{StaticResource place_bet_style1}" Click="p4_place_bet_Click"/>
+            <Button x:Name="p4_leave" Style="{StaticResource leave_game_style1}" Click="p4_leave_Click"/>
+        </Grid>
+        <Grid x:Name="p3_betting" Grid.Column="2" Grid.Row="3">
+            <Button x:Name="p3_five" Style="{StaticResource five_style1}" Click="p3_five_Click"/>
+            <Button x:Name="p3_ten" Style="{StaticResource ten_style1}" Click="p3_ten_Click"/>
+            <Button x:Name="p3_twenty" Style="{StaticResource twenty_style1}" Click="p3_twenty_Click"/>
+            <Button x:Name="p3_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p3_clear_bet_Click"/>
+            <Button x:Name="p3_place_bet" Style="{StaticResource place_bet_style1}" Click="p3_place_bet_Click"/>
+            <Button x:Name="p3_leave" Style="{StaticResource leave_game_style1}" Click="p3_leave_Click"/>
+        </Grid>
+        <Grid x:Name="p2_betting" Grid.Column="3" Grid.Row="3">
+            <Button x:Name="p2_five" Style="{StaticResource five_style1}" Click="p2_five_Click"/>
+            <Button x:Name="p2_ten" Style="{StaticResource ten_style1}" Click="p2_ten_Click"/>
+            <Button x:Name="p2_twenty" Style="{StaticResource twenty_style1}" Click="p2_twenty_Click"/>
+            <Button x:Name="p2_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p2_clear_bet_Click"/>
+            <Button x:Name="p2_place_bet" Style="{StaticResource place_bet_style1}" Click="p2_place_bet_Click"/>
+            <Button x:Name="p2_leave" Style="{StaticResource leave_game_style1}" Click="p2_leave_Click"/>
+        </Grid>
+        <Grid x:Name="p1_betting" Grid.Column="4" Grid.Row="3">
+            <Button x:Name="p1_five" Style="{StaticResource five_style1}" Click="p1_five_Click"/>
+            <Button x:Name="p1_ten" Style="{StaticResource ten_style1}" Click="p1_ten_Click"/>
+            <Button x:Name="p1_twenty" Style="{StaticResource twenty_style1}" Click="p1_twenty_Click"/>
+            <Button x:Name="p1_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p1_clear_bet_Click"/>
+            <Button x:Name="p1_place_bet" Style="{StaticResource place_bet_style1}" Click="p1_place_bet_Click"/>
+            <Button x:Name="p1_leave" Style="{StaticResource leave_game_style1}" Click="p1_leave_Click"/>
+        </Grid>
+        <Grid x:Name="p_moves" Grid.Column="4" Grid.Row="3">
+            <Button x:Name="hit" Style="{StaticResource buttonstyle1}" Content="Hit" Margin="0,0,160,100" Click="hit_Click"/>
+            <Button x:Name="stand" Style="{StaticResource buttonstyle1}" Content="Stand" Margin="160,0,0,100" Click="stand_Click"/>
+            <Button x:Name="double_down" Style="{StaticResource buttonstyle1}" Content="Double down" Margin="160,0,0,0" Click="double_down_Click"/>
+            <Button x:Name="split" Style="{StaticResource buttonstyle1}" Content="Split" Margin="0,0,160,0" Click="split_Click"/>
+        </Grid>
+
+
+        <TextBlock x:Name="p5_name" Style="{StaticResource name_style1}" Text= "{Binding Path=Player_Name, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="0" Grid.Row="3"/>
+        <TextBlock x:Name="p5_money" Style="{StaticResource money_style1}" Text="{Binding Path=Player_Money, Mode=OneWay, NotifyOnTargetUpdated=False}" Grid.Column="0" Grid.Row="2"/>
+        <TextBlock x:Name="p5_bet" Style="{StaticResource bet_style1}" Text="{Binding Path=Player_Bet, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="0" Grid.Row="2"/>
+        <TextBlock x:Name="p4_name" Style="{StaticResource name_style1}" Text="{Binding Path=Player_Name, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="1" Grid.Row="3"/>
+        <TextBlock x:Name="p4_money" Style="{StaticResource money_style1}" Text="{Binding Path=Player_Money, Mode=OneWay, NotifyOnTargetUpdated=False}" Grid.Column="1" Grid.Row="2"/>
+        <TextBlock x:Name="p4_bet" Style="{StaticResource bet_style1}" Text="{Binding Path=Player_Bet, Mode=OneWay, NotifyOnTargetUpdated=False}" Grid.Column="1" Grid.Row="2"/>
+        <TextBlock x:Name="p3_name" Style="{StaticResource name_style1}" Text="{Binding Path=Player_Name, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="2" Grid.Row="3"/>
+        <TextBlock x:Name="p3_money" Style="{StaticResource money_style1}" Text="{Binding Path=Player_Money, Mode=OneWay, NotifyOnTargetUpdated=False}" Grid.Column="2" Grid.Row="2"/>
+        <TextBlock x:Name="p3_bet" Style="{StaticResource bet_style1}" Text="{Binding Path=Player_Bet, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="2" Grid.Row="2"/>
+        <TextBlock x:Name="p2_name" Style="{StaticResource name_style1}" Text="{Binding Path=Player_Name, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="3" Grid.Row="3"/>
+        <TextBlock x:Name="p2_money" Style="{StaticResource money_style1}" Text="{Binding Path=Player_Money, Mode=OneWay, NotifyOnTargetUpdated=False}" Grid.Column="3" Grid.Row="2"/>
+        <TextBlock x:Name="p2_bet" Style="{StaticResource bet_style1}" Text="{Binding Path=Player_Bet, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="3" Grid.Row="2"/>
+        <TextBlock x:Name="p1_name" Style="{StaticResource name_style1}" Text="{Binding Path=Player_Name, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="4" Grid.Row="3"/>
+        <TextBlock x:Name="p1_money" Style="{StaticResource money_style1}" Text="{Binding Path=Player_Money, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="4" Grid.Row="2"/>
+        <TextBlock x:Name="p1_bet" Style="{StaticResource bet_style1}" Text="{Binding Path=Player_Bet, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="4" Grid.Row="2"/>
+        
+        <TextBox x:Name="errorbox" Height="100" Canvas.Left="35" TextWrapping="Wrap" Text="{Binding Path=Errortext, Mode=OneWay, NotifyOnTargetUpdated=True}" Canvas.Top="280" Width="201" Grid.Row="1"/>
+       
+        <Canvas x:Name="canvas1" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Grid.RowSpan="1">
+           
+            <!--<Image x:Name="deck" HorizontalAlignment="Center" VerticalAlignment="Top" Height="144" Width="103" Margin="70,0,0,0" Source="Images/Deck/HK.png" Stretch="Fill"/>
+            <Image x:Name="discard" HorizontalAlignment="Center" VerticalAlignment="Top" Height="143" Width="103" Margin="105,0,0,0" Source="Images/Deck/SQ.png" Stretch="Fill"/>-->
+        </Canvas>
+
+    </Grid>
+</Window>

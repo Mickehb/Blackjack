@@ -1,0 +1,53 @@
+﻿<Window x:Class="Blackjack.player_add_window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="player_add_window" Height="300" Width="300" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None">
+
+    <Window.Resources>
+        <!-- BUTTON STYLE-->
+    <Style x:Key="buttonstyle1" TargetType="Button">
+        <Setter Property="Width" Value="80"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="0,0,20,20"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="PlayBill"/>
+        <Setter Property="Foreground" Value="WhiteSmoke"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush ImageSource="images/buttonsmall1.png"/>
+            </Setter.Value>
+        </Setter>
+        <!-- LABEL STYLES -->
+    </Style>
+        <Style x:Key="labelstyle1" TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="PlayBill"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+         </Style>
+        <!-- TEXTBOX STYLES -->
+        <Style x:Key="textboxstyle1" TargetType="TextBox">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="PlayBill"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="Background" Value="{x:Null}"/>
+        </Style>
+    </Window.Resources>
+    <Grid >
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/wood.png"/>
+        </Grid.Background>
+        <Label Style="{StaticResource labelstyle1}" Margin="0,0,0,150">Enter player name:</Label>
+        <TextBox Name="player_name_TextBox" Style="{StaticResource textboxstyle1}" Text="{Binding Path=Player_Name, UpdateSourceTrigger=Explicit}" Margin="0,0,0,80"/>
+        <Label Style="{StaticResource labelstyle1}" Margin="0,20,0,0">How much money:</Label>
+        <TextBox Name="player_money_TextBox" Style="{StaticResource textboxstyle1}" Text="{Binding Path=Player_Money, UpdateSourceTrigger=Explicit}" Margin="0,90,0,0"/>
+        <Button x:Name="ok_button" Style="{StaticResource buttonstyle1}" Content="Ok" IsDefault="True" Focusable="False" Click="ok_button_Click" />
+    </Grid>
+</Window>
