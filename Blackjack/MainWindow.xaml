@@ -86,8 +86,7 @@
             <Setter Property="Margin" Value="20,0,0,10"/>
             <Setter Property="Width" Value="180"/>            
         </Style>
-        <Style x:Key="hand_style" TargetType="TextBlock">
-            <Setter Property="Text" Value="{Binding Path=Player_Status, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
+        <Style x:Key="hand_style" TargetType="TextBlock">            
             <Setter Property="FontSize" Value="36"/>           
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
@@ -98,25 +97,39 @@
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
-               x:Key="hand_style1">                                
-            <Setter Property="Margin" Value="0,0,0,40"/>
+               x:Key="hand_style1">
+            <Setter Property="Text" Value="{Binding Path=Hand_Status, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
+            <Setter Property="Margin" Value="20,0,0,40"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style2">
+            <Setter Property="Text" Value="{Binding Path=Hand_Status1, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
             <Setter Property="Margin" Value="20,0,0,152"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style3">
+            <Setter Property="Text" Value="{Binding Path=Hand_Status2, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
             <Setter Property="Margin" Value="20,0,0,264"/>            
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style4">
+            <Setter Property="Text" Value="{Binding Path=Hand_Status3, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
             <Setter Property="Margin" Value="20,0,0,376"/>            
         </Style>
-
+        <Style BasedOn="{StaticResource hand_style}"
+               TargetType="TextBlock"
+               x:Key="dealer_style">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Text" Value="{Binding Path=Dealer_Status, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="Grid.Column" Value="2"/>
+            <Setter Property="Canvas.ZIndex" Value="1001"/>
+            <Setter Property="Visibility" Value="Visible"/>
+        </Style>
 
         <!-- MENU STYLES-->
         <Style x:Key="menustyle1" TargetType="Menu">
@@ -169,6 +182,7 @@
         </Menu>
 
         <Button x:Name="deal" Style="{StaticResource big_button_style}" Content="Deal" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="deal_Click"/>
+        <Button x:Name="done" Style="{StaticResource big_button_style}" Content="Done" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="done_Click" Visibility="Hidden"/>
 
         <Button x:Name="p5_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="0" Click="p5_add_Click"/>
         <Button x:Name="p4_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="1" Click="p4_add_Click"/>
@@ -267,6 +281,8 @@
         <TextBlock x:Name="p1_hand1" Style="{StaticResource hand_style2}" Grid.Column="4"/>
         <TextBlock x:Name="p1_hand2" Style="{StaticResource hand_style3}" Grid.Column="4"/>
         <TextBlock x:Name="p1_hand3" Style="{StaticResource hand_style4}" Grid.Column="4"/>
+
+        <TextBlock x:Name="dealer_hand" Style="{StaticResource dealer_style}"/>
 
         <Canvas x:Name="canvas1" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Grid.RowSpan="1">
            

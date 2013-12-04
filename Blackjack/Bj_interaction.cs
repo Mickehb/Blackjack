@@ -36,15 +36,20 @@ namespace Blackjack
                 return instance_variable;
         }
 
-
+        public Dealer get_dealer()
+        {
+            return dealer;
+            
+        }
         public void new_round()
         {
             deck.clear_table();
-            //dealer.reset_Xoffset();
+            dealer.reset_Xoffset();
             //players.reset_Xoffset();
             players.Active_Player = 0;
             bets_placed = 0;
             players.clear_hands();
+            dealer.clear_hand();
         }
 
         /*
@@ -161,10 +166,19 @@ namespace Blackjack
                 return false;
         }
 
+        internal bool player_double_down_allowed()
+        {
+            return players.double_down_allowed();
+        }
+
+        internal bool player_split_allowed()
+        {
+            return players.split_allowed();
+        }
+
         public int player_get_column()
         {            
             short nr_of_columns = 4;
-            short s = players.Active_Player;
             if (players.Active_Player >= 0)
             {
                 return (nr_of_columns - players.Active_Player);
@@ -262,9 +276,9 @@ namespace Blackjack
         {
             return players.hit();
         }
-        internal void player_split()
+        internal bool player_split()
         {
-            players.split();
+            return players.split();
         }
        
         internal double[] player_split_coordinates()
@@ -300,10 +314,14 @@ namespace Blackjack
             return dealer.Hidden_Card;
         }
 
-       
-
-
-
+        internal void dealer_add_card()
+        {
+            dealer.add_card(deck.Active_Card.Card_Value);
+        }
         
+        internal bool dealer_logic()
+        {
+            return dealer.logic();
+        }
     }
 }

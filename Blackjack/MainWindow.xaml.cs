@@ -115,6 +115,7 @@ namespace Blackjack
                     to = Bj_interaction.instance().dealer_coordinates();
                     card = Bj_interaction.instance().deck_get_next_image();
                     one_card_animation(from, to, card);
+                    Bj_interaction.instance().dealer_add_card();
                 }
                 else // Dealers 2nd card
                 {
@@ -127,6 +128,7 @@ namespace Blackjack
                     card.Source = img;
                     Bj_interaction.instance().dealer_set_card(card);
                     one_card_animation(from, to, card);
+                    Bj_interaction.instance().dealer_add_card();
                  }
              }
         }
@@ -212,17 +214,25 @@ namespace Blackjack
             }
             else
             {
+
                 p_moves.Visibility = Visibility.Hidden;
-                clear_animation();
-                active_visibility();
+                
                 /*
                  * else dealer_logic()
                  */
                 show_dealer_hidden();
-                Bj_interaction.instance().new_round();
-                //hand_visibility();
-                
-                this.ResizeMode = System.Windows.ResizeMode.CanResize;
+
+                dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
+                while (Bj_interaction.instance().dealer_logic())
+                {
+                    double[] to = Bj_interaction.instance().dealer_coordinates();
+                    double[] from = Bj_interaction.instance().deck_get_start_coordinates();
+                    Image card = Bj_interaction.instance().deck_get_next_image();
+                    one_card_animation(from, to, card);
+                    Bj_interaction.instance().dealer_add_card();
+                } 
+
+                done.Visibility = Visibility.Visible;
                 
             }
         }
@@ -310,8 +320,19 @@ namespace Blackjack
             
             p_moves.Visibility = Visibility.Visible;
             p_moves.SetValue(Grid.ColumnProperty, Bj_interaction.instance().player_get_column());
-            this.ResizeMode = System.Windows.ResizeMode.NoResize;
             
+            
+        }
+
+        private void done_Click(object sender, RoutedEventArgs e)
+        {
+            clear_animation();
+            active_visibility();
+
+            Bj_interaction.instance().new_round();
+            done.Visibility = Visibility.Hidden;
+
+            this.ResizeMode = System.Windows.ResizeMode.CanResize;        
         }
 
         /*
@@ -327,21 +348,11 @@ namespace Blackjack
             one_card_animation(from, to, card);
             Bj_interaction.instance().player_add_card();
 
-            //Canvas.SetZIndex(p1_hand, zindex++);
-            
+                        
 
-            /*
-             * hit logic
-             * take another card
-             */
-            short active_player = Bj_interaction.instance().player_get_active_player_nr();
-            short active_hand = Bj_interaction.instance().player_get_active_hand();
-
-            if (!Bj_interaction.instance().player_hit())
-            {
-               // hand_visibility(active_player, active_hand);
+            if (!Bj_interaction.instance().player_hit())                           
                 change_player();
-            }
+            
             
 
         }
@@ -377,49 +388,60 @@ namespace Blackjack
              *  take another card move to next player
              *  bet more money
              */
-            //Bj_interaction.instance().player_add_card();
-            if (!Bj_interaction.instance().player_double_down())
-                change_player();
+            if (Bj_interaction.instance().player_double_down_allowed())
+            {
+                errorbox.DataContext = Bj_interaction.instance().deck;
+                double[] from = Bj_interaction.instance().deck_get_start_coordinates();
+                double[] to = Bj_interaction.instance().player_coordinates();
+                Image card = Bj_interaction.instance().deck_get_next_image();
+                one_card_animation(from, to, card);
+                Bj_interaction.instance().player_add_card();
+
+                if (!Bj_interaction.instance().player_double_down())
+                    change_player();
+            }
+                
+           
 
             
         }
 
         private void split_Click(object sender, RoutedEventArgs e)
         {
+
             errorbox.Text = "Split not implemented";
-            errorbox.DataContext = Bj_interaction.instance().deck;            
-            
-            // get our current coordinates
-            double[] from = Bj_interaction.instance().player_coordinates();                        
+            errorbox.DataContext = Bj_interaction.instance().deck;
+
             // get our current card_image
-            Image card = Bj_interaction.instance().player_get_active_image();            
-
-            Bj_interaction.instance().player_split();
-            // if split allowed is allowed, do animations 
-
-            double[] to = Bj_interaction.instance().player_split_coordinates();
-
-            one_card_animation(from, to, card);
-
-            from = Bj_interaction.instance().deck_get_start_coordinates();
-            to = Bj_interaction.instance().player_coordinates();
-          
-            card = Bj_interaction.instance().deck_get_next_image();
-            Bj_interaction.instance().player_add_card();
-            one_card_animation(from, to, card);
-
-            to = Bj_interaction.instance().player_split_coordinates();
-            to[0] += 30;
-
-            card = Bj_interaction.instance().deck_get_next_image();
-            Bj_interaction.instance().player_add_split_card();
-            one_card_animation(from, to, card);
+            Image card = Bj_interaction.instance().player_get_active_image();
             
-            /*
-             * split logic
-             * split cards
-             */
-            show_dealer_hidden();
+            // if split allowed is allowed, do animations
+            if (Bj_interaction.instance().player_split())
+            {
+                // get our current coordinates
+                double[] from = Bj_interaction.instance().player_coordinates();
+               
+
+                double[] to = Bj_interaction.instance().player_split_coordinates();
+
+                one_card_animation(from, to, card);
+
+                from = Bj_interaction.instance().deck_get_start_coordinates();
+                to = Bj_interaction.instance().player_coordinates();
+
+                card = Bj_interaction.instance().deck_get_next_image();
+                Bj_interaction.instance().player_add_card();
+                one_card_animation(from, to, card);
+
+                to = Bj_interaction.instance().player_split_coordinates();
+                to[0] += 30;
+
+                card = Bj_interaction.instance().deck_get_next_image();
+                Bj_interaction.instance().player_add_split_card();
+                one_card_animation(from, to, card);
+            }
+
+
         }
 
         /*
@@ -834,103 +856,8 @@ namespace Blackjack
                 p5_betting.Visibility = Visibility.Visible;
             else
                 p5_add.Visibility = Visibility.Visible;
-        }
-
+        }       
         
-        private void hand_visibility(short player, short hand)
-        {
-            
-            switch (player)
-            {
-                case 0:
-                     switch (hand)
-                     {
-                         case 0:
-                             p1_hand.Visibility = Visibility.Visible;
-                             break;
-                         case 1:
-                             p1_hand1.Visibility = Visibility.Visible;
-                             break;
-                         case 2:
-                             p1_hand2.Visibility = Visibility.Visible;
-                             break;
-                         case 3:
-                             p1_hand3.Visibility = Visibility.Visible;
-                             break;
-                     }
-                    break;
-                case 1:
-                    switch (hand)
-                    {
-                        case 0:
-                            p2_hand.Visibility = Visibility.Visible;
-                            break;
-                        case 1:
-                            p2_hand1.Visibility = Visibility.Visible;
-                            break;
-                        case 2:
-                            p2_hand1.Visibility = Visibility.Visible;
-                            break;
-                        case 3:
-                            p2_hand1.Visibility = Visibility.Visible;
-                            break;
-                    }
-                    break;
-                case 2:
-                    switch (hand)
-                    {
-                        case 0:
-                            p3_hand.Visibility = Visibility.Visible;
-                            break;
-                        case 1:
-                            p3_hand1.Visibility = Visibility.Visible;
-                            break;
-                        case 2:
-                            p3_hand2.Visibility = Visibility.Visible;
-                            break;
-                        case 3:
-                            p3_hand3.Visibility = Visibility.Visible;
-                            break;
-                    }
-                    break;
-                case 3:
-                    switch (hand)
-                    {
-                        case 0:
-                            p4_hand.Visibility = Visibility.Visible;
-                            break;
-                        case 1:
-                            p4_hand1.Visibility = Visibility.Visible;
-                            break;
-                        case 2:
-                            p4_hand2.Visibility = Visibility.Visible;
-                            break;
-                        case 3:
-                            p4_hand3.Visibility = Visibility.Visible;
-                            break;
-                    }
-                    break;
-                case 4:
-                    switch (hand)
-                    {
-                        case 0:
-                            p5_hand.Visibility = Visibility.Visible;
-                            break;
-                        case 1:
-                            p5_hand1.Visibility = Visibility.Visible;
-                            break;
-                        case 2:
-                            p5_hand2.Visibility = Visibility.Visible;
-                            break;
-                        case 3:
-                            p5_hand3.Visibility = Visibility.Visible;
-                            break;
-                    }
-                    break;
-            }
-            
-
-        }
 
         private void hand_visibility()
         {
@@ -959,6 +886,8 @@ namespace Blackjack
             p1_hand2.Visibility = Visibility.Hidden;
             p1_hand3.Visibility = Visibility.Hidden; 
         }
+
+       
     }
 }
 
