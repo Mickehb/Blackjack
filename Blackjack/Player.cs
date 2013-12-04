@@ -9,17 +9,19 @@ namespace Blackjack
 {
     class Player : INotifyPropertyChanged
     {
-        List<Card>[] hand;
+        List<Card>[] hand;                  //array of 4 lists, one for each hand (max 4 splits allowed)
         
-        private short active_hand;
-        private short nr_of_hands;
+        private short active_hand;          //hand that is currently being played
+        private short nr_of_hands;          //nr_of_hands the player has 
         private Card active_card;
 
-        private short[] value;
-        private string[] status;
-        private const short ACE_LOW = 1;
+        private short ace_high_value;       //counts values using ace value of high
+        private short[] hand_value;         //by default counts values using ace value of 1        
+        private string[] hand_status;       //text for player to see, i.e bust or handvalue (12)
+        private const short ACE_LOW = 1;    //Constants for logic
         private const short ACE_HIGH = 11;
         private const short BUST = 21;
+        private const short MAX_SPLITS = 3;
 
         private string name;
         private short money;
@@ -39,8 +41,8 @@ namespace Blackjack
           nr_of_hands = 0;
           hand = new List<Card>[4];
           hand[0] = new List<Card>();
-          value = new short[4];
-          status = new string[4];
+          hand_value = new short[4];
+          hand_status = new string[4];
           
 
           this.money = 100;
@@ -62,10 +64,10 @@ namespace Blackjack
 
       public string Player_Status
       {
-          get { return status[active_hand]; }
+          get { return hand_status[active_hand]; }
           set
           {
-              status[active_hand] = value;
+              hand_status[active_hand] = value;
               OnPropertyChanged("Player_Status");
           }
       }
@@ -136,13 +138,15 @@ namespace Blackjack
          * Functions
          */ 
       public void add_card(Card c)
-      {          
+      {
+          short s = active_hand;
           hand[active_hand].Add(c);                
       }
 
       public void split_add_card(Card c)
       {
-          hand[active_hand+1].Add(c);
+          short s = nr_of_hands;
+          hand[active_hand+nr_of_hands].Add(c);
       }
 
       public void clear_hands()
@@ -182,7 +186,7 @@ namespace Blackjack
       {
           double[] tmp = new double[2];
 
-          tmp[0] = (Xcord + (hand[active_hand].Count() * Xoffset));
+          tmp[0] = (Xcord + (hand[active_hand].Count * Xoffset));
           tmp[1] = (Ycord - (active_hand * Yoffset));
           
           return tmp;
@@ -211,16 +215,28 @@ namespace Blackjack
       }
             
 
-      internal void split_logic()
+      internal bool split_logic()
       {
-          int i = hand[active_hand].Count -1;
-          Card tmp = hand[active_hand].Last();
-          hand[active_hand + 1] = new List<Card>();
-          hand[active_hand + 1].Add(tmp);
-          //hand[active_hand].Remove(tmp);
-          hand[active_hand].RemoveAt(i);
+          //if split allowed
+          short first_card = hand[active_hand].ElementAt(0).Card_Value;
+          short second_card = hand[active_hand].ElementAt(1).Card_Value;
           
-          nr_of_hands++;
+
+          if ((nr_of_hands < MAX_SPLITS) && first_card == second_card)
+          {
+              nr_of_hands++;
+              int i = hand[active_hand].Count - 1;
+              Card tmp = hand[active_hand].Last();
+              hand[active_hand + nr_of_hands] = new List<Card>();
+              hand[active_hand + nr_of_hands].Add(tmp);
+              hand[active_hand].Remove(tmp);
+              //hand[active_hand].RemoveAt(i);
+              
+              return true;
+          }
+          else
+              return false;
+          
 
       }
 
@@ -248,7 +264,7 @@ namespace Blackjack
       {
           set_value();
           short s = active_hand;
-          short si = value[active_hand];
+          short si = hand_value[active_hand];
           string str = Player_Status;
 
           if (active_hand < nr_of_hands)
@@ -271,7 +287,7 @@ namespace Blackjack
       {
 
           set_value();
-          short s = value[active_hand];
+          short s = hand_value[active_hand];
           short si = active_hand;
           string str = Player_Status;
 
@@ -291,13 +307,13 @@ namespace Blackjack
 
               else if (!bust(ACE_HIGH))
               {
-                  value[active_hand] += ACE_HIGH;
-                  Player_Status = value[active_hand].ToString();
+                  hand_value[active_hand] += ACE_HIGH;
+                  Player_Status = hand_value[active_hand].ToString();
               }
               else
               {
-                  value[active_hand] += ACE_LOW;
-                  Player_Status = value[active_hand].ToString();
+                  hand_value[active_hand] += ACE_LOW;
+                  Player_Status = hand_value[active_hand].ToString();
               }
               return true;
           }
@@ -315,8 +331,8 @@ namespace Blackjack
               }
               else
               {
-                  value[active_hand] += active_card.Card_Value;
-                  Player_Status = value.ToString();
+                  hand_value[active_hand] += active_card.Card_Value;
+                  Player_Status = hand_value.ToString();
               }
 
               return true;
@@ -326,19 +342,31 @@ namespace Blackjack
 
       internal void set_value()
       {
-          value[active_hand] = 0;
-          short s = active_hand;
-          for (short i = 0; i < hand.Count() -2 ; ++i)
+          ace_high_value = 0;
+          hand_value[active_hand] = 0; 
+          short card_value;
+          for (short i = 0; i < hand[active_hand].Count; ++i)
           {
-              value[active_hand] += hand[active_hand].ElementAt(i).Card_Value;
+              card_value = hand[active_hand].ElementAt(i).Card_Value;
+              if (card_value == ACE_LOW)
+              {
+                  if (ace_high_value + ACE_HIGH < BUST)
+                      ace_high_value += ACE_HIGH;
+                  else
+                      ace_high_value += card_value;
+              }
+              else
+                  ace_high_value += card_value;
+
+              hand_value[active_hand] += card_value;
           }
 
-          Player_Status = value[active_hand].ToString();
+          Player_Status = hand_value[active_hand].ToString() + "/" + ace_high_value;
           
       }
       private bool bust(short s)
       {
-          if (value[active_hand] + s > BUST)
+          if (hand_value[active_hand] + s > BUST)
               return true;
 
           return false;

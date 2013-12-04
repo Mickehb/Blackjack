@@ -394,32 +394,29 @@ namespace Blackjack
             // get our current card_image
             Image card = Bj_interaction.instance().player_get_active_image();            
 
-            Bj_interaction.instance().player_split();
-            // if split allowed is allowed, do animations 
+            // if split allowed is allowed, do animations
+            if (Bj_interaction.instance().player_split())
+            {
+                double[] to = Bj_interaction.instance().player_split_coordinates();
 
-            double[] to = Bj_interaction.instance().player_split_coordinates();
+                one_card_animation(from, to, card);
 
-            one_card_animation(from, to, card);
+                from = Bj_interaction.instance().deck_get_start_coordinates();
+                to = Bj_interaction.instance().player_coordinates();
 
-            from = Bj_interaction.instance().deck_get_start_coordinates();
-            to = Bj_interaction.instance().player_coordinates();
-          
-            card = Bj_interaction.instance().deck_get_next_image();
-            Bj_interaction.instance().player_add_card();
-            one_card_animation(from, to, card);
+                card = Bj_interaction.instance().deck_get_next_image();
+                Bj_interaction.instance().player_add_card();
+                one_card_animation(from, to, card);
 
-            to = Bj_interaction.instance().player_split_coordinates();
-            to[0] += 30;
+                to = Bj_interaction.instance().player_split_coordinates();
+                to[0] += 30;
 
-            card = Bj_interaction.instance().deck_get_next_image();
-            Bj_interaction.instance().player_add_split_card();
-            one_card_animation(from, to, card);
+                card = Bj_interaction.instance().deck_get_next_image();
+                Bj_interaction.instance().player_add_split_card();
+                one_card_animation(from, to, card);
+            }
             
-            /*
-             * split logic
-             * split cards
-             */
-            show_dealer_hidden();
+                //show_dealer_hidden();
         }
 
         /*

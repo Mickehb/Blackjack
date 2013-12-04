@@ -99,7 +99,7 @@
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style1">                                
-            <Setter Property="Margin" Value="0,0,0,40"/>
+            <Setter Property="Margin" Value="20,0,0,40"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"

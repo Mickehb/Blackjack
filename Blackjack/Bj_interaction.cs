@@ -262,9 +262,9 @@ namespace Blackjack
         {
             return players.hit();
         }
-        internal void player_split()
+        internal bool player_split()
         {
-            players.split();
+            return players.split();
         }
        
         internal double[] player_split_coordinates()

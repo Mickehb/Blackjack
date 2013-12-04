@@ -89,9 +89,9 @@ namespace Blackjack
              */
             for (int i = 1; i < 5; i++)
             {
-                Card c1 = new Card(1, "HA.png");
-                Card c2 = new Card(1, "CA.png");
-                Card c3 = new Card(1, "DA.png");
+                Card c1 = new Card(10, "C10.png");
+                Card c2 = new Card(8, "C8.png");
+                Card c3 = new Card(2, "D2.png");
                 Card c4 = new Card(1, "SA.png");
         
                 deck.Add(c1);

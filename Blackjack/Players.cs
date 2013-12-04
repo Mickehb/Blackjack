@@ -119,9 +119,9 @@ namespace Blackjack
             return players[active_player].stand_logic();
         }
 
-        internal void split()
+        internal bool split()
         {
-            players[active_player].split_logic();
+            return players[active_player].split_logic();
         }
 
         internal bool hit()
