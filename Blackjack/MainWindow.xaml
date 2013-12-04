@@ -84,25 +84,21 @@
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Margin" Value="20,0,0,10"/>
-            <Setter Property="Width" Value="180"/>            
+            <Setter Property="Width" Value="180"/>
         </Style>
-        <Style x:Key="hand_style" TargetType="TextBlock">            
-            <Setter Property="FontSize" Value="36"/>           
+        <Style x:Key="hand_style" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="36"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Width" Value="180"/>
-            <Setter Property="Grid.Row" Value="1"/>            
+            <Setter Property="Grid.Row" Value="1"/>
             <Setter Property="Canvas.ZIndex" Value="1000"/>
             <Setter Property="Visibility" Value="Visible"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
-<<<<<<< HEAD
-               x:Key="hand_style1">                                
-=======
                x:Key="hand_style1">
             <Setter Property="Text" Value="{Binding Path=Hand_Status, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
->>>>>>> origin/master
             <Setter Property="Margin" Value="20,0,0,40"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
@@ -115,13 +111,13 @@
                TargetType="TextBlock"
                x:Key="hand_style3">
             <Setter Property="Text" Value="{Binding Path=Hand_Status2, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-            <Setter Property="Margin" Value="20,0,0,264"/>            
+            <Setter Property="Margin" Value="20,0,0,264"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style4">
             <Setter Property="Text" Value="{Binding Path=Hand_Status3, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-            <Setter Property="Margin" Value="20,0,0,376"/>            
+            <Setter Property="Margin" Value="20,0,0,376"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
@@ -242,7 +238,7 @@
             <Button x:Name="split" Style="{StaticResource buttonstyle1}" Content="Split" Margin="0,0,160,0" Click="split_Click"/>
         </Grid>
 
-        
+
         <TextBlock x:Name="p5_name" Style="{StaticResource name_style1}" Text= "{Binding Path=Player_Name, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="0" Grid.Row="3"/>
         <TextBlock x:Name="p5_money" Style="{StaticResource money_style1}" Text="{Binding Path=Player_Money, Mode=OneWay, NotifyOnTargetUpdated=False}" Grid.Column="0" Grid.Row="2"/>
         <TextBlock x:Name="p5_bet" Style="{StaticResource bet_style1}" Text="{Binding Path=Player_Bet, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="0" Grid.Row="2"/>
@@ -258,7 +254,7 @@
         <TextBlock x:Name="p1_name" Style="{StaticResource name_style1}" Text="{Binding Path=Player_Name, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="4" Grid.Row="3"/>
         <TextBlock x:Name="p1_money" Style="{StaticResource money_style1}" Text="{Binding Path=Player_Money, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="4" Grid.Row="2"/>
         <TextBlock x:Name="p1_bet" Style="{StaticResource bet_style1}" Text="{Binding Path=Player_Bet, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Column="4" Grid.Row="2"/>
-        
+
         <TextBox x:Name="errorbox" Height="100" Canvas.Left="35" TextWrapping="Wrap" Text="{Binding Path=Errortext, Mode=OneWay, NotifyOnTargetUpdated=True}" Canvas.Top="280" Width="201" Grid.Row="1"/>
 
         <TextBlock x:Name="p5_hand" Style="{StaticResource hand_style1}" Grid.Column="0"/>
@@ -270,7 +266,7 @@
         <TextBlock x:Name="p4_hand1" Style="{StaticResource hand_style2}" Grid.Column="1"/>
         <TextBlock x:Name="p4_hand2" Style="{StaticResource hand_style3}" Grid.Column="1"/>
         <TextBlock x:Name="p4_hand3" Style="{StaticResource hand_style4}" Grid.Column="1"/>
-        
+
         <TextBlock x:Name="p3_hand" Style="{StaticResource hand_style1}" Grid.Column="2" />
         <TextBlock x:Name="p3_hand1" Style="{StaticResource hand_style2}"  Grid.Column="2"/>
         <TextBlock x:Name="p3_hand2" Style="{StaticResource hand_style3}"  Grid.Column="2"/>
@@ -289,7 +285,7 @@
         <TextBlock x:Name="dealer_hand" Style="{StaticResource dealer_style}"/>
 
         <Canvas x:Name="canvas1" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Grid.RowSpan="1">
-           
+
             <!--<Image x:Name="deck" HorizontalAlignment="Center" VerticalAlignment="Top" Height="144" Width="103" Margin="70,0,0,0" Source="Images/Deck/HK.png" Stretch="Fill"/>
             <Image x:Name="discard" HorizontalAlignment="Center" VerticalAlignment="Top" Height="143" Width="103" Margin="105,0,0,0" Source="Images/Deck/SQ.png" Stretch="Fill"/>-->
         </Canvas>

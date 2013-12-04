@@ -50,10 +50,11 @@ namespace Blackjack
         public string Errortext
         {
             get { return errortext; }
-            set { 
-                    errortext = value;
-                    OnPropertyChanged("Errortext");
-                }
+            set
+            {
+                errortext = value;
+                OnPropertyChanged("Errortext");
+            }
         }
 
         public short ZIndex
@@ -89,13 +90,6 @@ namespace Blackjack
              */
             for (int i = 1; i < 5; i++)
             {
-<<<<<<< HEAD
-                Card c1 = new Card(10, "C10.png");
-                Card c2 = new Card(8, "C8.png");
-                Card c3 = new Card(2, "D2.png");
-                Card c4 = new Card(1, "SA.png");
-        
-=======
                 Card c1 = new Card(10, "H10.png");
                 Card c2 = new Card(1, "CA.png");
                 Card c3 = new Card(5, "D5.png");
@@ -106,7 +100,6 @@ namespace Blackjack
                 Card c7 = new Card(2, "D2.png");
                 Card c8 = new Card(3, "S3.png");
 
->>>>>>> origin/master
                 deck.Add(c1);
                 deck.Add(c2);
                 deck.Add(c3);
@@ -211,7 +204,7 @@ namespace Blackjack
         {
             Card tmp;
 
-            while(onTable.Count != 0)
+            while (onTable.Count != 0)
             {
                 tmp = onTable.ElementAt(0);
                 onTable.RemoveAt(0);

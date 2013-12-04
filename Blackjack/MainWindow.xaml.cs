@@ -30,9 +30,9 @@ namespace Blackjack
             InitializeComponent();
             hide_all();
             Bj_interaction.instance().deck_load();
-            Bj_interaction.instance().set_coordinates(1600, 900);            
+            Bj_interaction.instance().set_coordinates(1600, 900);
             load_card_image();
-            Bj_interaction.instance().deck_shuffle();            
+            Bj_interaction.instance().deck_shuffle();
         }
 
         /****************************************
@@ -97,7 +97,7 @@ namespace Blackjack
             double[] to;
             Image card;
 
-            for (int a = 0; a<2 ;a++ )
+            for (int a = 0; a < 2; a++)
             {
                 for (short i = 0; i < 5; i++)
                 {
@@ -129,8 +129,8 @@ namespace Blackjack
                     Bj_interaction.instance().dealer_set_card(card);
                     one_card_animation(from, to, card);
                     Bj_interaction.instance().dealer_add_card();
-                 }
-             }
+                }
+            }
         }
 
         private void show_dealer_hidden()
@@ -151,7 +151,7 @@ namespace Blackjack
             double[] startCoords = Bj_interaction.instance().deck_get_start_coordinates();
             double[] endCoords = Bj_interaction.instance().deck_get_end_coordinates();
             Uri src;
-           
+
             for (int i = 0; i < decksize; i++)
             {
                 string filename = Bj_interaction.instance().deck_get_image_name((short)i);
@@ -165,7 +165,7 @@ namespace Blackjack
                 card.Width = cardWidth;
                 card.Height = cardHeight;
                 card.Visibility = Visibility.Visible;
-                
+
 
                 Bj_interaction.instance().deck_set_card_image((short)i, card);
                 canvas1.Children.Add(card);
@@ -175,7 +175,7 @@ namespace Blackjack
             }
 
             src = new Uri("pack://application:,,,/Images/Deck/brv.png");
-            
+
             BitmapImage startimg = new BitmapImage(src);
             Image startcard = new Image();
             startcard.Source = startimg;
@@ -201,7 +201,7 @@ namespace Blackjack
             canvas1.Children.Add(endcard);
             Canvas.SetLeft(endcard, endCoords[0]);
             Canvas.SetTop(endcard, endCoords[1]);
-            
+
         }
 
         private void change_player()
@@ -216,7 +216,7 @@ namespace Blackjack
             {
 
                 p_moves.Visibility = Visibility.Hidden;
-                
+
                 /*
                  * else dealer_logic()
                  */
@@ -230,14 +230,14 @@ namespace Blackjack
                     Image card = Bj_interaction.instance().deck_get_next_image();
                     one_card_animation(from, to, card);
                     Bj_interaction.instance().dealer_add_card();
-                } 
+                }
 
                 done.Visibility = Visibility.Visible;
-                
+
             }
         }
 
-       
+
 
         private void set_datacontext(short p)
         {
@@ -314,14 +314,14 @@ namespace Blackjack
 
             Bj_interaction.instance().player_set_coordinates(1600, 900);
             Bj_interaction.instance().set_active_player();
-           
-            
+
+
             deal_animation();
-            
+
             p_moves.Visibility = Visibility.Visible;
             p_moves.SetValue(Grid.ColumnProperty, Bj_interaction.instance().player_get_column());
-            
-            
+
+
         }
 
         private void done_Click(object sender, RoutedEventArgs e)
@@ -332,7 +332,7 @@ namespace Blackjack
             Bj_interaction.instance().new_round();
             done.Visibility = Visibility.Hidden;
 
-            this.ResizeMode = System.Windows.ResizeMode.CanResize;        
+            this.ResizeMode = System.Windows.ResizeMode.CanResize;
         }
 
         /*
@@ -348,12 +348,12 @@ namespace Blackjack
             one_card_animation(from, to, card);
             Bj_interaction.instance().player_add_card();
 
-                        
 
-            if (!Bj_interaction.instance().player_hit())                           
+
+            if (!Bj_interaction.instance().player_hit())
                 change_player();
-            
-            
+
+
 
         }
 
@@ -364,7 +364,7 @@ namespace Blackjack
              */
             short active_player = Bj_interaction.instance().player_get_active_player_nr();
             short active_hand = Bj_interaction.instance().player_get_active_hand();
-            
+
 
             if (!Bj_interaction.instance().player_stand())
             {
@@ -372,13 +372,13 @@ namespace Blackjack
                 change_player();
             }
             //else
-                //hand_visibility(active_player, active_hand);
-            
-           
-            
-            
-           
-            
+            //hand_visibility(active_player, active_hand);
+
+
+
+
+
+
         }
 
         private void double_down_Click(object sender, RoutedEventArgs e)
@@ -400,10 +400,10 @@ namespace Blackjack
                 if (!Bj_interaction.instance().player_double_down())
                     change_player();
             }
-                
-           
 
-            
+
+
+
         }
 
         private void split_Click(object sender, RoutedEventArgs e)
@@ -414,20 +414,14 @@ namespace Blackjack
 
             // get our current card_image
             Image card = Bj_interaction.instance().player_get_active_image();
-            
+
             // if split allowed is allowed, do animations
             if (Bj_interaction.instance().player_split())
             {
                 // get our current coordinates
                 double[] from = Bj_interaction.instance().player_coordinates();
-               
 
-<<<<<<< HEAD
-            // if split allowed is allowed, do animations
-            if (Bj_interaction.instance().player_split())
-            {
-=======
->>>>>>> origin/master
+
                 double[] to = Bj_interaction.instance().player_split_coordinates();
 
                 one_card_animation(from, to, card);
@@ -438,18 +432,6 @@ namespace Blackjack
                 card = Bj_interaction.instance().deck_get_next_image();
                 Bj_interaction.instance().player_add_card();
                 one_card_animation(from, to, card);
-<<<<<<< HEAD
-
-                to = Bj_interaction.instance().player_split_coordinates();
-                to[0] += 30;
-
-                card = Bj_interaction.instance().deck_get_next_image();
-                Bj_interaction.instance().player_add_split_card();
-                one_card_animation(from, to, card);
-            }
-            
-                //show_dealer_hidden();
-=======
 
                 to = Bj_interaction.instance().player_split_coordinates();
                 to[0] += 30;
@@ -460,7 +442,6 @@ namespace Blackjack
             }
 
 
->>>>>>> origin/master
         }
 
         /*
@@ -720,23 +701,23 @@ namespace Blackjack
             p4_betting.Visibility = Visibility.Hidden;
             p4_bet.Visibility = Visibility.Hidden;
             p4_money.Visibility = Visibility.Hidden;
-            p4_name.Visibility = Visibility.Hidden;            
+            p4_name.Visibility = Visibility.Hidden;
 
             p3_betting.Visibility = Visibility.Hidden;
             p3_bet.Visibility = Visibility.Hidden;
             p3_money.Visibility = Visibility.Hidden;
-            p3_name.Visibility = Visibility.Hidden;           
+            p3_name.Visibility = Visibility.Hidden;
 
             p2_betting.Visibility = Visibility.Hidden;
             p2_bet.Visibility = Visibility.Hidden;
             p2_money.Visibility = Visibility.Hidden;
-            p2_name.Visibility = Visibility.Hidden;           
+            p2_name.Visibility = Visibility.Hidden;
 
             p1_betting.Visibility = Visibility.Hidden;
             p1_bet.Visibility = Visibility.Hidden;
             p1_money.Visibility = Visibility.Hidden;
             p1_name.Visibility = Visibility.Hidden;
-           
+
             p_moves.Visibility = Visibility.Hidden;
             deal.Visibility = Visibility.Hidden;
         }
@@ -875,8 +856,8 @@ namespace Blackjack
                 p5_betting.Visibility = Visibility.Visible;
             else
                 p5_add.Visibility = Visibility.Visible;
-        }       
-        
+        }
+
 
         private void hand_visibility()
         {
@@ -903,10 +884,10 @@ namespace Blackjack
             p1_hand.Visibility = Visibility.Hidden;
             p1_hand1.Visibility = Visibility.Hidden;
             p1_hand2.Visibility = Visibility.Hidden;
-            p1_hand3.Visibility = Visibility.Hidden; 
+            p1_hand3.Visibility = Visibility.Hidden;
         }
 
-       
+
     }
 }
 
