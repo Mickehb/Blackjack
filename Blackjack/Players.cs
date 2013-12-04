@@ -58,6 +58,14 @@ namespace Blackjack
             players[p].update_bet(b);
         }
 
+        public bool double_down_allowed()
+        {
+            return players[active_player].double_down_allowed();
+        }
+        public bool split_allowed()
+        {
+            return players[active_player].split_allowed();
+        }
         public void clear_player_bet(short p)
         {
             players[p].clear_bet();
@@ -95,7 +103,8 @@ namespace Blackjack
             for(short i = 0; i < max_players; ++i)
             {
                 if (isactive(i))
-                    players[i].clear_hands();
+                    players[i].clear_hands();                    
+                
             }
         }
 
