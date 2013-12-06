@@ -315,15 +315,18 @@ namespace Blackjack
             Bj_interaction.instance().player_set_coordinates(1600, 900);
             Bj_interaction.instance().set_active_player();
             deal_animation();
-            if (Bj_interaction.instance().bj_logic())
+
+            //will work once blackjack_logic works
+            if (Bj_interaction.instance().blackjack_logic())
             {
                 show_dealer_hidden();
-                Bj_interaction.instance().new_round();
+                done.Visibility = Visibility.Visible;
             }
-
-            p_moves.Visibility = Visibility.Visible;
-            p_moves.SetValue(Grid.ColumnProperty, Bj_interaction.instance().player_get_column());
-
+            else
+            {
+                p_moves.Visibility = Visibility.Visible;
+                p_moves.SetValue(Grid.ColumnProperty, Bj_interaction.instance().player_get_column());
+            }
 
         }
 
