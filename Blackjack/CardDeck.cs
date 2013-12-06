@@ -92,13 +92,13 @@ namespace Blackjack
             {
                 Card c1 = new Card(10, "H10.png");
                 Card c2 = new Card(1, "CA.png");
-                Card c3 = new Card(5, "D5.png");
-                Card c4 = new Card(6, "S6.png");
+                Card c3 = new Card(10, "D10.png");
+                Card c4 = new Card(10, "S10.png");
 
                 Card c5 = new Card(10, "C10.png");
                 Card c6 = new Card(1, "HA.png");
-                Card c7 = new Card(2, "D2.png");
-                Card c8 = new Card(3, "S3.png");
+                Card c7 = new Card(1, "DA.png");
+                Card c8 = new Card(1, "SA.png");
 
                 deck.Add(c1);
                 deck.Add(c2);

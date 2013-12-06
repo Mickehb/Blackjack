@@ -314,9 +314,12 @@ namespace Blackjack
 
             Bj_interaction.instance().player_set_coordinates(1600, 900);
             Bj_interaction.instance().set_active_player();
-
-
             deal_animation();
+            if (Bj_interaction.instance().bj_logic())
+            {
+                show_dealer_hidden();
+                Bj_interaction.instance().new_round();
+            }
 
             p_moves.Visibility = Visibility.Visible;
             p_moves.SetValue(Grid.ColumnProperty, Bj_interaction.instance().player_get_column());
@@ -636,37 +639,48 @@ namespace Blackjack
          */
         private void p1_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
-            deal_visibility();
-            move_visibility(0);
+            if (Bj_interaction.instance().player_place_bet(0))
+            {
+                deal_visibility();
+                move_visibility(0);
+            }
         }
 
         private void p2_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
+            if (Bj_interaction.instance().player_place_bet(1))
+            {
             deal_visibility();
             move_visibility(1);
+            }
         }
 
         private void p3_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
+            if (Bj_interaction.instance().player_place_bet(2))
+            {
             deal_visibility();
             move_visibility(2);
+            }
         }
 
         private void p4_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
-            deal_visibility();
-            move_visibility(3);
+            if (Bj_interaction.instance().player_place_bet(3))
+            {
+                deal_visibility();
+                move_visibility(3);
+            }
         }
 
         private void p5_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
-            deal_visibility();
-            move_visibility(4);
+            if (Bj_interaction.instance().player_place_bet(4))
+            {
+                deal_visibility();
+                move_visibility(4);
+            }
+            
         }
 
         /*

@@ -183,5 +183,18 @@ namespace Blackjack
             hand.Clear();
             Dealer_Status = "";
         }
+
+        internal bool blackjack()
+        {
+            set_value();
+            if (ace_high_value == 21)
+            {
+                Dealer_Status = "Dealer Blackjack!";
+                return true;
+            }
+
+            return false;
+
+        }
     }
 }
