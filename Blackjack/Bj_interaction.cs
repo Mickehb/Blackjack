@@ -159,7 +159,7 @@ namespace Blackjack
 
         internal bool player_isactive(short p)
         {
-            return players.isactive(p);
+            return players.is_active(p);
         }
 
         internal bool player_valid_deal()
@@ -220,9 +220,16 @@ namespace Blackjack
             return players.get_active_hand();
         }
 
-        internal void player_place_bet()
+        internal bool player_place_bet(short p)
         {
-            bets_placed++;                
+
+            if (players.get_player(p).Player_Bet > 0)
+            {
+                bets_placed++;
+                return true;
+            }
+
+            return false;
         }
 
         internal double[] player_coordinates()
@@ -236,8 +243,7 @@ namespace Blackjack
         }
 
         internal void set_coordinates(double Xcoord, double Ycoord)
-        {
-            
+        {            
             dealer.set_coordinates(Xcoord);
             deck.set_coordinates(Xcoord);
         }
@@ -326,6 +332,38 @@ namespace Blackjack
         internal bool dealer_logic()
         {
             return dealer.logic();
+        }
+
+        internal bool bj_logic()
+        {
+            //set blackjack for players
+            
+
+            if (dealer.blackjack())
+            {
+                for (short s = 0; s < 5; ++s)
+                {
+                    if (players.is_active(s))
+                    {
+                        if (!players.blackjack(s))
+                            players.player_loss(s);
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                for (short s = 0; s < 5; ++s)
+                {
+                    if (players.is_active(s))
+                    {
+                        players.blackjack(s);
+                        //if (players.blackjack(s))
+                          //  players.player_blackjack_win(s);
+                    }
+                }
+                return false;
+            }
         }
     }
 }

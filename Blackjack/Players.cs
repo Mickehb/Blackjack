@@ -71,9 +71,9 @@ namespace Blackjack
             players[p].clear_bet();
         }
 
-        public bool isactive(short p)
+        public bool is_active(short p)
         {
-            if(players[p] != null)
+            if(players[p] != null && !players[p].Player_Blackjack)
             {
                return true;
             }
@@ -102,7 +102,7 @@ namespace Blackjack
         {
             for(short i = 0; i < max_players; ++i)
             {
-                if (isactive(i))
+                if (is_active(i))
                     players[i].clear_hands();                    
                 
             }
@@ -138,6 +138,15 @@ namespace Blackjack
             return players[active_player].hit_logic();
         }
 
+        internal bool blackjack(short s)
+        {
+            return players[s].blackjack_logic();
+        }
+
+        internal void player_loss(short s)
+        {
+            players[s].loss();
+        }
         // Animation
         public double[] player_coordinates()
         {
@@ -161,7 +170,7 @@ namespace Blackjack
             double Xcoord = Xsize / 5;                  
             for(short i = 0; i < 5; ++i)
             {
-                if (isactive(i))
+                if (is_active(i))
                 {
                     p = players[i];
                     s = p.Player_Name;
@@ -191,7 +200,7 @@ namespace Blackjack
         {
             for(short i = active_player; i < max_players; ++i)
             {
-                if (isactive(i))
+                if (is_active(i))
                 {
                     active_player = i;
                     return;

@@ -20,6 +20,7 @@ namespace Blackjack
         private string hand_status1;       //text for player to see, i.e bust or handvalue (12)
         private string hand_status2;       //text for player to see, i.e bust or handvalue (12)
         private string hand_status3;       //text for player to see, i.e bust or handvalue (12)
+        bool blackjack;                     //true if we have blackjack
         private const short ACE_LOW = 1;    //Constants for logic
         private const short ACE_HIGH = 11;
         private const short BUST = 22;
@@ -46,6 +47,7 @@ namespace Blackjack
             hand[0] = new List<Card>();
             hand_value = new short[4];
             bets = new short[4];
+            blackjack = false;
 
             this.money = 100;
             this.name = "Player";
@@ -72,6 +74,11 @@ namespace Blackjack
             }
         }
 
+        public bool Player_Blackjack
+        {
+            get { return blackjack; }
+            set { blackjack = value; }
+        }
         public string get_player_status()
         {
             string s = "";
@@ -266,7 +273,10 @@ namespace Blackjack
         }
         public bool double_down_allowed()
         {
-            return update_bet(bets[active_hand]);
+            if (hand[active_hand].Count == 2)
+                return update_bet(bets[active_hand]);
+
+            return false;
         }
         public bool split_allowed()
         {
@@ -456,6 +466,19 @@ namespace Blackjack
 
         }
 
+        public bool blackjack_logic()
+        {
+            set_value();
+            if (ace_high_value == 21)
+            {
+                Player_Blackjack = true;
+                set_hand_status("Blackjack!");
+                return true;
+            }
+
+            return false;
+
+        }
         internal void set_value()
         {
             short h = active_hand;
@@ -495,5 +518,10 @@ namespace Blackjack
             return false;
         }
 
+        public void loss()
+        {
+            Player_Bet -= bets[0];
+            bets[0] = 0;            
+        }
     }
 }
