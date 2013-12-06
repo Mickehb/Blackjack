@@ -12,6 +12,8 @@ namespace Blackjack
       
     class Bj_interaction
     {
+        // testing Github får facks säjk
+
         public short bets_placed;
         private Players players;
         public CardDeck deck;               // Warning Puclic
