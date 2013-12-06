@@ -334,7 +334,7 @@ namespace Blackjack
             return dealer.logic();
         }
 
-        internal bool bj_logic()
+        internal bool blackjack_logic()
         {
             //set blackjack for players
             
@@ -362,7 +362,7 @@ namespace Blackjack
                           //  players.player_blackjack_win(s);
                     }
                 }
-                return false;
+                return true;
             }
         }
     }

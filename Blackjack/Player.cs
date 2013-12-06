@@ -249,7 +249,9 @@ namespace Blackjack
                     Hand_Status1 = "";
                     Hand_Status2 = "";
                     Hand_Status3 = "";
+                    Player_Blackjack = false;
                     clear_bet();
+                    
                 }
             }
         }
