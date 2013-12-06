@@ -8,6 +8,8 @@ using System.Windows.Media.Imaging;
 
 namespace Blackjack
 {
+    // handles all interaction between main window and code-behind classes with data and logic
+      
     class Bj_interaction
     {
         // testing Github får facks säjk
