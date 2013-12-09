@@ -92,8 +92,8 @@ namespace Blackjack
             {
                 Card c1 = new Card(10, "H10.png");
                 Card c2 = new Card(1, "CA.png");
-                Card c3 = new Card(10, "D10.png");
-                Card c4 = new Card(10, "S10.png");
+                Card c3 = new Card(9, "D9.png");
+                Card c4 = new Card(7, "S7.png");
 
                 Card c5 = new Card(10, "C10.png");
                 Card c6 = new Card(1, "HA.png");

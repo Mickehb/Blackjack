@@ -333,12 +333,13 @@ namespace Blackjack
         private void done_Click(object sender, RoutedEventArgs e)
         {
             clear_animation();
+            Bj_interaction.instance().new_round();
+
             active_visibility();
 
-            Bj_interaction.instance().new_round();
+
             done.Visibility = Visibility.Hidden;
 
-            this.ResizeMode = System.Windows.ResizeMode.CanResize;
         }
 
         /*

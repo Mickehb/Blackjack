@@ -348,7 +348,7 @@ namespace Blackjack
                         if (!players.blackjack(s))
                             players.player_loss(s);
                     }
-                }
+                }                
                 return true;
             }
             else
@@ -362,7 +362,7 @@ namespace Blackjack
                           //  players.player_blackjack_win(s);
                     }
                 }
-                return true;
+                return false;
             }
         }
     }
