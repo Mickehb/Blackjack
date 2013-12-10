@@ -26,6 +26,7 @@ namespace Blackjack
         private const short ACE_LOW = 1;    //Constants for logic
         private const short ACE_HIGH = 11;
         private const short BUST = 22;
+        private bool blackjack;
 
         // Declare the event 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,6 +37,7 @@ namespace Blackjack
             Xcoord = 700;
             Ycoord = 250;
             Xoffset = 0;
+            blackjack = false;
         }
       protected void OnPropertyChanged(string name)
       {
@@ -49,6 +51,7 @@ namespace Blackjack
         public short Hand_Value
         {
             get { return hand_value; }
+            set { hand_value = value; }
         }
         public string Dealer_Status
         {
@@ -116,6 +119,11 @@ namespace Blackjack
         //returns true if the dealer should take another card
         public bool logic()
         {
+            bool b = blackjack;
+
+            if (blackjack)
+                return false;
+            
             set_value();
             short s = ace_high_value;
             short sh = hand_value;
@@ -168,36 +176,9 @@ namespace Blackjack
                 Dealer_Status = hand_value.ToString();
                 return false;
             }
-            
-            //else if (hand_value >= 17)
-            //{
-            //    if (hand_value >= BUST)
-            //        Dealer_Status = "Bust";
-            //    else
-            //        Dealer_Status = hand_value.ToString();
-            //    return false;
-            //}
-            //else if(ace_high_value > 17)
-            //{
-            //    if (ace_high_value >= BUST)
-            //        Dealer_Status = "Bust";
-            //    else
-            //    {
-            //        Dealer_Status = ace_high_value.ToString();
-            //        hand_value = ace_high_value;
-            //    }
-            //    return false;
-            //}
-            
-            //else if (hand_value >= BUST)
-            //{
-            //    Dealer_Status = "Bust";
-            //    return false;
-            //}
-
-            return true;
 
         }
+
         internal void set_value()
         {
             
@@ -228,14 +209,16 @@ namespace Blackjack
         {
             hand.Clear();
             Dealer_Status = "";
+            blackjack = false;
         }
 
-        public bool blackjack()
+        public bool dealer_blackjack()
         {
             set_value();
             if (ace_high_value == 21)
             {
                 Dealer_Status = "Dealer Blackjack!";
+                blackjack = true;
                 return true;
             }
 

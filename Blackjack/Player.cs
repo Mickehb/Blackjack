@@ -9,10 +9,10 @@ namespace Blackjack
 {
     public class Player : INotifyPropertyChanged
     {
-        List<Card>[] hand;                  //array of 4 lists, one for each hand (max 4 splits allowed)
+        public List<Card>[] hand;                  //array of 4 lists, one for each hand (max 4 splits allowed)
 
         private short active_hand;          //hand that is currently being played
-        private short nr_of_hands;          //nr_of_hands the player has         
+        public short nr_of_hands;          //nr_of_hands the player has         
 
         private short ace_high_value;       //counts values using ace value of high
         private short[] hand_value;         //by default counts values using ace value of 1        
@@ -29,7 +29,7 @@ namespace Blackjack
         private string name;
         private short money;
         private short bet;                  //show to player
-        private short[] bets;               //keep track of bets made per hand
+        public short[] bets;               //keep track of bets made per hand
 
         private double Xcord;
         private double Ycord;
@@ -72,6 +72,17 @@ namespace Blackjack
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
+        }
+        
+        public short Active_Hand
+        {
+            get { return active_hand; }
+            set { active_hand = value; }
+        }
+        public short[] Hand_Value
+        {
+            get { return hand_value; }
+           // set { hand_value = value; }
         }
 
         public bool Player_Blackjack
@@ -332,7 +343,7 @@ namespace Blackjack
         // Create the OnPropertyChanged method to raise the event 
 
 
-        internal bool split_logic()
+        public bool split_logic()
         {
             //if split allowed
             short first_card = hand[active_hand].ElementAt(0).Card_Value;
@@ -361,7 +372,7 @@ namespace Blackjack
         /*
          * returns true if we have another hand to play
          */
-        internal bool double_down_logic()
+        public bool double_down_logic()
         {
 
             //update_bet(bets[active_hand]);
@@ -371,7 +382,7 @@ namespace Blackjack
             //save our highest handvalue and set status
             if ((ace_high_value >= BUST) && (hand_value[active_hand] >= BUST))
             {
-                set_hand_status("Bust\n!");
+                set_hand_status("Bust");
             }
             else if (ace_high_value < BUST)
             {
@@ -444,13 +455,27 @@ namespace Blackjack
         {
 
             set_value();
+            //if ((ace_high_value == 21) || (hand_value[active_hand] == 21))
+            //{
+            //    set_hand_status("21");
+            //    if (nr_of_hands > active_hand)
+            //    {
+            //        active_hand++;
+            //        set_value();
+            //        return true;
+            //    }
+            //    else
+            //        return false;
+            //}
+
             if ((ace_high_value >= BUST) && (hand_value[active_hand] >= BUST))
             {
-                set_hand_status("Bust\n!");
+                set_hand_status("Bust");
                 if (nr_of_hands > active_hand)
                 {
                     active_hand++;
                     set_value();
+                    return true;
                 }
                 else
                     return false;
@@ -538,7 +563,7 @@ namespace Blackjack
             bets[0] = 0;
         }
 
-        internal void calculate_win(short dealer_hand)
+        public void calculate_win(short dealer_hand)
         {
             short cur_hand;
             short cur_bet;
@@ -548,7 +573,14 @@ namespace Blackjack
                 cur_hand = hand_value[s];
                 cur_bet = bets[s];
 
-                if (hand_value[s] > 21)
+                if (dealer_hand == 21)
+                {
+                    Player_Bet -= bets[s];
+                    total_bet = Player_Bet;
+                    bets[s] = 0;                   
+                }
+
+                else if (hand_value[s] > 21)
                 {
                     Player_Bet -= bets[s];
                     total_bet = Player_Bet;

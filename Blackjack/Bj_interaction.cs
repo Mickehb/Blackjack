@@ -363,7 +363,7 @@ namespace Blackjack
             //set blackjack for players
             
 
-            if (dealer.blackjack())
+            if (dealer.dealer_blackjack())
             {
                 for (short s = 0; s < 5; ++s)
                 {
