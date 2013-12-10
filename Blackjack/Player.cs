@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Windows.Controls;
 namespace Blackjack
 {
-    class Player : INotifyPropertyChanged
+    public class Player : INotifyPropertyChanged
     {
         List<Card>[] hand;                  //array of 4 lists, one for each hand (max 4 splits allowed)
 
