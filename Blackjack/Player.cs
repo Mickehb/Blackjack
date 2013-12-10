@@ -7,12 +7,14 @@ using System.ComponentModel;
 using System.Windows.Controls;
 namespace Blackjack
 {
-    class Player : INotifyPropertyChanged
+    public class Player : INotifyPropertyChanged
     {
-        List<Card>[] hand;                  //array of 4 lists, one for each hand (max 4 splits allowed)
+        public List<Card>[] hand;                  //array of 4 lists, one for each hand (max 4 splits allowed)
+
+        private bool is_active;
 
         private short active_hand;          //hand that is currently being played
-        private short nr_of_hands;          //nr_of_hands the player has         
+        public short nr_of_hands;          //nr_of_hands the player has         
 
         private short ace_high_value;       //counts values using ace value of high
         private short[] hand_value;         //by default counts values using ace value of 1        
@@ -20,6 +22,7 @@ namespace Blackjack
         private string hand_status1;       //text for player to see, i.e bust or handvalue (12)
         private string hand_status2;       //text for player to see, i.e bust or handvalue (12)
         private string hand_status3;       //text for player to see, i.e bust or handvalue (12)
+        bool blackjack;                     //true if we have blackjack
         private const short ACE_LOW = 1;    //Constants for logic
         private const short ACE_HIGH = 11;
         private const short BUST = 22;
@@ -28,12 +31,17 @@ namespace Blackjack
         private string name;
         private short money;
         private short bet;                  //show to player
-        private short[] bets;               //keep track of bets made per hand
+        public short[] bets;               //keep track of bets made per hand
 
         private double Xcord;
         private double Ycord;
         private const double Xoffset = 30;
         private const double Yoffset = 110;
+               
+        private bool hand_visibility1;
+        private bool hand_visibility2;
+        private bool hand_visibility3;
+        private bool hand_visibility4;
 
         // Declare the event 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,6 +54,14 @@ namespace Blackjack
             hand[0] = new List<Card>();
             hand_value = new short[4];
             bets = new short[4];
+            blackjack = false;
+            
+            is_active = false;
+
+            hand_visibility1 = false;
+            hand_visibility2 = false;
+            hand_visibility3 = false;
+            hand_visibility4 = false;
 
             this.money = 100;
             this.name = "Player";
@@ -71,7 +87,29 @@ namespace Blackjack
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
+        
+        public short Active_Hand
+        {
+            get { return active_hand; }
+            set { active_hand = value; }
+        }
+        public short[] Hand_Value
+        {
+            get { return hand_value; }
+           // set { hand_value = value; }
+        }
 
+        public bool Is_Active
+        {
+            get { return is_active; }
+            set { is_active = value; }
+        }
+        
+        public bool Player_Blackjack
+        {
+            get { return blackjack; }
+            set { blackjack = value; }
+        }
         public string get_player_status()
         {
             string s = "";
@@ -101,15 +139,19 @@ namespace Blackjack
             {
                 case 0:
                     Hand_Status = status;
+                    Hand_Visibility1 = true;
                     break;
                 case 1:
                     Hand_Status1 = status;
+                    Hand_Visibility1 = true;
                     break;
                 case 2:
                     Hand_Status2 = status;
+                    Hand_Visibility1 = true;
                     break;
                 case 3:
                     Hand_Status3 = status;
+                    Hand_Visibility1 = true;
                     break;
             }
         }
@@ -148,6 +190,42 @@ namespace Blackjack
             {
                 hand_status3 = value;
                 OnPropertyChanged("Hand_Status3");
+            }
+        }
+
+        public bool Hand_Visibility4
+        {
+            get { return hand_visibility4; }
+            set { 
+                    hand_visibility4 = value;
+                    OnPropertyChanged("Hand_Visibility4");
+                }
+        }
+        public bool Hand_Visibility1
+        {
+            get { return hand_visibility1; }
+            set
+            {
+                hand_visibility1 = value;
+                OnPropertyChanged("Hand_Visibility1");
+            }
+        }
+        public bool Hand_Visibility2
+        {
+            get { return hand_visibility2; }
+            set
+            {
+                hand_visibility2 = value;
+                OnPropertyChanged("Hand_Visibility2");
+            }
+        }
+        public bool Hand_Visibility3
+        {
+            get { return hand_visibility3; }
+            set
+            {
+                hand_visibility3 = value;
+                OnPropertyChanged("Hand_Visibility3");
             }
         }
         public string Player_Name
@@ -221,12 +299,13 @@ namespace Blackjack
         {
             short s = active_hand;
             hand[active_hand].Add(c);
+            set_value();
         }
 
         public void split_add_card(Card c)
         {
             short s = nr_of_hands;
-            hand[active_hand + nr_of_hands].Add(c);
+            hand[active_hand + (nr_of_hands - active_hand)].Add(c);
         }
 
         public void clear_hands()
@@ -242,9 +321,19 @@ namespace Blackjack
                     Hand_Status1 = "";
                     Hand_Status2 = "";
                     Hand_Status3 = "";
+                    Player_Blackjack = false;
                     clear_bet();
+                    
                 }
             }
+        }
+
+        public void hide_hand_values()
+        {
+            Hand_Visibility1 = false;
+            Hand_Visibility2 = false;
+            Hand_Visibility3 = false;
+            Hand_Visibility4 = false;
         }
 
         public bool valid_bet()
@@ -254,19 +343,23 @@ namespace Blackjack
 
         public bool update_bet(short b)
         {
-
+            short cur_bet = bets[active_hand];
             if (money >= b)
             {
                 Player_Money -= b;
                 Player_Bet += b;
                 bets[active_hand] += b;
+                cur_bet = bets[active_hand];
                 return true;
             }
             return false;
         }
         public bool double_down_allowed()
         {
-            return update_bet(bets[active_hand]);
+            if (hand[active_hand].Count == 2)
+                return update_bet(bets[active_hand]);
+
+            return false;
         }
         public bool split_allowed()
         {
@@ -276,7 +369,7 @@ namespace Blackjack
             {
                 Player_Money -= b;
                 Player_Bet += b;
-                bets[active_hand + nr_of_hands] += b;
+                bets[active_hand + (nr_of_hands - active_hand)] += b;
                 return true;
             }
             return false;
@@ -318,7 +411,7 @@ namespace Blackjack
         // Create the OnPropertyChanged method to raise the event 
 
 
-        internal bool split_logic()
+        public bool split_logic()
         {
             //if split allowed
             short first_card = hand[active_hand].ElementAt(0).Card_Value;
@@ -330,10 +423,11 @@ namespace Blackjack
             {
                 int i = hand[active_hand].Count - 1;
                 Card tmp = hand[active_hand].Last();
-                hand[active_hand + nr_of_hands] = new List<Card>();
-                hand[active_hand + nr_of_hands].Add(tmp);
+                hand[active_hand + (nr_of_hands - active_hand)] = new List<Card>();
+                hand[active_hand + (nr_of_hands - active_hand)].Add(tmp);
                 hand[active_hand].Remove(tmp);
                 //hand[active_hand].RemoveAt(i);
+                set_value();
 
                 return true;
             }
@@ -346,7 +440,7 @@ namespace Blackjack
         /*
          * returns true if we have another hand to play
          */
-        internal bool double_down_logic()
+        public bool double_down_logic()
         {
 
             //update_bet(bets[active_hand]);
@@ -356,7 +450,7 @@ namespace Blackjack
             //save our highest handvalue and set status
             if ((ace_high_value >= BUST) && (hand_value[active_hand] >= BUST))
             {
-                set_hand_status("Bust\n!");
+                set_hand_status("Bust");
             }
             else if (ace_high_value < BUST)
             {
@@ -378,6 +472,7 @@ namespace Blackjack
             if (active_hand < nr_of_hands)
             {
                 active_hand++;
+                set_value();
                 return true;
             }
             else
@@ -410,6 +505,7 @@ namespace Blackjack
             if (active_hand < nr_of_hands)
             {
                 active_hand++;
+                set_value();
                 return true;
             }
             else
@@ -427,12 +523,27 @@ namespace Blackjack
         {
 
             set_value();
+            //if ((ace_high_value == 21) || (hand_value[active_hand] == 21))
+            //{
+            //    set_hand_status("21");
+            //    if (nr_of_hands > active_hand)
+            //    {
+            //        active_hand++;
+            //        set_value();
+            //        return true;
+            //    }
+            //    else
+            //        return false;
+            //}
+
             if ((ace_high_value >= BUST) && (hand_value[active_hand] >= BUST))
             {
-                set_hand_status("Bust\n!");
+                set_hand_status("Bust");
                 if (nr_of_hands > active_hand)
                 {
                     active_hand++;
+                    set_value();
+                    return true;
                 }
                 else
                     return false;
@@ -456,6 +567,20 @@ namespace Blackjack
 
         }
 
+        public bool blackjack_logic()
+        {
+            set_value();
+            if (ace_high_value == 21)
+            {
+                Player_Blackjack = true;
+                set_hand_status("Blackjack!");
+                bets[0] = 0;
+                return true;
+            }
+
+            return false;
+
+        }
         internal void set_value()
         {
             short h = active_hand;
@@ -495,5 +620,63 @@ namespace Blackjack
             return false;
         }
 
+        public void loss()
+        {
+            Player_Bet -= bets[0];
+            bets[0] = 0;            
+        }
+        public void blackjack_win()
+        {
+            Player_Bet *= 2;
+            bets[0] = 0;
+        }
+
+        public void calculate_win(short dealer_hand)
+        {
+            short cur_hand;
+            short cur_bet;
+            short total_bet = bet;
+            for (short s = 0; s <= nr_of_hands; ++s)
+            {
+                cur_hand = hand_value[s];
+                cur_bet = bets[s];
+
+                if (dealer_hand == 21)
+                {
+                    Player_Bet -= bets[s];
+                    total_bet = Player_Bet;
+                    bets[s] = 0;                   
+                }
+
+                else if (hand_value[s] > 21)
+                {
+                    Player_Bet -= bets[s];
+                    total_bet = Player_Bet;
+                    bets[s] = 0;
+                }
+                else
+                {
+                    if (dealer_hand > 21 || dealer_hand < hand_value[s])
+                    {
+                        Player_Bet += bets[s];
+                        total_bet = Player_Bet;
+                        
+                        bets[s] = 0;
+                    }
+                    else if(dealer_hand > hand_value[s])
+                    {
+                        Player_Bet -= bets[s];
+                        total_bet = Player_Bet;
+                        bets[s] = 0;
+                    }
+                    else 
+                    {
+                        bets[s] = 0;
+                    }
+                }
+
+
+            }
+        }
     }
 }

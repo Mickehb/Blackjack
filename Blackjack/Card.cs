@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 namespace Blackjack
 {
-    class Card
+    public class Card
     {        
         private string filename;
         private Image card_image;

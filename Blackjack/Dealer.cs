@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace Blackjack 
 {
-    class Dealer : INotifyPropertyChanged
+    public class Dealer : INotifyPropertyChanged
     {
         private int points;
         private double Xcoord;
@@ -17,15 +17,17 @@ namespace Blackjack
         private double Xoffset;
         private string hidden;
         private Image card;
+        private bool status_visibility;
 
         //Dealer hand
-        List<short> hand;
-        short hand_value;
-        short ace_high_value;
-        string status;
+        private List<short> hand;
+        private short hand_value;
+        private short ace_high_value;
+        private string status;
         private const short ACE_LOW = 1;    //Constants for logic
         private const short ACE_HIGH = 11;
         private const short BUST = 22;
+        private bool blackjack;
 
         // Declare the event 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,6 +38,7 @@ namespace Blackjack
             Xcoord = 700;
             Ycoord = 250;
             Xoffset = 0;
+            blackjack = false;
         }
       protected void OnPropertyChanged(string name)
       {
@@ -46,7 +49,11 @@ namespace Blackjack
               handler(this, new PropertyChangedEventArgs(name));
           }
       }
-           
+        public short Hand_Value
+        {
+            get { return hand_value; }
+            set { hand_value = value; }
+        }
         public string Dealer_Status
         {
             get { return status; }
@@ -56,6 +63,18 @@ namespace Blackjack
                 OnPropertyChanged("Dealer_Status");
             }
         }
+
+        public bool Status_Visibility
+        {
+            get { return status_visibility; }
+            set
+            {
+                status_visibility = value;
+                OnPropertyChanged("Status_Visibility");
+
+            }
+        }
+
         public int Points
         {
             get { return points; }
@@ -105,13 +124,19 @@ namespace Blackjack
 
         }
 
-        internal void add_card(short s)
+        public void add_card(short s)
         {
             hand.Add(s);
         }
         
-        internal bool logic()
+        //returns true if the dealer should take another card
+        public bool logic()
         {
+            bool b = blackjack;
+
+            if (blackjack)
+                return false;
+            
             set_value();
             short s = ace_high_value;
             short sh = hand_value;
@@ -119,39 +144,59 @@ namespace Blackjack
             if ((ace_high_value >= BUST) && (hand_value >= BUST))
             {
                 Dealer_Status = "Bust";
+                Status_Visibility = true;
                 return false;
             }
             
-            else if ((hand_value != ace_high_value) && ace_high_value == 17)
+            else if (hand_value == 17 || ace_high_value == 17)
             {                
-                return true;
-            }
-            else if (hand_value >= 17)
-            {
-                if (hand_value >= BUST)
-                    Dealer_Status = "Bust";
-                else
-                    Dealer_Status = hand_value.ToString();
+                hand_value = ace_high_value;
+                Dealer_Status = hand_value.ToString();
+                Status_Visibility = true;
                 return false;
             }
-            else if(ace_high_value > 17)
+
+            else if (hand_value != ace_high_value)
             {
                 if (ace_high_value >= BUST)
-                    Dealer_Status = "Bust";
+                {
+                    if (hand_value < 17)
+                    {
+                        Dealer_Status = hand_value.ToString();
+                        return true;
+                    }
+                    Dealer_Status = hand_value.ToString();
+                    Status_Visibility = true;
+                    return false;
+                }
                 else
-                    Dealer_Status = ace_high_value.ToString();
-                return false;
+                {
+                    if (ace_high_value >= 17)
+                    {
+                        hand_value = ace_high_value;
+                        Dealer_Status = hand_value.ToString();
+                        Status_Visibility = true;
+                        return false;
+                    }
+                    hand_value = ace_high_value;
+                    Dealer_Status = hand_value.ToString();
+                    return true;
+                }
             }
-            
-            else if (hand_value >= BUST)
+            else
             {
-                Dealer_Status = "Bust";
+                if (hand_value < 17)
+                {
+                    Dealer_Status = hand_value.ToString();
+                    return true;
+                }
+                Dealer_Status = hand_value.ToString();
+                Status_Visibility = true;
                 return false;
             }
-
-            return true;
 
         }
+
         internal void set_value()
         {
             
@@ -182,6 +227,22 @@ namespace Blackjack
         {
             hand.Clear();
             Dealer_Status = "";
+            blackjack = false;
+        }
+
+        public bool dealer_blackjack()
+        {
+            set_value();
+            if (ace_high_value == 21)
+            {
+                Dealer_Status = "Dealer Blackjack!";
+                blackjack = true;
+                Status_Visibility = true;
+                return true;
+            }
+
+            return false;
+
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Blackjack
         Storyboard mystoryboard;
         int cardHeight = 112;
         int cardWidth = 80;
-        int zindex;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +33,8 @@ namespace Blackjack
             Bj_interaction.instance().set_coordinates(1600, 900);
             load_card_image();
             Bj_interaction.instance().deck_shuffle();
+            //p_moves.DataContext = Bj_interaction.instance();
+            set_datacontext();
         }
 
         /****************************************
@@ -92,7 +94,6 @@ namespace Blackjack
 
         private void deal_animation()
         {
-            zindex = Bj_interaction.instance().deck_size();
             double[] from = Bj_interaction.instance().deck_get_start_coordinates();
             double[] to;
             Image card;
@@ -207,22 +208,14 @@ namespace Blackjack
         private void change_player()
         {
 
-            int column = Bj_interaction.instance().player_change();
-            if (column != -1)
+            if(!Bj_interaction.instance().player_change())           
             {
-                p_moves.SetValue(Grid.ColumnProperty, column);
-            }
-            else
-            {
-
-                p_moves.Visibility = Visibility.Hidden;
-
                 /*
                  * else dealer_logic()
                  */
                 show_dealer_hidden();
 
-                dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
+                //dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
                 while (Bj_interaction.instance().dealer_logic())
                 {
                     double[] to = Bj_interaction.instance().dealer_coordinates();
@@ -231,14 +224,14 @@ namespace Blackjack
                     one_card_animation(from, to, card);
                     Bj_interaction.instance().dealer_add_card();
                 }
-
+                Bj_interaction.instance().calculate_win();
                 done.Visibility = Visibility.Visible;
 
             }
         }
 
 
-
+        /*
         private void set_datacontext(short p)
         {
             switch (p)
@@ -295,6 +288,56 @@ namespace Blackjack
 
         }
 
+        */
+        private void set_datacontext()
+        {
+          
+                    p_moves.DataContext = Bj_interaction.instance();
+                    dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
+                    
+                    p1_money.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_name.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_bet.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand1.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand2.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand3.DataContext = Bj_interaction.instance().player_get_player(0);
+            
+                    p2_money.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_name.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_bet.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand1.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand2.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand3.DataContext = Bj_interaction.instance().player_get_player(1);
+           
+                    p3_money.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_name.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_bet.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand1.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand2.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand3.DataContext = Bj_interaction.instance().player_get_player(2);
+       
+                    p4_money.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_name.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_bet.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand1.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand2.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand3.DataContext = Bj_interaction.instance().player_get_player(3);
+          
+                    p5_money.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_name.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_bet.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand1.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand2.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand3.DataContext = Bj_interaction.instance().player_get_player(4);
+        
+
+        }
+
         /************************************
          *          EVENT HANDLERS          *
          * **********************************/
@@ -313,26 +356,38 @@ namespace Blackjack
             deal.Visibility = Visibility.Hidden;
 
             Bj_interaction.instance().player_set_coordinates(1600, 900);
-            Bj_interaction.instance().set_active_player();
-
-
+           
             deal_animation();
 
-            p_moves.Visibility = Visibility.Visible;
-            p_moves.SetValue(Grid.ColumnProperty, Bj_interaction.instance().player_get_column());
-
+            //will work once blackjack_logic works
+            
+            if (Bj_interaction.instance().blackjack_logic())
+            {
+                show_dealer_hidden();
+                done.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                if (!Bj_interaction.instance().set_active_player())
+                {
+                    show_dealer_hidden();
+                    done.Visibility = Visibility.Visible;
+                    Bj_interaction.instance().calculate_win();
+                }
+            }
 
         }
 
         private void done_Click(object sender, RoutedEventArgs e)
         {
             clear_animation();
+            Bj_interaction.instance().new_round();
+
             active_visibility();
 
-            Bj_interaction.instance().new_round();
+
             done.Visibility = Visibility.Hidden;
 
-            this.ResizeMode = System.Windows.ResizeMode.CanResize;
         }
 
         /*
@@ -490,7 +545,7 @@ namespace Blackjack
         {
             add_visibility(0);
             Bj_interaction.instance().player_create(0);
-            set_datacontext(0);
+            //set_datacontext(0);
             deal_visibility();
 
         }
@@ -498,7 +553,7 @@ namespace Blackjack
         {
             add_visibility(1);
             Bj_interaction.instance().player_create(1);
-            set_datacontext(1);
+            //set_datacontext(1);
             deal_visibility();
         }
 
@@ -506,7 +561,7 @@ namespace Blackjack
         {
             add_visibility(2);
             Bj_interaction.instance().player_create(2);
-            set_datacontext(2);
+            //set_datacontext(2);
             deal_visibility();
         }
 
@@ -514,7 +569,7 @@ namespace Blackjack
         {
             add_visibility(3);
             Bj_interaction.instance().player_create(3);
-            set_datacontext(3);
+            //set_datacontext(3);
             deal_visibility();
 
         }
@@ -523,7 +578,7 @@ namespace Blackjack
         {
             add_visibility(4);
             Bj_interaction.instance().player_create(4);
-            set_datacontext(4);
+            //set_datacontext(4);
             deal_visibility();
         }
 
@@ -636,37 +691,48 @@ namespace Blackjack
          */
         private void p1_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
-            deal_visibility();
-            move_visibility(0);
+            if (Bj_interaction.instance().player_place_bet(0))
+            {
+                deal_visibility();
+                hide_bet_visibility(0);
+            }
         }
 
         private void p2_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
+            if (Bj_interaction.instance().player_place_bet(1))
+            {
             deal_visibility();
-            move_visibility(1);
+            hide_bet_visibility(1);
+            }
         }
 
         private void p3_place_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_place_bet();
+        {           
+            if (Bj_interaction.instance().player_place_bet(2))
+            {
             deal_visibility();
-            move_visibility(2);
+            hide_bet_visibility(2);
+            }
         }
 
         private void p4_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
-            deal_visibility();
-            move_visibility(3);
+            if (Bj_interaction.instance().player_place_bet(3))
+            {
+                deal_visibility();
+                hide_bet_visibility(3);
+            }
         }
 
         private void p5_place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet();
-            deal_visibility();
-            move_visibility(4);
+            if (Bj_interaction.instance().player_place_bet(4))
+            {
+                deal_visibility();
+                hide_bet_visibility(4);
+            }
+            
         }
 
         /*
@@ -717,8 +783,7 @@ namespace Blackjack
             p1_bet.Visibility = Visibility.Hidden;
             p1_money.Visibility = Visibility.Hidden;
             p1_name.Visibility = Visibility.Hidden;
-
-            p_moves.Visibility = Visibility.Hidden;
+           
             deal.Visibility = Visibility.Hidden;
         }
 
@@ -808,7 +873,7 @@ namespace Blackjack
             }
         }
 
-        private void move_visibility(short p)
+        private void hide_bet_visibility(short p)
         {
             switch (p)
             {
