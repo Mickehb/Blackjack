@@ -228,12 +228,13 @@ namespace Blackjack
         {
             short s = active_hand;
             hand[active_hand].Add(c);
+            set_value();
         }
 
         public void split_add_card(Card c)
         {
             short s = nr_of_hands;
-            hand[active_hand + nr_of_hands].Add(c);
+            hand[active_hand + (nr_of_hands - active_hand)].Add(c);
         }
 
         public void clear_hands()
@@ -263,12 +264,13 @@ namespace Blackjack
 
         public bool update_bet(short b)
         {
-
+            short cur_bet = bets[active_hand];
             if (money >= b)
             {
                 Player_Money -= b;
                 Player_Bet += b;
                 bets[active_hand] += b;
+                cur_bet = bets[active_hand];
                 return true;
             }
             return false;
@@ -288,7 +290,7 @@ namespace Blackjack
             {
                 Player_Money -= b;
                 Player_Bet += b;
-                bets[active_hand + nr_of_hands] += b;
+                bets[active_hand + (nr_of_hands - active_hand)] += b;
                 return true;
             }
             return false;
@@ -342,10 +344,11 @@ namespace Blackjack
             {
                 int i = hand[active_hand].Count - 1;
                 Card tmp = hand[active_hand].Last();
-                hand[active_hand + nr_of_hands] = new List<Card>();
-                hand[active_hand + nr_of_hands].Add(tmp);
+                hand[active_hand + (nr_of_hands - active_hand)] = new List<Card>();
+                hand[active_hand + (nr_of_hands - active_hand)].Add(tmp);
                 hand[active_hand].Remove(tmp);
                 //hand[active_hand].RemoveAt(i);
+                set_value();
 
                 return true;
             }
@@ -390,6 +393,7 @@ namespace Blackjack
             if (active_hand < nr_of_hands)
             {
                 active_hand++;
+                set_value();
                 return true;
             }
             else
@@ -422,6 +426,7 @@ namespace Blackjack
             if (active_hand < nr_of_hands)
             {
                 active_hand++;
+                set_value();
                 return true;
             }
             else
@@ -445,6 +450,7 @@ namespace Blackjack
                 if (nr_of_hands > active_hand)
                 {
                     active_hand++;
+                    set_value();
                 }
                 else
                     return false;
@@ -475,6 +481,7 @@ namespace Blackjack
             {
                 Player_Blackjack = true;
                 set_hand_status("Blackjack!");
+                bets[0] = 0;
                 return true;
             }
 
@@ -524,6 +531,52 @@ namespace Blackjack
         {
             Player_Bet -= bets[0];
             bets[0] = 0;            
+        }
+        public void blackjack_win()
+        {
+            Player_Bet *= 2;
+            bets[0] = 0;
+        }
+
+        internal void calculate_win(short dealer_hand)
+        {
+            short cur_hand;
+            short cur_bet;
+            short total_bet = bet;
+            for (short s = 0; s <= nr_of_hands; ++s)
+            {
+                cur_hand = hand_value[s];
+                cur_bet = bets[s];
+
+                if (hand_value[s] > 21)
+                {
+                    Player_Bet -= bets[s];
+                    total_bet = Player_Bet;
+                    bets[s] = 0;
+                }
+                else
+                {
+                    if (dealer_hand > 21 || dealer_hand < hand_value[s])
+                    {
+                        Player_Bet += bets[s];
+                        total_bet = Player_Bet;
+                        
+                        bets[s] = 0;
+                    }
+                    else if(dealer_hand > hand_value[s])
+                    {
+                        Player_Bet -= bets[s];
+                        total_bet = Player_Bet;
+                        bets[s] = 0;
+                    }
+                    else 
+                    {
+                        bets[s] = 0;
+                    }
+                }
+
+
+            }
         }
     }
 }

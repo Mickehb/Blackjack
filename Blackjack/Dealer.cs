@@ -19,10 +19,10 @@ namespace Blackjack
         private Image card;
 
         //Dealer hand
-        List<short> hand;
-        short hand_value;
-        short ace_high_value;
-        string status;
+        private List<short> hand;
+        private short hand_value;
+        private short ace_high_value;
+        private string status;
         private const short ACE_LOW = 1;    //Constants for logic
         private const short ACE_HIGH = 11;
         private const short BUST = 22;
@@ -46,7 +46,10 @@ namespace Blackjack
               handler(this, new PropertyChangedEventArgs(name));
           }
       }
-           
+        public short Hand_Value
+        {
+            get { return hand_value; }
+        }
         public string Dealer_Status
         {
             get { return status; }
@@ -110,6 +113,7 @@ namespace Blackjack
             hand.Add(s);
         }
         
+        //returns true if the dealer should take another card
         internal bool logic()
         {
             set_value();
@@ -122,32 +126,74 @@ namespace Blackjack
                 return false;
             }
             
-            else if ((hand_value != ace_high_value) && ace_high_value == 17)
+            else if (hand_value == 17 || ace_high_value == 17)
             {                
-                return true;
-            }
-            else if (hand_value >= 17)
-            {
-                if (hand_value >= BUST)
-                    Dealer_Status = "Bust";
-                else
-                    Dealer_Status = hand_value.ToString();
+                hand_value = ace_high_value;
+                Dealer_Status = hand_value.ToString();
                 return false;
             }
-            else if(ace_high_value > 17)
+
+            else if (hand_value != ace_high_value)
             {
                 if (ace_high_value >= BUST)
-                    Dealer_Status = "Bust";
+                {
+                    if (hand_value < 17)
+                    {
+                        Dealer_Status = hand_value.ToString();
+                        return true;
+                    }
+                    Dealer_Status = hand_value.ToString();
+                    return false;
+                }
                 else
-                    Dealer_Status = ace_high_value.ToString();
+                {
+                    if (ace_high_value >= 17)
+                    {
+                        hand_value = ace_high_value;
+                        Dealer_Status = hand_value.ToString();
+                        return false;
+                    }
+                    hand_value = ace_high_value;
+                    Dealer_Status = hand_value.ToString();
+                    return true;
+                }
+            }
+            else
+            {
+                if (hand_value < 17)
+                {
+                    Dealer_Status = hand_value.ToString();
+                    return true;
+                }
+                Dealer_Status = hand_value.ToString();
                 return false;
             }
             
-            else if (hand_value >= BUST)
-            {
-                Dealer_Status = "Bust";
-                return false;
-            }
+            //else if (hand_value >= 17)
+            //{
+            //    if (hand_value >= BUST)
+            //        Dealer_Status = "Bust";
+            //    else
+            //        Dealer_Status = hand_value.ToString();
+            //    return false;
+            //}
+            //else if(ace_high_value > 17)
+            //{
+            //    if (ace_high_value >= BUST)
+            //        Dealer_Status = "Bust";
+            //    else
+            //    {
+            //        Dealer_Status = ace_high_value.ToString();
+            //        hand_value = ace_high_value;
+            //    }
+            //    return false;
+            //}
+            
+            //else if (hand_value >= BUST)
+            //{
+            //    Dealer_Status = "Bust";
+            //    return false;
+            //}
 
             return true;
 

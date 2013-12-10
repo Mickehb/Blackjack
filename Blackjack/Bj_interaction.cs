@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,8 @@ using System.Windows.Media.Imaging;
 namespace Blackjack
 {
     // handles all interaction between main window and code-behind classes with data and logic
-      
-    class Bj_interaction
+
+    class Bj_interaction : INotifyPropertyChanged
     {
         // testing Github får facks säjk
 
@@ -19,9 +20,16 @@ namespace Blackjack
         public CardDeck deck;               // Warning Puclic
         private Dealer dealer;
         private static Bj_interaction instance_variable;
-          
+
+        private int player_column;
+        private bool move_visibility;
+
+        // Declare the event 
+        public event PropertyChangedEventHandler PropertyChanged;
         private Bj_interaction()
         {
+            player_column = 0;
+            move_visibility = false;
             bets_placed = 0;
             players = new Players();
             deck = new CardDeck();
@@ -40,6 +48,33 @@ namespace Blackjack
                 return instance_variable;
         }
 
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        public bool Move_Visibility
+        {
+            get { return move_visibility; }
+            set
+            {
+                move_visibility = value;
+                OnPropertyChanged("Move_Visibility");
+            }
+        }
+        public int Player_Column
+        {
+            get { return player_column; }
+            set
+            {
+                player_column = value;
+                OnPropertyChanged("Player_Column");
+            }
+        }
         public Dealer get_dealer()
         {
             return dealer;
@@ -180,34 +215,23 @@ namespace Blackjack
             return players.split_allowed();
         }
 
-        public int player_get_column()
-        {            
-            short nr_of_columns = 4;
-            if (players.Active_Player >= 0)
-            {
-                return (nr_of_columns - players.Active_Player);
-            }
-            else
-                return -1;
-
-         }
-
-        public int player_change()
+       
+        public bool player_change()
         {
-            
-            if (players.Active_Player < 4)
-            {
-                players.Active_Player++;
-                players.set_active_player();
-                return player_get_column();
-            }
-            else 
-                return -1;
+            players.Active_Player++;            
+            return set_active_player();
         }
 
-        internal void set_active_player()
+        internal bool set_active_player()
         {
-            players.set_active_player();
+            if (players.set_active_player())
+            {
+                Move_Visibility = true;
+                Player_Column = 4 - players.Active_Player;
+                return true;
+            }
+            Move_Visibility = false;
+            return false;
         }
 
         internal short player_get_active_player_nr()
@@ -347,6 +371,7 @@ namespace Blackjack
                     {
                         if (!players.blackjack(s))
                             players.player_loss(s);
+                        
                     }
                 }                
                 return true;
@@ -357,13 +382,17 @@ namespace Blackjack
                 {
                     if (players.is_active(s))
                     {
-                        players.blackjack(s);
-                        //if (players.blackjack(s))
-                          //  players.player_blackjack_win(s);
+                        if (players.blackjack(s))
+                            players.blackjack_win(s);
                     }
                 }
                 return false;
             }
+        }
+
+        internal void calculate_win()
+        {
+            players.calculate_win(dealer.Hand_Value);
         }
     }
 }
