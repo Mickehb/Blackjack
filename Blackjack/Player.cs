@@ -11,6 +11,8 @@ namespace Blackjack
     {
         public List<Card>[] hand;                  //array of 4 lists, one for each hand (max 4 splits allowed)
 
+        private bool is_active;
+
         private short active_hand;          //hand that is currently being played
         public short nr_of_hands;          //nr_of_hands the player has         
 
@@ -35,6 +37,11 @@ namespace Blackjack
         private double Ycord;
         private const double Xoffset = 30;
         private const double Yoffset = 110;
+               
+        private bool hand_visibility1;
+        private bool hand_visibility2;
+        private bool hand_visibility3;
+        private bool hand_visibility4;
 
         // Declare the event 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,6 +55,13 @@ namespace Blackjack
             hand_value = new short[4];
             bets = new short[4];
             blackjack = false;
+            
+            is_active = false;
+
+            hand_visibility1 = false;
+            hand_visibility2 = false;
+            hand_visibility3 = false;
+            hand_visibility4 = false;
 
             this.money = 100;
             this.name = "Player";
@@ -85,6 +99,12 @@ namespace Blackjack
            // set { hand_value = value; }
         }
 
+        public bool Is_Active
+        {
+            get { return is_active; }
+            set { is_active = value; }
+        }
+        
         public bool Player_Blackjack
         {
             get { return blackjack; }
@@ -119,15 +139,19 @@ namespace Blackjack
             {
                 case 0:
                     Hand_Status = status;
+                    Hand_Visibility1 = true;
                     break;
                 case 1:
                     Hand_Status1 = status;
+                    Hand_Visibility1 = true;
                     break;
                 case 2:
                     Hand_Status2 = status;
+                    Hand_Visibility1 = true;
                     break;
                 case 3:
                     Hand_Status3 = status;
+                    Hand_Visibility1 = true;
                     break;
             }
         }
@@ -166,6 +190,42 @@ namespace Blackjack
             {
                 hand_status3 = value;
                 OnPropertyChanged("Hand_Status3");
+            }
+        }
+
+        public bool Hand_Visibility4
+        {
+            get { return hand_visibility4; }
+            set { 
+                    hand_visibility4 = value;
+                    OnPropertyChanged("Hand_Visibility4");
+                }
+        }
+        public bool Hand_Visibility1
+        {
+            get { return hand_visibility1; }
+            set
+            {
+                hand_visibility1 = value;
+                OnPropertyChanged("Hand_Visibility1");
+            }
+        }
+        public bool Hand_Visibility2
+        {
+            get { return hand_visibility2; }
+            set
+            {
+                hand_visibility2 = value;
+                OnPropertyChanged("Hand_Visibility2");
+            }
+        }
+        public bool Hand_Visibility3
+        {
+            get { return hand_visibility3; }
+            set
+            {
+                hand_visibility3 = value;
+                OnPropertyChanged("Hand_Visibility3");
             }
         }
         public string Player_Name
@@ -266,6 +326,14 @@ namespace Blackjack
                     
                 }
             }
+        }
+
+        public void hide_hand_values()
+        {
+            Hand_Visibility1 = false;
+            Hand_Visibility2 = false;
+            Hand_Visibility3 = false;
+            Hand_Visibility4 = false;
         }
 
         public bool valid_bet()

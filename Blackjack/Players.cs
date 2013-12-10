@@ -14,7 +14,7 @@ namespace Blackjack
         private short max_players;
         public Players()
         {
-            players = new Player[] {null, null, null, null, null };
+            players = new Player[] { new Player(), new Player(), new Player(), new Player(), new Player() };
             active_player = 0;
             active_players = 0;
             max_players = 5;
@@ -35,16 +35,17 @@ namespace Blackjack
 
         public void add_player(short p)
         {
-            Player player = new Player();
-            players[p] = player;            
+            //Player player = new Player();
+            //players[p] = player;            
             player_add_window addwindow = new player_add_window(p);
+            players[p].Is_Active = true;
             addwindow.ShowDialog();
             active_players++;
         }
 
         public void remove_player(short p)
         {
-            players[p] = null;
+            players[p].Is_Active = false;
             active_players--;
         }
 
@@ -73,12 +74,7 @@ namespace Blackjack
 
         public bool is_active(short p)
         {
-            if(players[p] != null)
-            {
-               return true;
-            }
-            else
-                return false;
+            return players[p].Is_Active;
         }
 
         public void add_card(Card c)
@@ -225,6 +221,15 @@ namespace Blackjack
 
             active_player = -1;
             return false;
+        }
+
+        internal void hide_hand_values()
+        {
+            for (short i = 0; i < max_players; ++i)
+            {
+                if(is_active(i))
+                    players[i].hide_hand_values();
+            }
         }
     }
 }
