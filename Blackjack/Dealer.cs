@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace Blackjack 
 {
-    class Dealer : INotifyPropertyChanged
+    public class Dealer : INotifyPropertyChanged
     {
         private int points;
         private double Xcoord;
@@ -108,13 +108,13 @@ namespace Blackjack
 
         }
 
-        internal void add_card(short s)
+        public void add_card(short s)
         {
             hand.Add(s);
         }
         
         //returns true if the dealer should take another card
-        internal bool logic()
+        public bool logic()
         {
             set_value();
             short s = ace_high_value;
@@ -230,7 +230,7 @@ namespace Blackjack
             Dealer_Status = "";
         }
 
-        internal bool blackjack()
+        public bool blackjack()
         {
             set_value();
             if (ace_high_value == 21)
