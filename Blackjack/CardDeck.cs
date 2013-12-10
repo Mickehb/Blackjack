@@ -88,6 +88,19 @@ namespace Blackjack
             /*
              * Loading from database comming soonish
              */
+            //using (var db = new Blackjack_DBEntities1())
+            //{
+            //var query = from deck in db.Decks
+            //            select deck;
+            //    foreach (var item in query)
+            //    {
+            //        Console.WriteLine(item.card_value);
+            //        Card c = new Card((short)item.card_value, item.Filename);
+            //        deck.Add(c);
+            //    }
+
+            //}
+
             for (int i = 1; i < 5; i++)
             {
                 Card c1 = new Card(10, "H10.png");

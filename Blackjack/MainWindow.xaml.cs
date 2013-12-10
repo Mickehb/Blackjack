@@ -24,13 +24,13 @@ namespace Blackjack
         Storyboard mystoryboard;
         int cardHeight = 112;
         int cardWidth = 80;
-        int zindex;
+        
         public MainWindow()
         {
             InitializeComponent();
             hide_all();
             Bj_interaction.instance().deck_load();
-            Bj_interaction.instance().set_coordinates(1280, 720);
+            Bj_interaction.instance().set_coordinates(1600, 900);
             load_card_image();
             Bj_interaction.instance().deck_shuffle();
             p_moves.DataContext = Bj_interaction.instance();
@@ -93,7 +93,6 @@ namespace Blackjack
 
         private void deal_animation()
         {
-            zindex = Bj_interaction.instance().deck_size();
             double[] from = Bj_interaction.instance().deck_get_start_coordinates();
             double[] to;
             Image card;
@@ -305,7 +304,7 @@ namespace Blackjack
             p1_add.Visibility = Visibility.Hidden;
             deal.Visibility = Visibility.Hidden;
 
-            Bj_interaction.instance().player_set_coordinates(1280, 720);
+            Bj_interaction.instance().player_set_coordinates(1600, 900);
            
             deal_animation();
 
