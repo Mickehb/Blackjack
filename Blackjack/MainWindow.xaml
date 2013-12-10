@@ -5,11 +5,11 @@
 
     <Window.Resources>
         <!-- BUTTON STYLES -->
-        <BooleanToVisibilityConverter x:Key="moves"/>
+        <BooleanToVisibilityConverter x:Key="boolvisibility"/>
         <Style x:Key="buttonstyle1" TargetType="Button">
-            <Setter Property="Width" Value="80"/>
+            <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="35"/>
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontFamily" Value="PlayBill"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -23,7 +23,7 @@
         </Style>
         <Style BasedOn="{StaticResource buttonstyle1}"
                x:Key="five_style1" TargetType="Button">
-            <Setter Property="Margin" Value="0,0,200,100"/>
+            <Setter Property="Margin" Value="0,0,150,100"/>
             <Setter Property="Content" Value="5"/>
         </Style>
         <Style BasedOn="{StaticResource buttonstyle1}"
@@ -33,7 +33,7 @@
         </Style>
         <Style BasedOn="{StaticResource buttonstyle1}"
                x:Key="twenty_style1" TargetType="Button">
-            <Setter Property="Margin" Value="200,0,0,100"/>
+            <Setter Property="Margin" Value="150,0,0,100"/>
             <Setter Property="Content" Value="20"/>
         </Style>
         <Style BasedOn="{StaticResource buttonstyle1}"
@@ -48,18 +48,19 @@
         </Style>
         <Style BasedOn="{StaticResource buttonstyle1}"
                x:Key="leave_game_style1" TargetType="Button">
-            <Setter Property="Margin" Value="200,100,0,0"/>
+            <Setter Property="Margin" Value="150,100,0,0"/>
             <Setter Property="Content" Value="Leave Game"/>
         </Style>
         <Style BasedOn="{StaticResource buttonstyle1}"
                x:Key="big_button_style" TargetType="Button">
-            <Setter Property="Width" Value="160"/>
-            <Setter Property="Height" Value="80"/>
-            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="Grid.ZIndex" Value="100"/>
         </Style>
         <!-- TEXTBLOCK STYLES -->
         <Style x:Key="textblock1" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontSize" Value="30"/>
             <Setter Property="FontFamily" Value="PlayBill"/>
             <Setter Property="Foreground" Value="WhiteSmoke"/>
             <Setter Property="Width" Value="100"/>
@@ -88,37 +89,50 @@
             <Setter Property="Width" Value="180"/>
         </Style>
         <Style x:Key="hand_style" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="FontFamily" Value="PlayBill"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="Width" Value="180"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="25"/>
             <Setter Property="Grid.Row" Value="1"/>
-            <Setter Property="Canvas.ZIndex" Value="1000"/>
+            <Setter Property="Canvas.ZIndex" Value="100"/>
             <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="images/buttonsmall1.png"/>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style1">
             <Setter Property="Text" Value="{Binding Path=Hand_Status, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-            <Setter Property="Margin" Value="20,0,0,40"/>
+            <Setter Property="Margin" Value="40,0,0,35"/>
+            <Setter Property="Visibility" Value="{Binding Path=Hand_Visibility1, Converter={StaticResource boolvisibility}}"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style2">
             <Setter Property="Text" Value="{Binding Path=Hand_Status1, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-            <Setter Property="Margin" Value="20,0,0,152"/>
+            <Setter Property="Margin" Value="40,0,0,145"/>
+            <Setter Property="Visibility" Value="{Binding Path=Hand_Visibility2, Converter={StaticResource boolvisibility}}"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style3">
             <Setter Property="Text" Value="{Binding Path=Hand_Status2, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-            <Setter Property="Margin" Value="20,0,0,264"/>
+            <Setter Property="Margin" Value="40,0,0,255"/>
+            <Setter Property="Visibility" Value="{Binding Path=Hand_Visibility3, Converter={StaticResource boolvisibility}}"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
                x:Key="hand_style4">
             <Setter Property="Text" Value="{Binding Path=Hand_Status3, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-            <Setter Property="Margin" Value="20,0,0,376"/>
+            <Setter Property="Margin" Value="40,0,0,365"/>
+            <Setter Property="Visibility" Value="{Binding Path=Hand_Visibility4, Converter={StaticResource boolvisibility}}"/>
         </Style>
         <Style BasedOn="{StaticResource hand_style}"
                TargetType="TextBlock"
@@ -126,10 +140,11 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Text" Value="{Binding Path=Dealer_Status, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="Margin" Value="0,40,0,0"/>
+            <Setter Property="Width" Value="100"/>
             <Setter Property="Grid.Column" Value="2"/>
             <Setter Property="Canvas.ZIndex" Value="1001"/>
-            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Visibility" Value="{Binding Path=Status_Visibility, Converter={StaticResource boolvisibility}}"/>
         </Style>
 
         <!-- MENU STYLES-->
@@ -232,11 +247,11 @@
             <Button x:Name="p1_place_bet" Style="{StaticResource place_bet_style1}" Click="p1_place_bet_Click"/>
             <Button x:Name="p1_leave" Style="{StaticResource leave_game_style1}" Click="p1_leave_Click"/>
         </Grid>
-        <Grid x:Name="p_moves" Grid.Column="{Binding Path=Player_Column, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Row="3" Visibility="{Binding Path=Move_Visibility, Converter={StaticResource moves}}">
-            <Button x:Name="hit" Style="{StaticResource buttonstyle1}" Content="Hit" Margin="0,0,160,100" Click="hit_Click"/>
-            <Button x:Name="stand" Style="{StaticResource buttonstyle1}" Content="Stand" Margin="160,0,0,100" Click="stand_Click"/>
-            <Button x:Name="double_down" Style="{StaticResource buttonstyle1}" Content="Double down" Margin="160,0,0,0" Click="double_down_Click"/>
-            <Button x:Name="split" Style="{StaticResource buttonstyle1}" Content="Split" Margin="0,0,160,0" Click="split_Click"/>
+        <Grid x:Name="p_moves" Grid.Column="{Binding Path=Player_Column, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Row="3" Visibility="{Binding Path=Move_Visibility, Converter={StaticResource boolvisibility}}">
+            <Button x:Name="hit" Style="{StaticResource buttonstyle1}" Content="Hit" Margin="0,0,150,100" Click="hit_Click"/>
+            <Button x:Name="stand" Style="{StaticResource buttonstyle1}" Content="Stand" Margin="150,0,0,100" Click="stand_Click"/>
+            <Button x:Name="double_down" Style="{StaticResource buttonstyle1}" Content="Double down" Margin="150,0,0,0" Click="double_down_Click"/>
+            <Button x:Name="split" Style="{StaticResource buttonstyle1}" Content="Split" Margin="0,0,150,0" Click="split_Click"/>
         </Grid>
 
 
