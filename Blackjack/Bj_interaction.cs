@@ -88,7 +88,9 @@ namespace Blackjack
             players.Active_Player = 0;
             bets_placed = 0;
             players.clear_hands();
+            players.hide_hand_values();
             dealer.clear_hand();
+            dealer.Status_Visibility = false;
         }
 
         /*

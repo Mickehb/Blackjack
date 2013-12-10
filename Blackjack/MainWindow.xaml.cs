@@ -33,7 +33,8 @@ namespace Blackjack
             Bj_interaction.instance().set_coordinates(1280, 720);
             load_card_image();
             Bj_interaction.instance().deck_shuffle();
-            p_moves.DataContext = Bj_interaction.instance();
+            //p_moves.DataContext = Bj_interaction.instance();
+            set_datacontext();
         }
 
         /****************************************
@@ -215,7 +216,7 @@ namespace Blackjack
                  */
                 show_dealer_hidden();
 
-                dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
+                //dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
                 while (Bj_interaction.instance().dealer_logic())
                 {
                     double[] to = Bj_interaction.instance().dealer_coordinates();
@@ -231,7 +232,7 @@ namespace Blackjack
         }
 
 
-
+        /*
         private void set_datacontext(short p)
         {
             switch (p)
@@ -285,6 +286,56 @@ namespace Blackjack
                 default:
                     break;
             }
+
+        }
+
+        */
+        private void set_datacontext()
+        {
+          
+                    p_moves.DataContext = Bj_interaction.instance();
+                    dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
+                    
+                    p1_money.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_name.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_bet.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand1.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand2.DataContext = Bj_interaction.instance().player_get_player(0);
+                    p1_hand3.DataContext = Bj_interaction.instance().player_get_player(0);
+            
+                    p2_money.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_name.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_bet.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand1.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand2.DataContext = Bj_interaction.instance().player_get_player(1);
+                    p2_hand3.DataContext = Bj_interaction.instance().player_get_player(1);
+           
+                    p3_money.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_name.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_bet.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand1.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand2.DataContext = Bj_interaction.instance().player_get_player(2);
+                    p3_hand3.DataContext = Bj_interaction.instance().player_get_player(2);
+       
+                    p4_money.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_name.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_bet.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand1.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand2.DataContext = Bj_interaction.instance().player_get_player(3);
+                    p4_hand3.DataContext = Bj_interaction.instance().player_get_player(3);
+          
+                    p5_money.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_name.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_bet.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand1.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand2.DataContext = Bj_interaction.instance().player_get_player(4);
+                    p5_hand3.DataContext = Bj_interaction.instance().player_get_player(4);
+        
 
         }
 
@@ -495,7 +546,7 @@ namespace Blackjack
         {
             add_visibility(0);
             Bj_interaction.instance().player_create(0);
-            set_datacontext(0);
+            //set_datacontext(0);
             deal_visibility();
 
         }
@@ -503,7 +554,7 @@ namespace Blackjack
         {
             add_visibility(1);
             Bj_interaction.instance().player_create(1);
-            set_datacontext(1);
+            //set_datacontext(1);
             deal_visibility();
         }
 
@@ -511,7 +562,7 @@ namespace Blackjack
         {
             add_visibility(2);
             Bj_interaction.instance().player_create(2);
-            set_datacontext(2);
+            //set_datacontext(2);
             deal_visibility();
         }
 
@@ -519,7 +570,7 @@ namespace Blackjack
         {
             add_visibility(3);
             Bj_interaction.instance().player_create(3);
-            set_datacontext(3);
+            //set_datacontext(3);
             deal_visibility();
 
         }
@@ -528,7 +579,7 @@ namespace Blackjack
         {
             add_visibility(4);
             Bj_interaction.instance().player_create(4);
-            set_datacontext(4);
+            //set_datacontext(4);
             deal_visibility();
         }
 

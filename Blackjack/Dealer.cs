@@ -17,6 +17,7 @@ namespace Blackjack
         private double Xoffset;
         private string hidden;
         private Image card;
+        private bool status_visibility;
 
         //Dealer hand
         private List<short> hand;
@@ -62,6 +63,18 @@ namespace Blackjack
                 OnPropertyChanged("Dealer_Status");
             }
         }
+
+        public bool Status_Visibility
+        {
+            get { return status_visibility; }
+            set
+            {
+                status_visibility = value;
+                OnPropertyChanged("Status_Visibility");
+
+            }
+        }
+
         public int Points
         {
             get { return points; }
@@ -131,6 +144,7 @@ namespace Blackjack
             if ((ace_high_value >= BUST) && (hand_value >= BUST))
             {
                 Dealer_Status = "Bust";
+                Status_Visibility = true;
                 return false;
             }
             
@@ -138,6 +152,7 @@ namespace Blackjack
             {                
                 hand_value = ace_high_value;
                 Dealer_Status = hand_value.ToString();
+                Status_Visibility = true;
                 return false;
             }
 
@@ -151,6 +166,7 @@ namespace Blackjack
                         return true;
                     }
                     Dealer_Status = hand_value.ToString();
+                    Status_Visibility = true;
                     return false;
                 }
                 else
@@ -159,6 +175,7 @@ namespace Blackjack
                     {
                         hand_value = ace_high_value;
                         Dealer_Status = hand_value.ToString();
+                        Status_Visibility = true;
                         return false;
                     }
                     hand_value = ace_high_value;
@@ -174,6 +191,7 @@ namespace Blackjack
                     return true;
                 }
                 Dealer_Status = hand_value.ToString();
+                Status_Visibility = true;
                 return false;
             }
 
@@ -219,6 +237,7 @@ namespace Blackjack
             {
                 Dealer_Status = "Dealer Blackjack!";
                 blackjack = true;
+                Status_Visibility = true;
                 return true;
             }
 
