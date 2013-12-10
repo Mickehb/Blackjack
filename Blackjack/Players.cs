@@ -73,7 +73,7 @@ namespace Blackjack
 
         public bool is_active(short p)
         {
-            if(players[p] != null && !players[p].Player_Blackjack)
+            if(players[p] != null)
             {
                return true;
             }
@@ -142,10 +142,25 @@ namespace Blackjack
         {
             return players[s].blackjack_logic();
         }
-
+        internal void blackjack_win(short s)
+        {
+            players[s].blackjack_win();
+        }
         internal void player_loss(short s)
         {
             players[s].loss();
+        }
+
+        internal void calculate_win(short dealer_hand)
+        {
+            for (short s = 0; s < max_players; ++s)
+            {
+                if(is_active(s))
+                {
+                    if (!players[s].Player_Blackjack)
+                        players[s].calculate_win(dealer_hand);
+                }
+            }
         }
         // Animation
         public double[] player_coordinates()
@@ -196,19 +211,20 @@ namespace Blackjack
         }
         
 
-        internal void set_active_player()
+        internal bool set_active_player()
         {
             for(short i = active_player; i < max_players; ++i)
             {
-                if (is_active(i))
+                if (is_active(i) && !players[i].Player_Blackjack)
                 {
                     active_player = i;
-                    return;
+                    return true;
                 }
                 
             }
 
             active_player = -1;
+            return false;
         }
     }
 }

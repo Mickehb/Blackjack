@@ -30,9 +30,10 @@ namespace Blackjack
             InitializeComponent();
             hide_all();
             Bj_interaction.instance().deck_load();
-            Bj_interaction.instance().set_coordinates(1600, 900);
+            Bj_interaction.instance().set_coordinates(1280, 720);
             load_card_image();
             Bj_interaction.instance().deck_shuffle();
+            p_moves.DataContext = Bj_interaction.instance();
         }
 
         /****************************************
@@ -207,16 +208,8 @@ namespace Blackjack
         private void change_player()
         {
 
-            int column = Bj_interaction.instance().player_change();
-            if (column != -1)
+            if(!Bj_interaction.instance().player_change())           
             {
-                p_moves.SetValue(Grid.ColumnProperty, column);
-            }
-            else
-            {
-
-                p_moves.Visibility = Visibility.Hidden;
-
                 /*
                  * else dealer_logic()
                  */
@@ -231,7 +224,7 @@ namespace Blackjack
                     one_card_animation(from, to, card);
                     Bj_interaction.instance().dealer_add_card();
                 }
-
+                Bj_interaction.instance().calculate_win();
                 done.Visibility = Visibility.Visible;
 
             }
@@ -312,11 +305,12 @@ namespace Blackjack
             p1_add.Visibility = Visibility.Hidden;
             deal.Visibility = Visibility.Hidden;
 
-            Bj_interaction.instance().player_set_coordinates(1600, 900);
-            Bj_interaction.instance().set_active_player();
+            Bj_interaction.instance().player_set_coordinates(1280, 720);
+           
             deal_animation();
 
             //will work once blackjack_logic works
+            
             if (Bj_interaction.instance().blackjack_logic())
             {
                 show_dealer_hidden();
@@ -324,8 +318,12 @@ namespace Blackjack
             }
             else
             {
-                p_moves.Visibility = Visibility.Visible;
-                p_moves.SetValue(Grid.ColumnProperty, Bj_interaction.instance().player_get_column());
+                if (!Bj_interaction.instance().set_active_player())
+                {
+                    show_dealer_hidden();
+                    done.Visibility = Visibility.Visible;
+                    Bj_interaction.instance().calculate_win();
+                }
             }
 
         }
@@ -646,7 +644,7 @@ namespace Blackjack
             if (Bj_interaction.instance().player_place_bet(0))
             {
                 deal_visibility();
-                move_visibility(0);
+                hide_bet_visibility(0);
             }
         }
 
@@ -655,7 +653,7 @@ namespace Blackjack
             if (Bj_interaction.instance().player_place_bet(1))
             {
             deal_visibility();
-            move_visibility(1);
+            hide_bet_visibility(1);
             }
         }
 
@@ -664,7 +662,7 @@ namespace Blackjack
             if (Bj_interaction.instance().player_place_bet(2))
             {
             deal_visibility();
-            move_visibility(2);
+            hide_bet_visibility(2);
             }
         }
 
@@ -673,7 +671,7 @@ namespace Blackjack
             if (Bj_interaction.instance().player_place_bet(3))
             {
                 deal_visibility();
-                move_visibility(3);
+                hide_bet_visibility(3);
             }
         }
 
@@ -682,7 +680,7 @@ namespace Blackjack
             if (Bj_interaction.instance().player_place_bet(4))
             {
                 deal_visibility();
-                move_visibility(4);
+                hide_bet_visibility(4);
             }
             
         }
@@ -735,8 +733,7 @@ namespace Blackjack
             p1_bet.Visibility = Visibility.Hidden;
             p1_money.Visibility = Visibility.Hidden;
             p1_name.Visibility = Visibility.Hidden;
-
-            p_moves.Visibility = Visibility.Hidden;
+           
             deal.Visibility = Visibility.Hidden;
         }
 
@@ -826,7 +823,7 @@ namespace Blackjack
             }
         }
 
-        private void move_visibility(short p)
+        private void hide_bet_visibility(short p)
         {
             switch (p)
             {

@@ -1,10 +1,11 @@
 ﻿<Window x:Name="main_window" x:Class="Blackjack.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
-        Title="MainWindow" Height="900" Width="1600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="720" Width="1280" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <!-- BUTTON STYLES -->
+        <BooleanToVisibilityConverter x:Key="moves"/>
         <Style x:Key="buttonstyle1" TargetType="Button">
             <Setter Property="Width" Value="80"/>
             <Setter Property="Height" Value="35"/>
@@ -231,7 +232,7 @@
             <Button x:Name="p1_place_bet" Style="{StaticResource place_bet_style1}" Click="p1_place_bet_Click"/>
             <Button x:Name="p1_leave" Style="{StaticResource leave_game_style1}" Click="p1_leave_Click"/>
         </Grid>
-        <Grid x:Name="p_moves" Grid.Column="4" Grid.Row="3">
+        <Grid x:Name="p_moves" Grid.Column="{Binding Path=Player_Column, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Row="3" Visibility="{Binding Path=Move_Visibility, Converter={StaticResource moves}}">
             <Button x:Name="hit" Style="{StaticResource buttonstyle1}" Content="Hit" Margin="0,0,160,100" Click="hit_Click"/>
             <Button x:Name="stand" Style="{StaticResource buttonstyle1}" Content="Stand" Margin="160,0,0,100" Click="stand_Click"/>
             <Button x:Name="double_down" Style="{StaticResource buttonstyle1}" Content="Double down" Margin="160,0,0,0" Click="double_down_Click"/>
