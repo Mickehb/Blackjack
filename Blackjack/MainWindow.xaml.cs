@@ -658,7 +658,7 @@ namespace Blackjack
         }
 
         private void p3_place_bet_Click(object sender, RoutedEventArgs e)
-        {
+        {           
             if (Bj_interaction.instance().player_place_bet(2))
             {
             deal_visibility();
