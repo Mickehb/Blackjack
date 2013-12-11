@@ -22,7 +22,10 @@ namespace Blackjack
         private static Bj_interaction instance_variable;
 
         private int player_column;
+
         private bool move_visibility;
+        private bool done_button_visibility;
+        private bool deal_button_visibility;
 
         // Declare the event 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -30,6 +33,8 @@ namespace Blackjack
         {
             player_column = 0;
             move_visibility = false;
+            done_button_visibility = false;
+            deal_button_visibility = false;
             bets_placed = 0;
             players = new Players();
             deck = new CardDeck();
@@ -66,6 +71,24 @@ namespace Blackjack
                 OnPropertyChanged("Move_Visibility");
             }
         }
+        public bool Done_Button_Visibility
+        {
+            get { return done_button_visibility; }
+            set
+            {
+                done_button_visibility = value;
+                OnPropertyChanged("Done_Button_Visibility");
+            }
+        }
+        public bool Deal_Button_Visibility
+        {
+            get { return deal_button_visibility; }
+            set
+            {
+                deal_button_visibility = value;
+                OnPropertyChanged("Deal_Button_Visibility");
+            }
+        }
         public int Player_Column
         {
             get { return player_column; }
@@ -82,13 +105,13 @@ namespace Blackjack
         }
         public void new_round()
         {
+            Done_Button_Visibility = false;
             deck.clear_table();
             dealer.reset_Xoffset();
             //players.reset_Xoffset();
             players.Active_Player = 0;
             bets_placed = 0;
-            players.clear_hands();
-            players.hide_hand_values();
+            players.new_round();
             dealer.clear_hand();
             dealer.Status_Visibility = false;
         }
@@ -167,11 +190,13 @@ namespace Blackjack
         internal void player_create(short p)
         {
             players.add_player(p);
+            player_valid_deal();
         }
 
         internal void player_remove(short p)
         {
             players.remove_player(p);
+            player_valid_deal();
         }
 
         internal void player_update_bet(short p, short b)
@@ -202,9 +227,15 @@ namespace Blackjack
         internal bool player_valid_deal()
         {
             if (players.Active_Players > 0 && (players.Active_Players == bets_placed))
+            {
+                Deal_Button_Visibility = true;
                 return true;
+            }
             else
+            {
+                Deal_Button_Visibility = false;
                 return false;
+            }
         }
 
         internal bool player_double_down_allowed()
@@ -251,7 +282,9 @@ namespace Blackjack
 
             if (players.get_player(p).Player_Bet > 0)
             {
+                players.get_player(p).Bet_Grid_Visibility = false;
                 bets_placed++;
+                player_valid_deal();
                 return true;
             }
 
@@ -395,6 +428,13 @@ namespace Blackjack
         internal void calculate_win()
         {
             players.calculate_win(dealer.Hand_Value);
+            Done_Button_Visibility = true;
+        }
+
+        internal void deal()
+        {
+            Deal_Button_Visibility = false;
+            players.deal();
         }
     }
 }

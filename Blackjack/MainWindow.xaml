@@ -72,6 +72,7 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Visibility" Value="{Binding Path=Money_Bet_Name_Visibility, Converter={StaticResource boolvisibility}}"/>
         </Style>
         <Style BasedOn="{StaticResource textblock1}"
                TargetType="TextBlock"
@@ -79,6 +80,7 @@
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="20,0,0,0"/>
+            <Setter Property="Visibility" Value="{Binding Path=Money_Bet_Name_Visibility, Converter={StaticResource boolvisibility}}"/>
         </Style>
         <Style BasedOn="{StaticResource textblock1}"
                TargetType="TextBlock"
@@ -87,6 +89,7 @@
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Margin" Value="20,0,0,10"/>
             <Setter Property="Width" Value="180"/>
+            <Setter Property="Visibility" Value="{Binding Path=Money_Bet_Name_Visibility, Converter={StaticResource boolvisibility}}"/>
         </Style>
         <Style x:Key="hand_style" TargetType="TextBlock">
             <Setter Property="Foreground" Value="WhiteSmoke"/>
@@ -197,16 +200,23 @@
             </MenuItem>
         </Menu>
 
-        <Button x:Name="deal" Style="{StaticResource big_button_style}" Content="Deal" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="deal_Click"/>
-        <Button x:Name="done" Style="{StaticResource big_button_style}" Content="Done" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="done_Click" Visibility="Hidden"/>
+        <Button x:Name="deal" Style="{StaticResource big_button_style}" Content="Deal" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="deal_Click"
+                Visibility="{Binding Path=Deal_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
+        <Button x:Name="done" Style="{StaticResource big_button_style}" Content="Done" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="done_Click"
+                Visibility="{Binding Path=Done_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
 
-        <Button x:Name="p5_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="0" Click="p5_add_Click"/>
-        <Button x:Name="p4_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="1" Click="p4_add_Click"/>
-        <Button x:Name="p3_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="2" Click="p3_add_Click"/>
-        <Button x:Name="p2_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="3" Click="p2_add_Click"/>
-        <Button x:Name="p1_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="4" Click="p1_add_Click"/>
+        <Button x:Name="p5_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="0" Click="p5_add_Click"
+                Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
+        <Button x:Name="p4_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="1" Click="p4_add_Click"
+                Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
+        <Button x:Name="p3_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="2" Click="p3_add_Click"
+                Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
+        <Button x:Name="p2_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="3" Click="p2_add_Click"
+                Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
+        <Button x:Name="p1_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="4" Click="p1_add_Click"
+                Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
 
-        <Grid x:Name="p5_betting" Grid.Column="0" Grid.Row="3">
+        <Grid x:Name="p5_betting" Grid.Column="0" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
             <Button x:Name="p5_five" Style="{StaticResource five_style1}" Click="p5_five_Click"/>
             <Button x:Name="p5_ten" Style="{StaticResource ten_style1}" Click="p5_ten_Click"/>
             <Button x:Name="p5_twenty" Style="{StaticResource twenty_style1}" Click="p5_twenty_Click"/>
@@ -215,7 +225,7 @@
             <Button x:Name="p5_leave" Style="{StaticResource leave_game_style1}" Click="p5_leave_Click"/>
         </Grid>
 
-        <Grid x:Name="p4_betting" Grid.Column="1" Grid.Row="3">
+        <Grid x:Name="p4_betting" Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
             <Button x:Name="p4_five" Style="{StaticResource five_style1}" Click="p4_five_Click"/>
             <Button x:Name="p4_ten" Style="{StaticResource ten_style1}" Click="p4_ten_Click"/>
             <Button x:Name="p4_twenty" Style="{StaticResource twenty_style1}" Click="p4_twenty_Click"/>
@@ -223,7 +233,7 @@
             <Button x:Name="p4_place_bet" Style="{StaticResource place_bet_style1}" Click="p4_place_bet_Click"/>
             <Button x:Name="p4_leave" Style="{StaticResource leave_game_style1}" Click="p4_leave_Click"/>
         </Grid>
-        <Grid x:Name="p3_betting" Grid.Column="2" Grid.Row="3">
+        <Grid x:Name="p3_betting" Grid.Column="2" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
             <Button x:Name="p3_five" Style="{StaticResource five_style1}" Click="p3_five_Click"/>
             <Button x:Name="p3_ten" Style="{StaticResource ten_style1}" Click="p3_ten_Click"/>
             <Button x:Name="p3_twenty" Style="{StaticResource twenty_style1}" Click="p3_twenty_Click"/>
@@ -231,7 +241,7 @@
             <Button x:Name="p3_place_bet" Style="{StaticResource place_bet_style1}" Click="p3_place_bet_Click"/>
             <Button x:Name="p3_leave" Style="{StaticResource leave_game_style1}" Click="p3_leave_Click"/>
         </Grid>
-        <Grid x:Name="p2_betting" Grid.Column="3" Grid.Row="3">
+        <Grid x:Name="p2_betting" Grid.Column="3" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
             <Button x:Name="p2_five" Style="{StaticResource five_style1}" Click="p2_five_Click"/>
             <Button x:Name="p2_ten" Style="{StaticResource ten_style1}" Click="p2_ten_Click"/>
             <Button x:Name="p2_twenty" Style="{StaticResource twenty_style1}" Click="p2_twenty_Click"/>
@@ -239,7 +249,7 @@
             <Button x:Name="p2_place_bet" Style="{StaticResource place_bet_style1}" Click="p2_place_bet_Click"/>
             <Button x:Name="p2_leave" Style="{StaticResource leave_game_style1}" Click="p2_leave_Click"/>
         </Grid>
-        <Grid x:Name="p1_betting" Grid.Column="4" Grid.Row="3">
+        <Grid x:Name="p1_betting" Grid.Column="4" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
             <Button x:Name="p1_five" Style="{StaticResource five_style1}" Click="p1_five_Click"/>
             <Button x:Name="p1_ten" Style="{StaticResource ten_style1}" Click="p1_ten_Click"/>
             <Button x:Name="p1_twenty" Style="{StaticResource twenty_style1}" Click="p1_twenty_Click"/>

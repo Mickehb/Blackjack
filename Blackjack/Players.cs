@@ -34,18 +34,16 @@ namespace Blackjack
         }
 
         public void add_player(short p)
-        {
-            //Player player = new Player();
-            //players[p] = player;            
+        {          
             player_add_window addwindow = new player_add_window(p);
-            players[p].Is_Active = true;
+            players[p].activate();
             addwindow.ShowDialog();
             active_players++;
         }
 
         public void remove_player(short p)
         {
-            players[p].Is_Active = false;
+            players[p].reset();
             active_players--;
         }
 
@@ -223,12 +221,25 @@ namespace Blackjack
             return false;
         }
 
-        internal void hide_hand_values()
+        internal void new_round()
         {
             for (short i = 0; i < max_players; ++i)
             {
-                if(is_active(i))
-                    players[i].hide_hand_values();
+                if (players[i].Is_Active)
+                    players[i].new_round();
+                else
+                    players[i].Add_Button_Visibility = true;
+            }
+        }
+
+        internal void deal()
+        {
+            for (int i = 0; i < max_players; ++i)
+            {
+                if (players[i].Is_Active)
+                    players[i].Bet_Grid_Visibility = false;
+                else
+                    players[i].Add_Button_Visibility = false;
             }
         }
     }

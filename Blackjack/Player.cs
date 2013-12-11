@@ -37,6 +37,11 @@ namespace Blackjack
         private double Ycord;
         private const double Xoffset = 30;
         private const double Yoffset = 110;
+
+        // Visibility bools
+        private bool money_bet_name_visibility;
+        private bool bet_grid_visibility;
+        private bool add_button_visibility;
                
         private bool hand_visibility1;
         private bool hand_visibility2;
@@ -55,9 +60,11 @@ namespace Blackjack
             hand_value = new short[4];
             bets = new short[4];
             blackjack = false;
-            
             is_active = false;
 
+            money_bet_name_visibility = false;
+            bet_grid_visibility = false;
+            add_button_visibility = true;
             hand_visibility1 = false;
             hand_visibility2 = false;
             hand_visibility3 = false;
@@ -104,7 +111,7 @@ namespace Blackjack
             get { return is_active; }
             set { is_active = value; }
         }
-        
+
         public bool Player_Blackjack
         {
             get { return blackjack; }
@@ -193,14 +200,6 @@ namespace Blackjack
             }
         }
 
-        public bool Hand_Visibility4
-        {
-            get { return hand_visibility4; }
-            set { 
-                    hand_visibility4 = value;
-                    OnPropertyChanged("Hand_Visibility4");
-                }
-        }
         public bool Hand_Visibility1
         {
             get { return hand_visibility1; }
@@ -228,6 +227,45 @@ namespace Blackjack
                 OnPropertyChanged("Hand_Visibility3");
             }
         }
+        public bool Hand_Visibility4
+        {
+            get { return hand_visibility4; }
+            set
+            {
+                hand_visibility4 = value;
+                OnPropertyChanged("Hand_Visibility4");
+            }
+        }
+        public bool Money_Bet_Name_Visibility
+        {
+            get { return money_bet_name_visibility; }
+            set
+            {
+                money_bet_name_visibility = value;
+                OnPropertyChanged("Money_Bet_Name_Visibility");
+            }
+        }
+
+        public bool Bet_Grid_Visibility
+        {
+            get { return bet_grid_visibility; }
+            set
+            {
+                bet_grid_visibility = value;
+                OnPropertyChanged("Bet_Grid_Visibility");
+            }
+        }
+
+        public bool Add_Button_Visibility
+        {
+            get { return add_button_visibility; }
+            set
+            {
+                add_button_visibility = value;
+                OnPropertyChanged("Add_Button_Visibility");
+            }
+        }
+
         public string Player_Name
         {
             get { return name; }
@@ -334,6 +372,32 @@ namespace Blackjack
             Hand_Visibility2 = false;
             Hand_Visibility3 = false;
             Hand_Visibility4 = false;
+        }
+
+        public void activate()
+        {
+           Is_Active = true;
+           Money_Bet_Name_Visibility = true;
+           Add_Button_Visibility = false;
+           Bet_Grid_Visibility = true;
+        }
+
+        public void reset()
+        {
+            Is_Active = false;
+            Money_Bet_Name_Visibility = false;
+            Add_Button_Visibility = true;
+            Bet_Grid_Visibility = false;
+            Player_Money = 100;
+            Player_Bet = 0;
+            Player_Name = "Player";
+        }
+
+        public void new_round()
+        {
+            clear_hands();
+            hide_hand_values();
+            Bet_Grid_Visibility = true;
         }
 
         public bool valid_bet()
@@ -674,8 +738,6 @@ namespace Blackjack
                         bets[s] = 0;
                     }
                 }
-
-
             }
         }
     }
