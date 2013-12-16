@@ -11,7 +11,7 @@ namespace Blackjack
         private string filename;
         private Image card_image;
         private short c_value;
-      
+        private string image_name;
         public Card(short i, string f) 
         {
             c_value = i;
@@ -27,7 +27,11 @@ namespace Blackjack
         public Image Card_Image
         {
             get { return card_image; }
-            set { card_image = value; }
+            set 
+            { 
+                card_image = value;
+                image_name = card_image.Name;
+            }
         }
         
         public short Card_Value

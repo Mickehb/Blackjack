@@ -88,41 +88,20 @@ namespace Blackjack
             /*
              * Loading from database comming soonish
              */
-            //using (var db = new Blackjack_DBEntities1())
-            //{
-            //var query = from deck in db.Decks
-            //            select deck;
-            //    foreach (var item in query)
-            //    {
-            //        Console.WriteLine(item.card_value);
-            //        Card c = new Card((short)item.card_value, item.Filename);
-            //        deck.Add(c);
-            //    }
-
-            //}
-
-            for (int i = 1; i < 5; i++)
+            using (var db = new Blackjack_DBEntities1())
             {
-                Card c1 = new Card(10, "H10.png");
-                Card c2 = new Card(1, "CA.png");
-                Card c3 = new Card(9, "D9.png");
-                Card c4 = new Card(7, "S7.png");
-
-                Card c5 = new Card(10, "C10.png");
-                Card c6 = new Card(1, "HA.png");
-                Card c7 = new Card(1, "DA.png");
-                Card c8 = new Card(1, "SA.png");
-
-                deck.Add(c1);
-                deck.Add(c2);
-                deck.Add(c3);
-                deck.Add(c4);
-                deck.Add(c5);
-                deck.Add(c6);
-                deck.Add(c7);
-                deck.Add(c8);
+                var query = from deck in db.Decks
+                            select deck;
+                foreach (var item in query)
+                {
+                    Console.WriteLine(item.card_value);
+                    Card c = new Card((short)item.card_value, item.fname);
+                    deck.Add(c);
+                }
 
             }
+
+            
         }
 
         public void shuffle()
