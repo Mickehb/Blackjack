@@ -4,28 +4,27 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Blackjack_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Blackjack_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Deck">
           <Key>
-            <PropertyRef Name="Filename" />
+            <PropertyRef Name="fname" />
           </Key>
           <Property Name="card_value" Type="int" Nullable="false" />
-          <Property Name="Filename" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fname" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="Blackjack_DBModelStoreContainer">
           <EntitySet Name="Deck" EntityType="Self.Deck" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Blackjack_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Deck">
           <Key>
-            <PropertyRef Name="Filename" />
+            <PropertyRef Name="fname" />
           </Key>
           <Property Name="card_value" Type="Int32" Nullable="false" />
-          <Property Name="Filename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="Blackjack_DBEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Decks" EntityType="Self.Deck" />
@@ -39,8 +38,8 @@
           <EntitySetMapping Name="Decks">
             <EntityTypeMapping TypeName="Blackjack_DBModel.Deck">
               <MappingFragment StoreEntitySet="Deck">
+                <ScalarProperty Name="fname" ColumnName="fname" />
                 <ScalarProperty Name="card_value" ColumnName="card_value" />
-                <ScalarProperty Name="Filename" ColumnName="Filename" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

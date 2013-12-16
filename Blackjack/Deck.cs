@@ -15,6 +15,6 @@ namespace Blackjack
     public partial class Deck
     {
         public int card_value { get; set; }
-        public string Filename { get; set; }
+        public string fname { get; set; }
     }
 }
