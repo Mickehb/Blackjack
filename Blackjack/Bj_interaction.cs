@@ -458,7 +458,8 @@ namespace Blackjack
 
         internal void save_game()
         {
-
+            save_window save = new save_window();           
+            save.ShowDialog();
         }
     }
 }

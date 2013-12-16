@@ -227,6 +227,7 @@ namespace Blackjack
         {
             hand.Clear();
             Dealer_Status = "";
+            Status_Visibility = false;
             blackjack = false;
         }
 

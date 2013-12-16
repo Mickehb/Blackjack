@@ -389,6 +389,7 @@ namespace Blackjack
             Add_Button_Visibility = true;
             Bet_Grid_Visibility = false;
             clear_hands();
+            hide_hand_values();
             Player_Money = 100;
             Player_Bet = 0;
             Player_Name = "Player";
