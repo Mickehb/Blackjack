@@ -90,7 +90,7 @@ namespace Blackjack
              */
             using (var db = new Blackjack_DBEntities1())
             {
-                var query = from deck in db.Decks
+                var query = from deck in db.New_Deck_DB
                             select deck;
                 foreach (var item in query)
                 {
@@ -100,7 +100,7 @@ namespace Blackjack
                 }
 
             }
-
+           
             
         }
 
@@ -212,6 +212,13 @@ namespace Blackjack
             cardStartX = Xcoord - 400;
             cardCordY = 10;
             cardEndX = 320;
+        }
+
+        internal void reset()
+        {
+            deck.Clear();
+            onTable.Clear();
+            discard.Clear();
         }
     }
 }

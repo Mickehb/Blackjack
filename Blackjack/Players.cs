@@ -242,5 +242,22 @@ namespace Blackjack
                     players[i].Add_Button_Visibility = false;
             }
         }
+
+        internal void add_visibility()
+        {
+            foreach (Player p in players)
+            {
+                p.Add_Button_Visibility = true;
+            }
+        }
+
+        internal void reset()
+        {
+            active_players = 0;
+            foreach (Player p in players)
+            {
+                p.reset();
+            } 
+        }
     }
 }

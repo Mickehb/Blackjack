@@ -5,41 +5,512 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Blackjack_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Deck">
+        <EntityType Name="Dealer_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="save_id" Type="int" Nullable="false" />
+          <Property Name="hand_value" Type="int" Nullable="false" />
+          <Property Name="x_offset" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Deck_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="save_id" Type="int" Nullable="false" />
+          <Property Name="image_name" Type="text" Nullable="false" />
+          <Property Name="c_value" Type="int" Nullable="false" />
+          <Property Name="fname" Type="text" Nullable="false" />
+          <Property Name="x_coord" Type="int" Nullable="false" />
+          <Property Name="y_coord" Type="int" Nullable="false" />
+          <Property Name="z_coord" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Discard_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="save_id" Type="int" Nullable="false" />
+          <Property Name="image_name" Type="text" Nullable="false" />
+          <Property Name="c_value" Type="int" Nullable="false" />
+          <Property Name="fname" Type="text" Nullable="false" />
+          <Property Name="x_coord" Type="int" Nullable="false" />
+          <Property Name="y_coord" Type="int" Nullable="false" />
+          <Property Name="z_coord" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="New_Deck_DB">
           <Key>
             <PropertyRef Name="fname" />
           </Key>
           <Property Name="card_value" Type="int" Nullable="false" />
           <Property Name="fname" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Ontable_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="save_id" Type="int" Nullable="false" />
+          <Property Name="image_name" Type="text" Nullable="false" />
+          <Property Name="c_value" Type="int" Nullable="false" />
+          <Property Name="fname" Type="text" Nullable="false" />
+          <Property Name="x_coord" Type="int" Nullable="false" />
+          <Property Name="y_coord" Type="int" Nullable="false" />
+          <Property Name="z_coord" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Player_hands_DB">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="player_id" Type="int" Nullable="false" />
+          <Property Name="hand" Type="int" Nullable="false" />
+          <Property Name="image_name" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Players_DB">
+          <Key>
+            <PropertyRef Name="player_id" />
+          </Key>
+          <Property Name="player_id" Type="int" Nullable="false" />
+          <Property Name="save_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="text" />
+          <Property Name="money" Type="int" />
+          <Property Name="total_bet" Type="int" />
+          <Property Name="bet0" Type="int" />
+          <Property Name="bet1" Type="int" />
+          <Property Name="bet2" Type="int" />
+          <Property Name="bet3" Type="int" />
+          <Property Name="active_hand" Type="int" />
+          <Property Name="nr_of_hands" Type="int" />
+        </EntityType>
+        <EntityType Name="Saves_DB">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="save_name" Type="text" Nullable="false" />
+          <Property Name="active_player" Type="int" Nullable="false" />
+          <Property Name="active_players" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Dealer_DB_save_id">
+          <End Role="Saves_DB" Type="Self.Saves_DB" Multiplicity="1" />
+          <End Role="Dealer_DB" Type="Self.Dealer_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dealer_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Deck_DB_save_id">
+          <End Role="Saves_DB" Type="Self.Saves_DB" Multiplicity="1" />
+          <End Role="Deck_DB" Type="Self.Deck_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Deck_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Discard_DB_save_id">
+          <End Role="Saves_DB" Type="Self.Saves_DB" Multiplicity="1" />
+          <End Role="Discard_DB" Type="Self.Discard_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Discard_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ontable_save_id">
+          <End Role="Saves_DB" Type="Self.Saves_DB" Multiplicity="1" />
+          <End Role="Ontable_DB" Type="Self.Ontable_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ontable_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_player_id">
+          <End Role="Players_DB" Type="Self.Players_DB" Multiplicity="1" />
+          <End Role="Player_hands_DB" Type="Self.Player_hands_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players_DB">
+              <PropertyRef Name="player_id" />
+            </Principal>
+            <Dependent Role="Player_hands_DB">
+              <PropertyRef Name="player_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_players_DB_save_id">
+          <End Role="Saves_DB" Type="Self.Saves_DB" Multiplicity="1" />
+          <End Role="Players_DB" Type="Self.Players_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Players_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Blackjack_DBModelStoreContainer">
-          <EntitySet Name="Deck" EntityType="Self.Deck" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dealer_DB" EntityType="Self.Dealer_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deck_DB" EntityType="Self.Deck_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Discard_DB" EntityType="Self.Discard_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="New_Deck_DB" EntityType="Self.New_Deck_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ontable_DB" EntityType="Self.Ontable_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Player_hands_DB" EntityType="Self.Player_hands_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Players_DB" EntityType="Self.Players_DB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Saves_DB" EntityType="Self.Saves_DB" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dealer_DB_save_id" Association="Self.FK_Dealer_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Dealer_DB" EntitySet="Dealer_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Deck_DB_save_id" Association="Self.FK_Deck_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Deck_DB" EntitySet="Deck_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Discard_DB_save_id" Association="Self.FK_Discard_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Discard_DB" EntitySet="Discard_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ontable_save_id" Association="Self.FK_Ontable_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Ontable_DB" EntitySet="Ontable_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_player_id" Association="Self.FK_player_id">
+            <End Role="Players_DB" EntitySet="Players_DB" />
+            <End Role="Player_hands_DB" EntitySet="Player_hands_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_players_DB_save_id" Association="Self.FK_players_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Players_DB" EntitySet="Players_DB" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Blackjack_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Deck">
+        <EntityContainer Name="Blackjack_DBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dealer_DB" EntityType="Blackjack_DBModel.Dealer_DB" />
+          <EntitySet Name="Deck_DB" EntityType="Blackjack_DBModel.Deck_DB" />
+          <EntitySet Name="Discard_DB" EntityType="Blackjack_DBModel.Discard_DB" />
+          <EntitySet Name="New_Deck_DB" EntityType="Blackjack_DBModel.New_Deck_DB" />
+          <EntitySet Name="Ontable_DB" EntityType="Blackjack_DBModel.Ontable_DB" />
+          <EntitySet Name="Player_hands_DB" EntityType="Blackjack_DBModel.Player_hands_DB" />
+          <EntitySet Name="Players_DB" EntityType="Blackjack_DBModel.Players_DB" />
+          <EntitySet Name="Saves_DB" EntityType="Blackjack_DBModel.Saves_DB" />
+          <AssociationSet Name="FK_Dealer_DB_save_id" Association="Blackjack_DBModel.FK_Dealer_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Dealer_DB" EntitySet="Dealer_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Deck_DB_save_id" Association="Blackjack_DBModel.FK_Deck_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Deck_DB" EntitySet="Deck_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Discard_DB_save_id" Association="Blackjack_DBModel.FK_Discard_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Discard_DB" EntitySet="Discard_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ontable_save_id1" Association="Blackjack_DBModel.FK_Ontable_save_id1">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Ontable_DB" EntitySet="Ontable_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_player_id1" Association="Blackjack_DBModel.FK_player_id1">
+            <End Role="Players_DB" EntitySet="Players_DB" />
+            <End Role="Player_hands_DB" EntitySet="Player_hands_DB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_players_DB_save_id" Association="Blackjack_DBModel.FK_players_DB_save_id">
+            <End Role="Saves_DB" EntitySet="Saves_DB" />
+            <End Role="Players_DB" EntitySet="Players_DB" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Dealer_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="save_id" Type="Int32" Nullable="false" />
+          <Property Name="hand_value" Type="Int32" Nullable="false" />
+          <Property Name="x_offset" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Saves_DB" Relationship="Blackjack_DBModel.FK_Dealer_DB_save_id" FromRole="Dealer_DB" ToRole="Saves_DB" />
+        </EntityType>
+        <EntityType Name="Deck_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="save_id" Type="Int32" Nullable="false" />
+          <Property Name="image_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="c_value" Type="Int32" Nullable="false" />
+          <Property Name="fname" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="x_coord" Type="Int32" Nullable="false" />
+          <Property Name="y_coord" Type="Int32" Nullable="false" />
+          <Property Name="z_coord" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Saves_DB" Relationship="Blackjack_DBModel.FK_Deck_DB_save_id" FromRole="Deck_DB" ToRole="Saves_DB" />
+        </EntityType>
+        <EntityType Name="Discard_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="save_id" Type="Int32" Nullable="false" />
+          <Property Name="image_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="c_value" Type="Int32" Nullable="false" />
+          <Property Name="fname" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="x_coord" Type="Int32" Nullable="false" />
+          <Property Name="y_coord" Type="Int32" Nullable="false" />
+          <Property Name="z_coord" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Saves_DB" Relationship="Blackjack_DBModel.FK_Discard_DB_save_id" FromRole="Discard_DB" ToRole="Saves_DB" />
+        </EntityType>
+        <EntityType Name="New_Deck_DB">
           <Key>
             <PropertyRef Name="fname" />
           </Key>
           <Property Name="card_value" Type="Int32" Nullable="false" />
           <Property Name="fname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="Blackjack_DBEntities1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Decks" EntityType="Self.Deck" />
-        </EntityContainer>
+        <EntityType Name="Ontable_DB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="save_id" Type="Int32" Nullable="false" />
+          <Property Name="image_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="c_value" Type="Int32" Nullable="false" />
+          <Property Name="fname" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="x_coord" Type="Int32" Nullable="false" />
+          <Property Name="y_coord" Type="Int32" Nullable="false" />
+          <Property Name="z_coord" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Saves_DB" Relationship="Blackjack_DBModel.FK_Ontable_save_id1" FromRole="Ontable_DB" ToRole="Saves_DB" />
+        </EntityType>
+        <EntityType Name="Player_hands_DB">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="player_id" Type="Int32" Nullable="false" />
+          <Property Name="hand" Type="Int32" Nullable="false" />
+          <Property Name="image_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Players_DB" Relationship="Blackjack_DBModel.FK_player_id1" FromRole="Player_hands_DB" ToRole="Players_DB" />
+        </EntityType>
+        <EntityType Name="Players_DB">
+          <Key>
+            <PropertyRef Name="player_id" />
+          </Key>
+          <Property Name="player_id" Type="Int32" Nullable="false" />
+          <Property Name="save_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="money" Type="Int32" />
+          <Property Name="total_bet" Type="Int32" />
+          <Property Name="bet0" Type="Int32" />
+          <Property Name="bet1" Type="Int32" />
+          <Property Name="bet2" Type="Int32" />
+          <Property Name="bet3" Type="Int32" />
+          <Property Name="active_hand" Type="Int32" />
+          <Property Name="nr_of_hands" Type="Int32" />
+          <NavigationProperty Name="Player_hands_DB" Relationship="Blackjack_DBModel.FK_player_id1" FromRole="Players_DB" ToRole="Player_hands_DB" />
+          <NavigationProperty Name="Saves_DB" Relationship="Blackjack_DBModel.FK_players_DB_save_id" FromRole="Players_DB" ToRole="Saves_DB" />
+        </EntityType>
+        <EntityType Name="Saves_DB">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="save_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="active_player" Type="Int32" Nullable="false" />
+          <Property Name="active_players" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dealer_DB" Relationship="Blackjack_DBModel.FK_Dealer_DB_save_id" FromRole="Saves_DB" ToRole="Dealer_DB" />
+          <NavigationProperty Name="Deck_DB" Relationship="Blackjack_DBModel.FK_Deck_DB_save_id" FromRole="Saves_DB" ToRole="Deck_DB" />
+          <NavigationProperty Name="Discard_DB" Relationship="Blackjack_DBModel.FK_Discard_DB_save_id" FromRole="Saves_DB" ToRole="Discard_DB" />
+          <NavigationProperty Name="Ontable_DB" Relationship="Blackjack_DBModel.FK_Ontable_save_id1" FromRole="Saves_DB" ToRole="Ontable_DB" />
+          <NavigationProperty Name="Players_DB" Relationship="Blackjack_DBModel.FK_players_DB_save_id" FromRole="Saves_DB" ToRole="Players_DB" />
+        </EntityType>
+        <Association Name="FK_Dealer_DB_save_id">
+          <End Type="Blackjack_DBModel.Saves_DB" Role="Saves_DB" Multiplicity="1" />
+          <End Type="Blackjack_DBModel.Dealer_DB" Role="Dealer_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dealer_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Deck_DB_save_id">
+          <End Type="Blackjack_DBModel.Saves_DB" Role="Saves_DB" Multiplicity="1" />
+          <End Type="Blackjack_DBModel.Deck_DB" Role="Deck_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Deck_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Discard_DB_save_id">
+          <End Type="Blackjack_DBModel.Saves_DB" Role="Saves_DB" Multiplicity="1" />
+          <End Type="Blackjack_DBModel.Discard_DB" Role="Discard_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Discard_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ontable_save_id1">
+          <End Type="Blackjack_DBModel.Saves_DB" Role="Saves_DB" Multiplicity="1" />
+          <End Type="Blackjack_DBModel.Ontable_DB" Role="Ontable_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ontable_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_player_id1">
+          <End Type="Blackjack_DBModel.Players_DB" Role="Players_DB" Multiplicity="1" />
+          <End Type="Blackjack_DBModel.Player_hands_DB" Role="Player_hands_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players_DB">
+              <PropertyRef Name="player_id" />
+            </Principal>
+            <Dependent Role="Player_hands_DB">
+              <PropertyRef Name="player_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_players_DB_save_id">
+          <End Type="Blackjack_DBModel.Saves_DB" Role="Saves_DB" Multiplicity="1" />
+          <End Type="Blackjack_DBModel.Players_DB" Role="Players_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves_DB">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Players_DB">
+              <PropertyRef Name="save_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Blackjack_DBModelStoreContainer" CdmEntityContainer="Blackjack_DBEntities1">
-          <EntitySetMapping Name="Decks">
-            <EntityTypeMapping TypeName="Blackjack_DBModel.Deck">
-              <MappingFragment StoreEntitySet="Deck">
+          <EntitySetMapping Name="Dealer_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.Dealer_DB">
+              <MappingFragment StoreEntitySet="Dealer_DB">
+                <ScalarProperty Name="x_offset" ColumnName="x_offset" />
+                <ScalarProperty Name="hand_value" ColumnName="hand_value" />
+                <ScalarProperty Name="save_id" ColumnName="save_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deck_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.Deck_DB">
+              <MappingFragment StoreEntitySet="Deck_DB">
+                <ScalarProperty Name="z_coord" ColumnName="z_coord" />
+                <ScalarProperty Name="y_coord" ColumnName="y_coord" />
+                <ScalarProperty Name="x_coord" ColumnName="x_coord" />
+                <ScalarProperty Name="fname" ColumnName="fname" />
+                <ScalarProperty Name="c_value" ColumnName="c_value" />
+                <ScalarProperty Name="image_name" ColumnName="image_name" />
+                <ScalarProperty Name="save_id" ColumnName="save_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Discard_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.Discard_DB">
+              <MappingFragment StoreEntitySet="Discard_DB">
+                <ScalarProperty Name="z_coord" ColumnName="z_coord" />
+                <ScalarProperty Name="y_coord" ColumnName="y_coord" />
+                <ScalarProperty Name="x_coord" ColumnName="x_coord" />
+                <ScalarProperty Name="fname" ColumnName="fname" />
+                <ScalarProperty Name="c_value" ColumnName="c_value" />
+                <ScalarProperty Name="image_name" ColumnName="image_name" />
+                <ScalarProperty Name="save_id" ColumnName="save_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="New_Deck_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.New_Deck_DB">
+              <MappingFragment StoreEntitySet="New_Deck_DB">
                 <ScalarProperty Name="fname" ColumnName="fname" />
                 <ScalarProperty Name="card_value" ColumnName="card_value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ontable_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.Ontable_DB">
+              <MappingFragment StoreEntitySet="Ontable_DB">
+                <ScalarProperty Name="z_coord" ColumnName="z_coord" />
+                <ScalarProperty Name="y_coord" ColumnName="y_coord" />
+                <ScalarProperty Name="x_coord" ColumnName="x_coord" />
+                <ScalarProperty Name="fname" ColumnName="fname" />
+                <ScalarProperty Name="c_value" ColumnName="c_value" />
+                <ScalarProperty Name="image_name" ColumnName="image_name" />
+                <ScalarProperty Name="save_id" ColumnName="save_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Player_hands_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.Player_hands_DB">
+              <MappingFragment StoreEntitySet="Player_hands_DB">
+                <ScalarProperty Name="image_name" ColumnName="image_name" />
+                <ScalarProperty Name="hand" ColumnName="hand" />
+                <ScalarProperty Name="player_id" ColumnName="player_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.Players_DB">
+              <MappingFragment StoreEntitySet="Players_DB">
+                <ScalarProperty Name="nr_of_hands" ColumnName="nr_of_hands" />
+                <ScalarProperty Name="active_hand" ColumnName="active_hand" />
+                <ScalarProperty Name="bet3" ColumnName="bet3" />
+                <ScalarProperty Name="bet2" ColumnName="bet2" />
+                <ScalarProperty Name="bet1" ColumnName="bet1" />
+                <ScalarProperty Name="bet0" ColumnName="bet0" />
+                <ScalarProperty Name="total_bet" ColumnName="total_bet" />
+                <ScalarProperty Name="money" ColumnName="money" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="save_id" ColumnName="save_id" />
+                <ScalarProperty Name="player_id" ColumnName="player_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Saves_DB">
+            <EntityTypeMapping TypeName="Blackjack_DBModel.Saves_DB">
+              <MappingFragment StoreEntitySet="Saves_DB">
+                <ScalarProperty Name="active_players" ColumnName="active_players" />
+                <ScalarProperty Name="active_player" ColumnName="active_player" />
+                <ScalarProperty Name="save_name" ColumnName="save_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

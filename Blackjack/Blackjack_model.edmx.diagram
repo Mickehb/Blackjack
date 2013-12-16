@@ -5,7 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8258cd80e7c84b6c9b94d141bef7e12b" Name="Diagram1">
-        <EntityTypeShape EntityType="Blackjack_DBModel.Deck" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.Dealer_DB" Width="1.5" PointX="8" PointY="9.625" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.Deck_DB" Width="1.5" PointX="8" PointY="16.625" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.Discard_DB" Width="1.5" PointX="8" PointY="23.625" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.New_Deck_DB" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.Ontable_DB" Width="1.5" PointX="8" PointY="20.125" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.Player_hands_DB" Width="1.5" PointX="10.25" PointY="13.125" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.Players_DB" Width="1.5" PointX="8" PointY="12.375" />
+        <EntityTypeShape EntityType="Blackjack_DBModel.Saves_DB" Width="1.5" PointX="5.75" PointY="16.625" />
+        <AssociationConnector Association="Blackjack_DBModel.FK_Dealer_DB_save_id" />
+        <AssociationConnector Association="Blackjack_DBModel.FK_Deck_DB_save_id" />
+        <AssociationConnector Association="Blackjack_DBModel.FK_Discard_DB_save_id" />
+        <AssociationConnector Association="Blackjack_DBModel.FK_Ontable_save_id1" />
+        <AssociationConnector Association="Blackjack_DBModel.FK_player_id1" />
+        <AssociationConnector Association="Blackjack_DBModel.FK_players_DB_save_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

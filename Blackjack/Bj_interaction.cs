@@ -62,6 +62,8 @@ namespace Blackjack
             }
         }
 
+        internal void yo()
+        { }
         public bool Move_Visibility
         {
             get { return move_visibility; }
@@ -112,7 +114,7 @@ namespace Blackjack
             players.Active_Player = 0;
             bets_placed = 0;
             players.new_round();
-            dealer.clear_hand();
+            dealer.reset();
             dealer.Status_Visibility = false;
         }
 
@@ -435,6 +437,28 @@ namespace Blackjack
         {
             Deal_Button_Visibility = false;
             players.deal();
+        }
+
+        internal void new_game()
+        {
+            players.reset();
+            deck.reset();
+            dealer.reset();
+            deck_load();
+            bets_placed = 0;
+            set_coordinates(1000, 400);
+            Move_Visibility = false;
+            Done_Button_Visibility = false;           
+            players.add_visibility();
+        }
+        internal void load_game()
+        {
+
+        }
+
+        internal void save_game()
+        {
+
         }
     }
 }

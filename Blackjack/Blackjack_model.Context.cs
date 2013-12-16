@@ -25,6 +25,13 @@ namespace Blackjack
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Deck> Decks { get; set; }
+        public virtual DbSet<Dealer_DB> Dealer_DB { get; set; }
+        public virtual DbSet<Deck_DB> Deck_DB { get; set; }
+        public virtual DbSet<Discard_DB> Discard_DB { get; set; }
+        public virtual DbSet<New_Deck_DB> New_Deck_DB { get; set; }
+        public virtual DbSet<Ontable_DB> Ontable_DB { get; set; }
+        public virtual DbSet<Player_hands_DB> Player_hands_DB { get; set; }
+        public virtual DbSet<Players_DB> Players_DB { get; set; }
+        public virtual DbSet<Saves_DB> Saves_DB { get; set; }
     }
 }

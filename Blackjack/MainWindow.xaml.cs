@@ -28,11 +28,9 @@ namespace Blackjack
         public MainWindow()
         {
             InitializeComponent();
-            Bj_interaction.instance().deck_load();
-            Bj_interaction.instance().set_coordinates(1600, 900);
-            load_card_image();
-            Bj_interaction.instance().deck_shuffle();
+            Bj_interaction.instance().yo();
             set_datacontext();
+         
         }
 
         /****************************************
@@ -600,7 +598,32 @@ namespace Blackjack
         /*
          * Menu event handlers
          */
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+
+        private void New_Game_Click(object sender, RoutedEventArgs e)
+        {
+            Bj_interaction.instance().new_game(); 
+         
+            foreach (Image i in canvas1.Children)
+            {                
+                this.UnregisterName(i.Name);
+            }
+            canvas1.Children.Clear();
+            load_card_image();
+
+            Bj_interaction.instance().deck_shuffle();
+        }
+
+        private void Load_Game_Click(object sender, RoutedEventArgs e)
+        {
+            Bj_interaction.instance().load_game();
+        }
+
+        private void Save_Game_Click(object sender, RoutedEventArgs e)
+        {
+            Bj_interaction.instance().save_game();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }

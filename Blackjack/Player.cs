@@ -64,7 +64,7 @@ namespace Blackjack
 
             money_bet_name_visibility = false;
             bet_grid_visibility = false;
-            add_button_visibility = true;
+            add_button_visibility = false;
             hand_visibility1 = false;
             hand_visibility2 = false;
             hand_visibility3 = false;
@@ -150,15 +150,15 @@ namespace Blackjack
                     break;
                 case 1:
                     Hand_Status1 = status;
-                    Hand_Visibility1 = true;
+                    Hand_Visibility2 = true;
                     break;
                 case 2:
                     Hand_Status2 = status;
-                    Hand_Visibility1 = true;
+                    Hand_Visibility3 = true;
                     break;
                 case 3:
                     Hand_Status3 = status;
-                    Hand_Visibility1 = true;
+                    Hand_Visibility4 = true;
                     break;
             }
         }
@@ -388,6 +388,7 @@ namespace Blackjack
             Money_Bet_Name_Visibility = false;
             Add_Button_Visibility = true;
             Bet_Grid_Visibility = false;
+            clear_hands();
             Player_Money = 100;
             Player_Bet = 0;
             Player_Name = "Player";

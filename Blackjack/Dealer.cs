@@ -223,7 +223,7 @@ namespace Blackjack
         }
 
 
-        internal void clear_hand()
+        internal void reset()
         {
             hand.Clear();
             Dealer_Status = "";
