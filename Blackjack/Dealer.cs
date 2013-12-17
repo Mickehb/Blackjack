@@ -14,30 +14,30 @@ namespace Blackjack
         private int points;
         private double Xcoord;
         private double Ycoord;
-        private double Xoffset;
+        private double x_offset;
         private string hidden;
         private Image card;
         private bool status_visibility;
 
         //Dealer hand
-        private List<short> hand;
-        private short hand_value;
-        private short ace_high_value;
+        private List<int> hand;
+        private int hand_value;
+        private int ace_high_value;
         private string status;
-        private const short ACE_LOW = 1;    //Constants for logic
-        private const short ACE_HIGH = 11;
-        private const short BUST = 22;
+        private const int ACE_LOW = 1;    //Constants for logic
+        private const int ACE_HIGH = 11;
+        private const int BUST = 22;
         private bool blackjack;
 
         // Declare the event 
         public event PropertyChangedEventHandler PropertyChanged;
         public Dealer()
         {
-            hand = new List<short>();
+            hand = new List<int>();
             points = 0;
             Xcoord = 700;
             Ycoord = 250;
-            Xoffset = 0;
+            x_offset = 0;
             blackjack = false;
         }
       protected void OnPropertyChanged(string name)
@@ -49,7 +49,18 @@ namespace Blackjack
               handler(this, new PropertyChangedEventArgs(name));
           }
       }
-        public short Hand_Value
+
+        public List<int> Dealer_Hand
+        {
+          get { return hand; }
+          set { hand = value; }
+        }
+        public double Xoffset
+        {
+            get { return x_offset; }
+            set { x_offset = value;}
+        }
+        public int Hand_Value
         {
             get { return hand_value; }
             set { hand_value = value; }
@@ -95,9 +106,9 @@ namespace Blackjack
         public double[] coordinates()
         {
             double[] tmp = new double[2];
-            tmp[0] = (Xcoord + Xoffset);
+            tmp[0] = (Xcoord + x_offset);
             tmp[1] = Ycoord;
-            Xoffset += 30;
+            x_offset += 30;
             return tmp;
         }
 
@@ -113,7 +124,7 @@ namespace Blackjack
         }
         public void reset_Xoffset()
         {
-            Xoffset = 0;
+            x_offset = 0;
         }
 
         internal void set_coordinates(double Xsize)
@@ -124,7 +135,7 @@ namespace Blackjack
 
         }
 
-        public void add_card(short s)
+        public void add_card(int s)
         {
             hand.Add(s);
         }
@@ -138,8 +149,8 @@ namespace Blackjack
                 return false;
             
             set_value();
-            short s = ace_high_value;
-            short sh = hand_value;
+            int s = ace_high_value;
+            int sh = hand_value;
 
             if ((ace_high_value >= BUST) && (hand_value >= BUST))
             {
@@ -202,8 +213,8 @@ namespace Blackjack
             
             ace_high_value = 0;
             hand_value = 0;
-            short card_value;
-            for (short i = 0; i < hand.Count; ++i)
+            int card_value;
+            for (int i = 0; i < hand.Count; ++i)
             {
                 card_value = hand.ElementAt(i);
 

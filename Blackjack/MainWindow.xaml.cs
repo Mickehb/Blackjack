@@ -78,7 +78,7 @@ namespace Blackjack
             double[] to = Bj_interaction.instance().deck_get_end_coordinates();
             Image tmp;
 
-            for (short i = 0; i < decksize; i++)
+            for (int i = 0; i < decksize; i++)
             {
                 tmp = Bj_interaction.instance().deck_get_onTable_image(i);
                 from[0] = Canvas.GetLeft(tmp);
@@ -96,7 +96,7 @@ namespace Blackjack
 
             for (int a = 0; a < 2; a++)
             {
-                for (short i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     if (Bj_interaction.instance().player_isactive(i))
                     {
@@ -151,7 +151,7 @@ namespace Blackjack
 
             for (int i = 0; i < decksize; i++)
             {
-                string filename = Bj_interaction.instance().deck_get_image_name((short)i);
+                string filename = Bj_interaction.instance().deck_get_image_name((int)i);
                 src = new Uri("pack://application:,,,/Images/Deck/" + filename);
                 BitmapImage img = new BitmapImage(src);
 
@@ -164,14 +164,50 @@ namespace Blackjack
                 card.Visibility = Visibility.Visible;
 
 
-                Bj_interaction.instance().deck_set_card_image((short)i, card);
+                Bj_interaction.instance().deck_set_card_image((int)i, card);
                 canvas1.Children.Add(card);
 
                 Canvas.SetLeft(card, startCoords[0]);
                 Canvas.SetTop(card, startCoords[1]);
             }
 
-            src = new Uri("pack://application:,,,/Images/Deck/brv.png");
+            load_back_of_card();
+            //src = new Uri("pack://application:,,,/Images/Deck/brv.png");
+
+            //BitmapImage startimg = new BitmapImage(src);
+            //Image startcard = new Image();
+            //startcard.Source = startimg;
+            //startcard.Name = "startpile";
+            //this.RegisterName(startcard.Name, startcard);
+            //startcard.Width = cardWidth;
+            //startcard.Height = cardHeight;
+            //startcard.Visibility = Visibility.Visible;
+            //Canvas.SetZIndex(startcard, (decksize + 2));
+            //canvas1.Children.Add(startcard);
+            //Canvas.SetLeft(startcard, startCoords[0]);
+            //Canvas.SetTop(startcard, startCoords[1]);
+
+            //BitmapImage endimg = new BitmapImage(src);
+            //Image endcard = new Image();
+            //endcard.Source = endimg;
+            //endcard.Name = "throwpile";
+            //this.RegisterName(endcard.Name, endcard);
+            //endcard.Width = cardWidth;
+            //endcard.Height = cardHeight;
+            //endcard.Visibility = Visibility.Visible;
+            //Canvas.SetZIndex(endcard, (decksize + 2));
+            //canvas1.Children.Add(endcard);
+            //Canvas.SetLeft(endcard, endCoords[0]);
+            //Canvas.SetTop(endcard, endCoords[1]);
+
+        }
+
+        private void load_back_of_card()
+        {
+            double[] startCoords = Bj_interaction.instance().deck_get_start_coordinates();
+            double[] endCoords = Bj_interaction.instance().deck_get_end_coordinates();
+        
+            Uri src = new Uri("pack://application:,,,/Images/Deck/brv.png");
 
             BitmapImage startimg = new BitmapImage(src);
             Image startcard = new Image();
@@ -181,7 +217,7 @@ namespace Blackjack
             startcard.Width = cardWidth;
             startcard.Height = cardHeight;
             startcard.Visibility = Visibility.Visible;
-            Canvas.SetZIndex(startcard, (decksize + 2));
+            Canvas.SetZIndex(startcard, (1000));
             canvas1.Children.Add(startcard);
             Canvas.SetLeft(startcard, startCoords[0]);
             Canvas.SetTop(startcard, startCoords[1]);
@@ -194,13 +230,38 @@ namespace Blackjack
             endcard.Width = cardWidth;
             endcard.Height = cardHeight;
             endcard.Visibility = Visibility.Visible;
-            Canvas.SetZIndex(endcard, (decksize + 2));
+            Canvas.SetZIndex(endcard, (1000));
             canvas1.Children.Add(endcard);
             Canvas.SetLeft(endcard, endCoords[0]);
             Canvas.SetTop(endcard, endCoords[1]);
-
         }
+        private void load_animation()
+        {
+            foreach(Card c in Bj_interaction.instance().deck.OnTable)
+            {
+                Image i = c.Card_Image;
+                this.RegisterName(i.Name, i);
+                i.Visibility = Visibility.Visible;
+                canvas1.Children.Add(i);
+            }
 
+            foreach (Card c in Bj_interaction.instance().deck.Deck)
+            {
+                Image i = c.Card_Image;
+                this.RegisterName(i.Name, i);
+                i.Visibility = Visibility.Visible;
+                canvas1.Children.Add(i);
+            }
+
+            foreach (Card c in Bj_interaction.instance().deck.Discard)
+            {
+                Image i = c.Card_Image;
+                this.RegisterName(i.Name, i);
+                i.Visibility = Visibility.Visible;
+                canvas1.Children.Add(i);
+            }
+            load_back_of_card();
+        }
         private void change_player()
         {
 
@@ -340,8 +401,8 @@ namespace Blackjack
             /*
              * stand logic
              */
-            short active_player = Bj_interaction.instance().player_get_active_player_nr();
-            short active_hand = Bj_interaction.instance().player_get_active_hand();
+            int active_player = Bj_interaction.instance().player_get_active_player_nr();
+            int active_hand = Bj_interaction.instance().player_get_active_hand();
 
             if (!Bj_interaction.instance().player_stand())
             {
@@ -615,12 +676,29 @@ namespace Blackjack
 
         private void Load_Game_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().load_game();
+            load_window load = new load_window();
+            load.ShowDialog();
+
+            if (Bj_interaction.instance().Save_Name != "")
+            {
+                //ska endast göras när vi faktiskt ska ladda!
+                foreach (Image i in canvas1.Children)
+                {
+                    this.UnregisterName(i.Name);
+                }
+                canvas1.Children.Clear();
+
+                Bj_interaction.instance().reset_game();
+                Bj_interaction.instance().load_game();
+                load_animation();
+            }
+            
         }
 
         private void Save_Game_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().save_game();
+            save_window save = new save_window();
+            save.ShowDialog();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

@@ -16,16 +16,16 @@ using System.Windows.Shapes;
 namespace Blackjack
 {
     /// <summary>
-    /// Interaction logic for save_window.xaml
+    /// Interaction logic for load_window.xaml
     /// </summary>
-    public partial class save_window : Window
+    public partial class load_window : Window
     {
         public ObservableCollection<string> saves { get; set; }
-        public save_window()
+        ListBoxItem load_item;
+        public load_window()
         {
             InitializeComponent();
-            
-            
+            Bj_interaction.instance().Save_Name = "";
 
             saves = new ObservableCollection<string>();
             save_list.DataContext = saves;
@@ -40,8 +40,7 @@ namespace Blackjack
 
             }
 
-            filename.DataContext = Bj_interaction.instance(); 
-
+            filename.DataContext = Bj_interaction.instance();
         }
 
         private void cancel_button_Click(object sender, RoutedEventArgs e)
@@ -49,19 +48,18 @@ namespace Blackjack
             this.Close();
         }
 
-        private void save_button_Click(object sender, RoutedEventArgs e)
-        {
-            /*
-             * check for unique filename 
-            */           
-           
-            BindingExpression be = filename.GetBindingExpression(TextBox.TextProperty);
-            be.UpdateSource();
 
-            Bj_interaction.instance().save_game();
+        private void load_button_Click(object sender, RoutedEventArgs e)
+        {
+            if (Bj_interaction.instance().Save_Name != "")        
+                this.Close();
             
-            this.Close();
-            
+        }
+
+        private void save_list_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            load_item = ItemsControl.ContainerFromElement(save_list, e.OriginalSource as DependencyObject) as ListBoxItem;
+            Bj_interaction.instance().Save_Name = load_item.Content.ToString();         
         }
     }
 }

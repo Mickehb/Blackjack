@@ -19,8 +19,8 @@ namespace Blackjack
         public string image_name { get; set; }
         public int c_value { get; set; }
         public string fname { get; set; }
-        public int x_coord { get; set; }
-        public int y_coord { get; set; }
+        public double x_coord { get; set; }
+        public double y_coord { get; set; }
         public int z_coord { get; set; }
     
         public virtual Saves_DB Saves_DB { get; set; }

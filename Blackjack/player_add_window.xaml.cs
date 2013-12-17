@@ -23,7 +23,7 @@ namespace Blackjack
         {
             InitializeComponent();
         }
-        public player_add_window(short p)
+        public player_add_window(int p)
         {
             InitializeComponent();
             player_name_TextBox.DataContext = Bj_interaction.instance().player_get_player(p);

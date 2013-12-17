@@ -13,7 +13,7 @@ namespace Blackjack
         private List<Card> onTable;
         private List<Card> discard;
         private Card active;
-        private short Zcoord;
+        private int Zcoord;
         private double cardStartX;
         private double cardCordY;
         private double cardEndX;
@@ -31,6 +31,21 @@ namespace Blackjack
             }
         }
 
+        public List<Card> Deck
+        {
+            get { return deck; }
+            set { deck = value; }
+        }
+        public List<Card> OnTable
+        {
+            get { return onTable; }
+            set { onTable = value; }
+        }
+        public List<Card> Discard
+        {
+            get { return discard; }
+            set { discard = value; }
+        }
         public CardDeck()
         {
             deck = new List<Card>();
@@ -57,7 +72,7 @@ namespace Blackjack
             }
         }
 
-        public short ZIndex
+        public int ZIndex
         {
             get { return Zcoord; }
             set { Zcoord = value; }
@@ -95,7 +110,7 @@ namespace Blackjack
                 foreach (var item in query)
                 {
                     Console.WriteLine(item.card_value);
-                    Card c = new Card((short)item.card_value, item.fname);
+                    Card c = new Card((int)item.card_value, item.fname);
                     deck.Add(c);
                 }
 
@@ -139,17 +154,17 @@ namespace Blackjack
 
             Errortext += "discard.count = " + discard.Count.ToString() + "\ndeck.count = " + deck.Count.ToString();
         }
-        public Image get_card_image(short i)
+        public Image get_card_image(int i)
         {
             return deck.ElementAt(i).Card_Image;
         }
 
-        public void set_card_image(short i, Image c)
+        public void set_card_image(int i, Image c)
         {
             deck.ElementAt(i).Card_Image = c;
         }
 
-        public string get_image_name(short i)
+        public string get_image_name(int i)
         {
             return deck.ElementAt(i).Card_Filename;
         }
@@ -182,7 +197,7 @@ namespace Blackjack
         }
 
         // onTable
-        public Image get_onTable_image(short c)
+        public Image get_onTable_image(int c)
         {
             return onTable.ElementAt(c).Card_Image;
         }

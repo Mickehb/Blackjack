@@ -27,6 +27,9 @@ namespace Blackjack
         public string save_name { get; set; }
         public int active_player { get; set; }
         public int active_players { get; set; }
+        public bool deal_visibility { get; set; }
+        public bool move_visibility { get; set; }
+        public bool done_visibility { get; set; }
     
         public virtual ICollection<Dealer_DB> Dealer_DB { get; set; }
         public virtual ICollection<Deck_DB> Deck_DB { get; set; }

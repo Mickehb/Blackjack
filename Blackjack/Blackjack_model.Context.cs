@@ -33,5 +33,6 @@ namespace Blackjack
         public virtual DbSet<Player_hands_DB> Player_hands_DB { get; set; }
         public virtual DbSet<Players_DB> Players_DB { get; set; }
         public virtual DbSet<Saves_DB> Saves_DB { get; set; }
+        public virtual DbSet<Dealer_Hand_DB> Dealer_Hand_DB { get; set; }
     }
 }

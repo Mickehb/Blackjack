@@ -22,14 +22,15 @@ namespace Blackjack
         public int player_id { get; set; }
         public int save_id { get; set; }
         public string name { get; set; }
-        public Nullable<int> money { get; set; }
-        public Nullable<int> total_bet { get; set; }
-        public Nullable<int> bet0 { get; set; }
-        public Nullable<int> bet1 { get; set; }
-        public Nullable<int> bet2 { get; set; }
-        public Nullable<int> bet3 { get; set; }
-        public Nullable<int> active_hand { get; set; }
-        public Nullable<int> nr_of_hands { get; set; }
+        public int money { get; set; }
+        public int total_bet { get; set; }
+        public int bet0 { get; set; }
+        public int bet1 { get; set; }
+        public int bet2 { get; set; }
+        public int bet3 { get; set; }
+        public int active_hand { get; set; }
+        public int nr_of_hands { get; set; }
+        public int player_nr { get; set; }
     
         public virtual ICollection<Player_hands_DB> Player_hands_DB { get; set; }
         public virtual Saves_DB Saves_DB { get; set; }

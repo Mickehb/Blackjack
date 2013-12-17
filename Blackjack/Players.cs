@@ -9,9 +9,9 @@ namespace Blackjack
     class Players
     {
         private Player[] players;
-        private short active_player;
-        private short active_players;
-        private short max_players;
+        private int active_player;
+        private int active_players;
+        private int max_players;
         public Players()
         {
             players = new Player[] { new Player(), new Player(), new Player(), new Player(), new Player() };
@@ -20,20 +20,20 @@ namespace Blackjack
             max_players = 5;
         }
 
-        public short Active_Player
+        public int Active_Player
         {
             get { return active_player; }
             set { active_player = value; }
         }
 
         
-        public short Active_Players
+        public int Active_Players
         {
             get { return active_players; }
             set { active_players = value; }
         }
 
-        public void add_player(short p)
+        public void add_player(int p)
         {          
             player_add_window addwindow = new player_add_window(p);
             players[p].activate();
@@ -41,18 +41,18 @@ namespace Blackjack
             active_players++;
         }
 
-        public void remove_player(short p)
+        public void remove_player(int p)
         {
             players[p].reset();
             active_players--;
         }
 
-        public Player get_player(short p)
+        public Player get_player(int p)
         {
            return players[p];
         }
 
-        public void update_player_bet(short p, short b)
+        public void update_player_bet(int p, int b)
         {
             players[p].update_bet(b);
         }
@@ -65,12 +65,12 @@ namespace Blackjack
         {
             return players[active_player].split_allowed();
         }
-        public void clear_player_bet(short p)
+        public void clear_player_bet(int p)
         {
             players[p].clear_bet();
         }
 
-        public bool is_active(short p)
+        public bool is_active(int p)
         {
             return players[p].Is_Active;
         }
@@ -81,10 +81,16 @@ namespace Blackjack
                 players[active_player].add_card(c);
         }
 
-        public void add_card(short s, Card c)
+        public void add_card(int s, Card c)
         {
             if (players[s] != null)
                 players[s].add_card(c); 
+        }
+
+        public void add_card_hand(int p, int h, Card c)
+        {
+            if (is_active(p))
+                players[p].add_card(h, c);
         }
 
         public void add_split_card(Card c)
@@ -94,7 +100,7 @@ namespace Blackjack
 
         public void clear_hands()
         {
-            for(short i = 0; i < max_players; ++i)
+            for(int i = 0; i < max_players; ++i)
             {
                 if (is_active(i))
                     players[i].clear_hands();                    
@@ -107,7 +113,7 @@ namespace Blackjack
             return players[active_player].get_active_image();
         }
 
-        internal short get_active_hand()
+        internal int get_active_hand()
         {
             return players[active_player].Player_Hand;
         }
@@ -132,22 +138,22 @@ namespace Blackjack
             return players[active_player].hit_logic();
         }
 
-        internal bool blackjack(short s)
+        internal bool blackjack(int s)
         {
             return players[s].blackjack_logic();
         }
-        internal void blackjack_win(short s)
+        internal void blackjack_win(int s)
         {
             players[s].blackjack_win();
         }
-        internal void player_loss(short s)
+        internal void player_loss(int s)
         {
             players[s].loss();
         }
 
-        internal void calculate_win(short dealer_hand)
+        internal void calculate_win(int dealer_hand)
         {
-            for (short s = 0; s < max_players; ++s)
+            for (int s = 0; s < max_players; ++s)
             {
                 if(is_active(s))
                 {
@@ -162,7 +168,7 @@ namespace Blackjack
             return players[active_player].coordinates();
         }
 
-        public double[] player_coordinates(short p)
+        public double[] player_coordinates(int p)
         {
             return players[p].coordinates();
         }
@@ -177,7 +183,7 @@ namespace Blackjack
             string s;
             double x, y;
             double Xcoord = Xsize / 5;                  
-            for(short i = 0; i < 5; ++i)
+            for(int i = 0; i < 5; ++i)
             {
                 if (is_active(i))
                 {
@@ -207,7 +213,7 @@ namespace Blackjack
 
         internal bool set_active_player()
         {
-            for(short i = active_player; i < max_players; ++i)
+            for(int i = active_player; i < max_players; ++i)
             {
                 if (is_active(i) && !players[i].Player_Blackjack)
                 {
@@ -223,7 +229,7 @@ namespace Blackjack
 
         internal void new_round()
         {
-            for (short i = 0; i < max_players; ++i)
+            for (int i = 0; i < max_players; ++i)
             {
                 if (players[i].Is_Active)
                     players[i].new_round();

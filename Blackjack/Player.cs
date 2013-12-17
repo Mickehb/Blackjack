@@ -13,25 +13,25 @@ namespace Blackjack
 
         private bool is_active;
 
-        private short active_hand;          //hand that is currently being played
-        public short nr_of_hands;          //nr_of_hands the player has         
+        private int active_hand;          //hand that is currently being played
+        public int nr_of_hands;          //nr_of_hands the player has         
 
-        private short ace_high_value;       //counts values using ace value of high
-        private short[] hand_value;         //by default counts values using ace value of 1        
+        private int ace_high_value;       //counts values using ace value of high
+        private int[] hand_value;         //by default counts values using ace value of 1        
         private string hand_status;       //text for player to see, i.e bust or handvalue (12)
         private string hand_status1;       //text for player to see, i.e bust or handvalue (12)
         private string hand_status2;       //text for player to see, i.e bust or handvalue (12)
         private string hand_status3;       //text for player to see, i.e bust or handvalue (12)
         bool blackjack;                     //true if we have blackjack
-        private const short ACE_LOW = 1;    //Constants for logic
-        private const short ACE_HIGH = 11;
-        private const short BUST = 22;
-        private const short MAX_SPLITS = 3;
+        private const int ACE_LOW = 1;    //Constants for logic
+        private const int ACE_HIGH = 11;
+        private const int BUST = 22;
+        private const int MAX_SPLITS = 3;
 
         private string name;
-        private short money;
-        private short bet;                  //show to player
-        public short[] bets;               //keep track of bets made per hand
+        private int money;
+        private int bet;                  //show to player
+        public int[] bets;               //keep track of bets made per hand
 
         private double Xcord;
         private double Ycord;
@@ -57,8 +57,8 @@ namespace Blackjack
             nr_of_hands = 0;
             hand = new List<Card>[4];
             hand[0] = new List<Card>();
-            hand_value = new short[4];
-            bets = new short[4];
+            hand_value = new int[4];
+            bets = new int[] {0,0,0,0};
             blackjack = false;
             is_active = false;
 
@@ -76,7 +76,24 @@ namespace Blackjack
             this.Ycord = 600;
 
         }
+        public List<Card> get_hand(int s)
+        {
+            return hand[s];
+        }
 
+        public void set_hand(List<Card> l, int s)
+        {
+            hand[s]= l;
+        }
+        public int get_bet(int s)
+        {
+            return bets[s];
+        }
+
+        public void set_bet(int s, int b)
+        {
+            bets[s] = b;
+        }
         public Player(string value)
         {
             this.name = value;
@@ -95,12 +112,12 @@ namespace Blackjack
             }
         }
         
-        public short Active_Hand
+        public int Active_Hand
         {
             get { return active_hand; }
             set { active_hand = value; }
         }
-        public short[] Hand_Value
+        public int[] Hand_Value
         {
             get { return hand_value; }
            // set { hand_value = value; }
@@ -276,7 +293,7 @@ namespace Blackjack
             }
         }
 
-        public short Player_Money
+        public int Player_Money
         {
             get { return money; }
             set
@@ -286,7 +303,7 @@ namespace Blackjack
             }
         }
 
-        public short Player_Bet
+        public int Player_Bet
         {
             get { return bet; }
             set
@@ -296,7 +313,7 @@ namespace Blackjack
             }
         }
 
-        public short Player_Hand
+        public int Player_Hand
         {
             get { return active_hand; }
             set { active_hand = value; }
@@ -335,14 +352,18 @@ namespace Blackjack
          */
         public void add_card(Card c)
         {
-            short s = active_hand;
             hand[active_hand].Add(c);
             set_value();
         }
 
+        public void add_card(int h, Card c)
+        {
+            hand[h].Add(c);
+        }
+
         public void split_add_card(Card c)
         {
-            short s = nr_of_hands;
+            int s = nr_of_hands;
             hand[active_hand + (nr_of_hands - active_hand)].Add(c);
         }
 
@@ -407,9 +428,9 @@ namespace Blackjack
             return true;
         }
 
-        public bool update_bet(short b)
+        public bool update_bet(int b)
         {
-            short cur_bet = bets[active_hand];
+            int cur_bet = bets[active_hand];
             if (money >= b)
             {
                 Player_Money -= b;
@@ -430,7 +451,7 @@ namespace Blackjack
         public bool split_allowed()
         {
             nr_of_hands++;
-            short b = bets[active_hand];
+            int b = bets[active_hand];
             if (money >= b)
             {
                 Player_Money -= b;
@@ -480,8 +501,8 @@ namespace Blackjack
         public bool split_logic()
         {
             //if split allowed
-            short first_card = hand[active_hand].ElementAt(0).Card_Value;
-            short second_card = hand[active_hand].ElementAt(1).Card_Value;
+            int first_card = hand[active_hand].ElementAt(0).Card_Value;
+            int second_card = hand[active_hand].ElementAt(1).Card_Value;
 
 
 
@@ -649,12 +670,12 @@ namespace Blackjack
         }
         internal void set_value()
         {
-            short h = active_hand;
-            short nr = nr_of_hands;
+            int h = active_hand;
+            int nr = nr_of_hands;
             ace_high_value = 0;
             hand_value[active_hand] = 0;
-            short card_value;
-            for (short i = 0; i < hand[active_hand].Count; ++i)
+            int card_value;
+            for (int i = 0; i < hand[active_hand].Count; ++i)
             {
                 card_value = hand[active_hand].ElementAt(i).Card_Value;
 
@@ -678,7 +699,7 @@ namespace Blackjack
                 set_hand_status(hand_value[active_hand].ToString() + "/" + ace_high_value);
 
         }
-        private bool bust(short s)
+        private bool bust(int s)
         {
             if (hand_value[active_hand] + s > BUST)
                 return true;
@@ -697,12 +718,12 @@ namespace Blackjack
             bets[0] = 0;
         }
 
-        public void calculate_win(short dealer_hand)
+        public void calculate_win(int dealer_hand)
         {
-            short cur_hand;
-            short cur_bet;
-            short total_bet = bet;
-            for (short s = 0; s <= nr_of_hands; ++s)
+            int cur_hand;
+            int cur_bet;
+            int total_bet = bet;
+            for (int s = 0; s <= nr_of_hands; ++s)
             {
                 cur_hand = hand_value[s];
                 cur_bet = bets[s];

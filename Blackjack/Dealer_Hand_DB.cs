@@ -12,19 +12,12 @@ namespace Blackjack
     using System;
     using System.Collections.Generic;
     
-    public partial class Dealer_DB
+    public partial class Dealer_Hand_DB
     {
-        public Dealer_DB()
-        {
-            this.Dealer_Hand_DB = new HashSet<Dealer_Hand_DB>();
-        }
-    
         public int Id { get; set; }
-        public int save_id { get; set; }
-        public int hand_value { get; set; }
-        public double x_offset { get; set; }
+        public int d_id { get; set; }
+        public int c_value { get; set; }
     
-        public virtual Saves_DB Saves_DB { get; set; }
-        public virtual ICollection<Dealer_Hand_DB> Dealer_Hand_DB { get; set; }
+        public virtual Dealer_DB Dealer_DB { get; set; }
     }
 }
