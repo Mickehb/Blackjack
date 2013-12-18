@@ -391,7 +391,6 @@ namespace Blackjack
                     Hand_Status3 = "";
                     Player_Blackjack = false;
                     clear_bet();
-
                 }
             }
         }
@@ -605,9 +604,7 @@ namespace Blackjack
                 active_hand = 0;
                 return false;
             }
-
-
-        }
+       }
         /*
          * returns true if we are to play again
          */

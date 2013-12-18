@@ -59,7 +59,8 @@ namespace Blackjack
         private void save_list_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             load_item = ItemsControl.ContainerFromElement(save_list, e.OriginalSource as DependencyObject) as ListBoxItem;
-            Bj_interaction.instance().Save_Name = load_item.Content.ToString();         
+            if (Bj_interaction.instance().Save_Name != "")   
+                Bj_interaction.instance().Save_Name = load_item.Content.ToString();         
         }
     }
 }

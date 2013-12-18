@@ -28,6 +28,7 @@ namespace Blackjack
             InitializeComponent();
             Bj_interaction.instance().yo();
             set_datacontext();
+            errorbox.Visibility = Visibility.Hidden; // hide the error box
         }
 
         /****************************************

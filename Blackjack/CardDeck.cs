@@ -31,6 +31,16 @@ namespace Blackjack
             }
         }
 
+        public CardDeck()
+        {
+            deck = new List<Card>();
+            onTable = new List<Card>();
+            discard = new List<Card>();
+            cardStartX = 1200;
+            cardCordY = 50;
+            cardEndX = 400;
+            Zcoord = 1;
+        }
         public List<Card> Deck
         {
             get { return deck; }
@@ -46,17 +56,6 @@ namespace Blackjack
             get { return discard; }
             set { discard = value; }
         }
-        public CardDeck()
-        {
-            deck = new List<Card>();
-            onTable = new List<Card>();
-            discard = new List<Card>();
-            cardStartX = 1200;
-            cardCordY = 50;
-            cardEndX = 400;
-            Zcoord = 1;
-        }
-
         public Card Active_Card
         {
             get { return active; }
@@ -115,8 +114,8 @@ namespace Blackjack
                 }
 
             }
-           
-            
+
+
         }
 
         public void shuffle()
@@ -227,7 +226,7 @@ namespace Blackjack
 
             cardStartX = (3 * column_width) + (column_width / 2);
             cardEndX = column_width + (column_width / 2);
-            cardCordY = 10;           
+            cardCordY = 10;
         }
 
         internal void reset()
