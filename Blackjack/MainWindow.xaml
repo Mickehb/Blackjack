@@ -1,7 +1,7 @@
 ﻿<Window x:Name="main_window" x:Class="Blackjack.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
-        Title="MainWindow" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None">
 
     <Window.Resources>
         <!-- BUTTON STYLES -->
@@ -208,57 +208,57 @@
         <Button x:Name="done" Style="{StaticResource big_button_style}" Content="Done" Grid.Column="2" Grid.Row="1" Margin="0,200,0,0" Click="done_Click"
                 Visibility="{Binding Path=Done_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
 
-        <Button x:Name="p5_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="0" Click="p5_add_Click"
+        <Button x:Name="p5_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="0" Click="add_Click"
                 Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
-        <Button x:Name="p4_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="1" Click="p4_add_Click"
+        <Button x:Name="p4_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="1" Click="add_Click"
                 Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
-        <Button x:Name="p3_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="2" Click="p3_add_Click"
+        <Button x:Name="p3_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="2" Click="add_Click"
                 Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
-        <Button x:Name="p2_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="3" Click="p2_add_Click"
+        <Button x:Name="p2_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="3" Click="add_Click"
                 Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
-        <Button x:Name="p1_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="4" Click="p1_add_Click"
+        <Button x:Name="p1_add" Style="{StaticResource big_button_style}" Content="Add Player" Grid.Row="3" Grid.Column="4" Click="add_Click"
                 Visibility="{Binding Path=Add_Button_Visibility, Converter={StaticResource boolvisibility}}"/>
 
         <Grid x:Name="p5_betting" Grid.Column="0" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
-            <Button x:Name="p5_five" Style="{StaticResource five_style1}" Click="p5_five_Click"/>
-            <Button x:Name="p5_ten" Style="{StaticResource ten_style1}" Click="p5_ten_Click"/>
-            <Button x:Name="p5_twenty" Style="{StaticResource twenty_style1}" Click="p5_twenty_Click"/>
-            <Button x:Name="p5_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p5_clear_bet_Click"/>
-            <Button x:Name="p5_place_bet" Style="{StaticResource place_bet_style1}" Click="p5_place_bet_Click"/>
-            <Button x:Name="p5_leave" Style="{StaticResource leave_game_style1}" Click="p5_leave_Click"/>
+            <Button x:Name="p5_five" Style="{StaticResource five_style1}" Click="five_Click"/>
+            <Button x:Name="p5_ten" Style="{StaticResource ten_style1}" Click="ten_Click"/>
+            <Button x:Name="p5_twenty" Style="{StaticResource twenty_style1}" Click="twenty_Click"/>
+            <Button x:Name="p5_clear_bet" Style="{StaticResource clear_bet_style1}" Click="clear_bet_Click"/>
+            <Button x:Name="p5_place_bet" Style="{StaticResource place_bet_style1}" Click="place_bet_Click"/>
+            <Button x:Name="p5_leave" Style="{StaticResource leave_game_style1}" Click="leave_Click"/>
         </Grid>
 
         <Grid x:Name="p4_betting" Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
-            <Button x:Name="p4_five" Style="{StaticResource five_style1}" Click="p4_five_Click"/>
-            <Button x:Name="p4_ten" Style="{StaticResource ten_style1}" Click="p4_ten_Click"/>
-            <Button x:Name="p4_twenty" Style="{StaticResource twenty_style1}" Click="p4_twenty_Click"/>
-            <Button x:Name="p4_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p4_clear_bet_Click"/>
-            <Button x:Name="p4_place_bet" Style="{StaticResource place_bet_style1}" Click="p4_place_bet_Click"/>
-            <Button x:Name="p4_leave" Style="{StaticResource leave_game_style1}" Click="p4_leave_Click"/>
+            <Button x:Name="p4_five" Style="{StaticResource five_style1}" Click="five_Click"/>
+            <Button x:Name="p4_ten" Style="{StaticResource ten_style1}" Click="ten_Click"/>
+            <Button x:Name="p4_twenty" Style="{StaticResource twenty_style1}" Click="twenty_Click"/>
+            <Button x:Name="p4_clear_bet" Style="{StaticResource clear_bet_style1}" Click="clear_bet_Click"/>
+            <Button x:Name="p4_place_bet" Style="{StaticResource place_bet_style1}" Click="place_bet_Click"/>
+            <Button x:Name="p4_leave" Style="{StaticResource leave_game_style1}" Click="leave_Click"/>
         </Grid>
         <Grid x:Name="p3_betting" Grid.Column="2" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
-            <Button x:Name="p3_five" Style="{StaticResource five_style1}" Click="p3_five_Click"/>
-            <Button x:Name="p3_ten" Style="{StaticResource ten_style1}" Click="p3_ten_Click"/>
-            <Button x:Name="p3_twenty" Style="{StaticResource twenty_style1}" Click="p3_twenty_Click"/>
-            <Button x:Name="p3_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p3_clear_bet_Click"/>
-            <Button x:Name="p3_place_bet" Style="{StaticResource place_bet_style1}" Click="p3_place_bet_Click"/>
-            <Button x:Name="p3_leave" Style="{StaticResource leave_game_style1}" Click="p3_leave_Click"/>
+            <Button x:Name="p3_five" Style="{StaticResource five_style1}" Click="five_Click"/>
+            <Button x:Name="p3_ten" Style="{StaticResource ten_style1}" Click="ten_Click"/>
+            <Button x:Name="p3_twenty" Style="{StaticResource twenty_style1}" Click="twenty_Click"/>
+            <Button x:Name="p3_clear_bet" Style="{StaticResource clear_bet_style1}" Click="clear_bet_Click"/>
+            <Button x:Name="p3_place_bet" Style="{StaticResource place_bet_style1}" Click="place_bet_Click"/>
+            <Button x:Name="p3_leave" Style="{StaticResource leave_game_style1}" Click="leave_Click"/>
         </Grid>
         <Grid x:Name="p2_betting" Grid.Column="3" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
-            <Button x:Name="p2_five" Style="{StaticResource five_style1}" Click="p2_five_Click"/>
-            <Button x:Name="p2_ten" Style="{StaticResource ten_style1}" Click="p2_ten_Click"/>
-            <Button x:Name="p2_twenty" Style="{StaticResource twenty_style1}" Click="p2_twenty_Click"/>
-            <Button x:Name="p2_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p2_clear_bet_Click"/>
-            <Button x:Name="p2_place_bet" Style="{StaticResource place_bet_style1}" Click="p2_place_bet_Click"/>
-            <Button x:Name="p2_leave" Style="{StaticResource leave_game_style1}" Click="p2_leave_Click"/>
+            <Button x:Name="p2_five" Style="{StaticResource five_style1}" Click="five_Click"/>
+            <Button x:Name="p2_ten" Style="{StaticResource ten_style1}" Click="ten_Click"/>
+            <Button x:Name="p2_twenty" Style="{StaticResource twenty_style1}" Click="twenty_Click"/>
+            <Button x:Name="p2_clear_bet" Style="{StaticResource clear_bet_style1}" Click="clear_bet_Click"/>
+            <Button x:Name="p2_place_bet" Style="{StaticResource place_bet_style1}" Click="place_bet_Click"/>
+            <Button x:Name="p2_leave" Style="{StaticResource leave_game_style1}" Click="leave_Click"/>
         </Grid>
         <Grid x:Name="p1_betting" Grid.Column="4" Grid.Row="3" Visibility="{Binding Path=Bet_Grid_Visibility, Converter={StaticResource boolvisibility}}">
-            <Button x:Name="p1_five" Style="{StaticResource five_style1}" Click="p1_five_Click"/>
-            <Button x:Name="p1_ten" Style="{StaticResource ten_style1}" Click="p1_ten_Click"/>
-            <Button x:Name="p1_twenty" Style="{StaticResource twenty_style1}" Click="p1_twenty_Click"/>
-            <Button x:Name="p1_clear_bet" Style="{StaticResource clear_bet_style1}" Click="p1_clear_bet_Click"/>
-            <Button x:Name="p1_place_bet" Style="{StaticResource place_bet_style1}" Click="p1_place_bet_Click"/>
-            <Button x:Name="p1_leave" Style="{StaticResource leave_game_style1}" Click="p1_leave_Click"/>
+            <Button x:Name="p1_five" Style="{StaticResource five_style1}" Click="five_Click"/>
+            <Button x:Name="p1_ten" Style="{StaticResource ten_style1}" Click="ten_Click"/>
+            <Button x:Name="p1_twenty" Style="{StaticResource twenty_style1}" Click="twenty_Click"/>
+            <Button x:Name="p1_clear_bet" Style="{StaticResource clear_bet_style1}" Click="clear_bet_Click"/>
+            <Button x:Name="p1_place_bet" Style="{StaticResource place_bet_style1}" Click="place_bet_Click"/>
+            <Button x:Name="p1_leave" Style="{StaticResource leave_game_style1}" Click="leave_Click"/>
         </Grid>
         <Grid x:Name="p_moves" Grid.Column="{Binding Path=Player_Column, Mode=OneWay, NotifyOnTargetUpdated=True}" Grid.Row="3" Visibility="{Binding Path=Move_Visibility, Converter={StaticResource boolvisibility}}">
             <Button x:Name="hit" Style="{StaticResource buttonstyle1}" Content="Hit" Margin="0,0,150,100" Click="hit_Click"/>

@@ -12,6 +12,7 @@ namespace Blackjack
         private int active_player;
         private int active_players;
         private int max_players;
+
         public Players()
         {
             players = new Player[] { new Player(), new Player(), new Player(), new Player(), new Player() };
@@ -162,6 +163,7 @@ namespace Blackjack
                 }
             }
         }
+
         // Animation
         public double[] player_coordinates()
         {
@@ -177,39 +179,24 @@ namespace Blackjack
         {
             return players[active_player].split_coordinates();
         }
+
         public void set_coordinates(double Xsize, double Ysize)
         {
-            Player p;
-            string s;
-            double x, y;
-            double Xcoord = Xsize / 5;                  
+            double Xcoord = Xsize / 5;
+            double card_height = Ysize / 6;
+            double card_width = card_height / 1.5;
+            double y = Ysize - card_height;
+            double y_offset = card_height + 10;
+            double x_offset = card_width / 3;
+
             for(int i = 0; i < 5; ++i)
             {
-                if (is_active(i))
-                {
-                    p = players[i];
-                    s = p.Player_Name;
-                    x = Xsize - ((i + 1) * Xcoord);
-                    y = Ysize - 385;
-                    players[i].set_Xcord(x);
-                    players[i].set_Ycord(y);
-                    
-                        
-
-                }
+                    players[i].Player_Xcord = Xsize - ((i + 1) * Xcoord) + 10;
+                    players[i].Player_Ycord = y;
+                    players[i].Player_Yoffset = y_offset;
+                    players[i].Player_Xoffset = x_offset;
             }
-
-        }
-
-        public void reset_Xoffset()
-        {
-            for (int i = 0; i < max_players; i++)
-            {
-                //if (players.ElementAt(i) != null)
-                    //players.ElementAt(i).Player_Offset = 0;
-            }
-        }
-        
+        }        
 
         internal bool set_active_player()
         {

@@ -223,10 +223,11 @@ namespace Blackjack
 
         internal void set_coordinates(double Xcoord)
         {
+            double column_width = Xcoord / 5;
 
-            cardStartX = Xcoord - 400;
-            cardCordY = 10;
-            cardEndX = 320;
+            cardStartX = (3 * column_width) + (column_width / 2);
+            cardEndX = column_width + (column_width / 2);
+            cardCordY = 10;           
         }
 
         internal void reset()

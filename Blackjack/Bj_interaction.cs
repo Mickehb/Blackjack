@@ -14,7 +14,6 @@ namespace Blackjack
 
     class Bj_interaction : INotifyPropertyChanged
     {
-        // testing Github får facks säjk
         int s_id;
         int p_id;
         int p_nr;
@@ -35,6 +34,7 @@ namespace Blackjack
 
         // Declare the event 
         public event PropertyChangedEventHandler PropertyChanged;
+
         private Bj_interaction()
         {
             player_column = 0;
@@ -54,7 +54,7 @@ namespace Blackjack
                 instance_variable = new Bj_interaction();
                 return instance_variable;
             }
-                
+
             else
                 return instance_variable;
         }
@@ -71,7 +71,7 @@ namespace Blackjack
         public string Save_Name
         {
             get { return save_name; }
-            set 
+            set
             {
                 save_name = value;
                 OnPropertyChanged("Save_Name");
@@ -119,7 +119,7 @@ namespace Blackjack
         public Dealer get_dealer()
         {
             return dealer;
-            
+
         }
         public void new_round()
         {
@@ -136,10 +136,10 @@ namespace Blackjack
 
         /*
          * Deck functions
-         */ 
+         */
         public void deck_load()
         {
-            deck.load();            
+            deck.load();
         }
 
         public Image deck_get_card_image(int i)
@@ -219,7 +219,7 @@ namespace Blackjack
 
         internal void player_update_bet(int p, int b)
         {
-            players.update_player_bet(p,b);
+            players.update_player_bet(p, b);
         }
 
         internal void player_clear_bet(int player)
@@ -266,10 +266,10 @@ namespace Blackjack
             return players.split_allowed();
         }
 
-       
+
         public bool player_change()
         {
-            players.Active_Player++;            
+            players.Active_Player++;
             return set_active_player();
         }
 
@@ -286,8 +286,8 @@ namespace Blackjack
         }
 
         internal int player_get_active_player_nr()
-        {           
-           return players.Active_Player;
+        {
+            return players.Active_Player;
         }
 
         internal int player_get_active_hand()
@@ -320,7 +320,7 @@ namespace Blackjack
         }
 
         internal void set_coordinates(double Xcoord, double Ycoord)
-        {            
+        {
             dealer.set_coordinates(Xcoord);
             deck.set_coordinates(Xcoord);
         }
@@ -328,7 +328,7 @@ namespace Blackjack
         {
             players.set_coordinates(Xcoord, Ycoord);
         }
-        
+
 
         internal void player_add_card()
         {
@@ -367,7 +367,7 @@ namespace Blackjack
         {
             return players.split();
         }
-       
+
         internal double[] player_split_coordinates()
         {
             return players.player_split_coord();
@@ -405,7 +405,7 @@ namespace Blackjack
         {
             dealer.add_card(deck.Active_Card.Card_Value);
         }
-        
+
         internal bool dealer_logic()
         {
             return dealer.logic();
@@ -414,8 +414,6 @@ namespace Blackjack
         internal bool blackjack_logic()
         {
             //set blackjack for players
-            
-
             if (dealer.dealer_blackjack())
             {
                 for (int s = 0; s < 5; ++s)
@@ -424,9 +422,9 @@ namespace Blackjack
                     {
                         if (!players.blackjack(s))
                             players.player_loss(s);
-                        
+
                     }
-                }                
+                }
                 return true;
             }
             else
@@ -455,16 +453,17 @@ namespace Blackjack
             players.deal();
         }
 
-        internal void new_game()
+        internal void new_game(double canvas_width, double canvas_height)
         {
             players.reset();
             deck.reset();
             dealer.reset();
             deck_load();
             bets_placed = 0;
-            set_coordinates(1000, 400);
+            set_coordinates(canvas_width, canvas_height);
+            player_set_coordinates(canvas_width, canvas_height);
             Move_Visibility = false;
-            Done_Button_Visibility = false;           
+            Done_Button_Visibility = false;
             players.add_visibility();
         }
 
@@ -472,19 +471,18 @@ namespace Blackjack
         {
             players.reset();
             deck.reset();
-            dealer.reset();            
+            dealer.reset();
             bets_placed = 0;
-            set_coordinates(1000, 400);
             Move_Visibility = false;
             Done_Button_Visibility = false;
             players.add_visibility();
         }
-        internal void load_game()
+        internal void load_game(double canvas_width, double canvas_height)
         {
-            
+
             using (var db = new Blackjack_DBEntities1())
             {
-                
+
                 var query = from s in db.Saves_DB
                             //where s.save_name == Save_Name; WHY THE FUCK DOESN'T THIS WORK?
                             select s;
@@ -494,23 +492,25 @@ namespace Blackjack
                     {
                         s_id = item.id;
                         players.Active_Players = item.active_players;
-                        players.Active_Player = item.active_player;                        
+                        players.Active_Player = item.active_player;
                         Deal_Button_Visibility = item.deal_visibility;
                         Done_Button_Visibility = item.done_visibility;
                         Move_Visibility = item.move_visibility;
-                        
                     }
-                }                         
+                }
             }
 
             load_Deck_DB();
             load_Ontable_DB();
             load_Discard_DB();
             load_Players_DB();
-            load_Dealer_DB();            
-            if(Move_Visibility == true || Done_Button_Visibility == true)
+            load_Dealer_DB();
+            set_coordinates(canvas_width, canvas_height);
+            player_set_coordinates(canvas_width, canvas_height);
+            if (Move_Visibility == true || Done_Button_Visibility == true)
                 set_visibility();
         }
+
         internal void load_Dealer_DB()
         {
             int d_id = 3;
@@ -531,9 +531,9 @@ namespace Blackjack
                              where d.d_id == d_id
                              select d;
 
-                foreach (var item in query1)                
+                foreach (var item in query1)
                     dealer.add_card(item.c_value);
-                
+
 
             }
         }
@@ -545,15 +545,15 @@ namespace Blackjack
                 players.get_player(i).Add_Button_Visibility = false;
                 if (players.get_player(i).Is_Active && i <= players.Active_Player)
                 {
-                    for (int j = 0; j <= players.get_player(i).Active_Hand; ++j)                    
-                        players.get_player(i).set_value();                    
+                    for (int j = 0; j <= players.get_player(i).Active_Hand; ++j)
+                        players.get_player(i).set_value();
                 }
-            }            
+            }
 
         }
         internal void load_Players_DB()
         {
-            
+
             using (var db = new Blackjack_DBEntities1())
             {
                 var query = from d in db.Players_DB
@@ -562,7 +562,7 @@ namespace Blackjack
 
 
                 foreach (var item in query)
-                {                    
+                {
                     players.get_player(item.player_nr).Player_Bet = item.total_bet;
                     players.get_player(item.player_nr).Player_Money = item.money;
                     players.get_player(item.player_nr).Player_Name = item.name;
@@ -596,7 +596,7 @@ namespace Blackjack
                     }
                 }
 
-                
+
             }
         }
         internal void load_Deck_DB()
@@ -647,7 +647,7 @@ namespace Blackjack
                     card.Source = img;
                     card.Name = item.image_name;
                     c.Image_Name = item.image_name;
-                    c.Card_Image = card;                    
+                    c.Card_Image = card;
                     deck.OnTable.Add(c);
                     Canvas.SetLeft(card, item.x_coord);
                     Canvas.SetTop(card, item.y_coord);
@@ -688,47 +688,47 @@ namespace Blackjack
 
         internal void save_game()
         {
-            
-           
+
+
             using (var db = new Blackjack_DBEntities1())
-            {            
+            {
                 int save = (from s in db.Saves_DB
-                              select s).Count();
+                            select s).Count();
 
                 Saves_DB new_save = new Saves_DB()
                 {
                     save_name = Save_Name,
                     id = save,
                     active_player = players.Active_Player,
-                    active_players = players.Active_Players,                    
+                    active_players = players.Active_Players,
                     deal_visibility = Deal_Button_Visibility,
                     move_visibility = Move_Visibility,
                     done_visibility = Done_Button_Visibility
-                 };
-            
+                };
+
                 db.Saves_DB.Add(new_save);
 
 
                 int pk = (from s in db.Deck_DB
-                            select s).Count();
+                          select s).Count();
                 Deck_DB deck_db;
-                foreach (Card c in deck.Deck)             
+                foreach (Card c in deck.Deck)
+                {
+
+                    deck_db = new Deck_DB()
                     {
-                    
-                        deck_db = new Deck_DB()
-                        {
-                            Id = pk,
-                            save_id = save,
-                            image_name = c.Card_Image.Name,
-                            c_value = c.Card_Value,
-                            fname = c.Card_Filename,
-                            x_coord = Canvas.GetLeft(c.Card_Image),
-                            y_coord = Canvas.GetTop(c.Card_Image),
-                            z_coord = Canvas.GetZIndex(c.Card_Image)
-                        };
-                        db.Deck_DB.Add(deck_db);
-                        pk++;
-                    }
+                        Id = pk,
+                        save_id = save,
+                        image_name = c.Card_Image.Name,
+                        c_value = c.Card_Value,
+                        fname = c.Card_Filename,
+                        x_coord = Canvas.GetLeft(c.Card_Image),
+                        y_coord = Canvas.GetTop(c.Card_Image),
+                        z_coord = Canvas.GetZIndex(c.Card_Image)
+                    };
+                    db.Deck_DB.Add(deck_db);
+                    pk++;
+                }
 
 
                 pk = (from s in db.Discard_DB
@@ -752,7 +752,7 @@ namespace Blackjack
                 }
 
                 pk = (from s in db.Ontable_DB
-                      select s).Count();            
+                      select s).Count();
                 Ontable_DB ontable_db;
                 foreach (Card c in deck.OnTable)
                 {
@@ -786,19 +786,19 @@ namespace Blackjack
                 pk = (from s in db.Dealer_Hand_DB
                       select s).Count();
                 Dealer_Hand_DB dealer_hand_db;
-                foreach(int i in dealer.Dealer_Hand)
-                {                    
+                foreach (int i in dealer.Dealer_Hand)
+                {
                     dealer_hand_db = new Dealer_Hand_DB()
                     {
-                    Id = pk,
-                    d_id = fk,
-                    c_value = i
+                        Id = pk,
+                        d_id = fk,
+                        c_value = i
                     };
                     pk++;
                     db.Dealer_Hand_DB.Add(dealer_hand_db);
                 }
 
-                
+
 
                 db.SaveChanges();
 
@@ -808,7 +808,7 @@ namespace Blackjack
                 Players_DB players_db;
                 Player_hands_DB player_hands_db;
                 string player_rowguid;
-                
+
                 for (int i = 0; i < 5; ++i)
                 {
                     if (players.is_active(i))
@@ -821,17 +821,17 @@ namespace Blackjack
                             save_id = save,
                             name = players.get_player(i).Player_Name,
                             money = players.get_player(i).Player_Money,
-                            total_bet = players.get_player(i).Player_Bet,   
+                            total_bet = players.get_player(i).Player_Bet,
                             bet0 = players.get_player(i).get_bet(0),
                             bet1 = players.get_player(i).get_bet(1),
                             bet2 = players.get_player(i).get_bet(2),
-                            bet3 = players.get_player(i).get_bet(3),                 
+                            bet3 = players.get_player(i).get_bet(3),
                             active_hand = players.get_player(i).Active_Hand,
                             nr_of_hands = players.get_player(i).nr_of_hands,
-                            player_nr = (int) i
-                            
+                            player_nr = (int)i
+
                         };
-                        db.Players_DB.Add(players_db);           
+                        db.Players_DB.Add(players_db);
 
                         for (int s = 0; s <= players.get_player(i).nr_of_hands; ++s)
                         {
@@ -845,15 +845,15 @@ namespace Blackjack
                                     hand = s,
                                     image_name = c.Card_Image.Name
                                 };
-                                db.Player_hands_DB.Add(player_hands_db);                       
+                                db.Player_hands_DB.Add(player_hands_db);
                                 pk++;
                             }
                         }
                     }
-               
+
                 }
 
-            
+
 
 
                 try
@@ -872,8 +872,8 @@ namespace Blackjack
                                 ve.PropertyName, ve.ErrorMessage);
                         }
                     }
-                
-                }               
+
+                }
 
             }
         }

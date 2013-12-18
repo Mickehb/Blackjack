@@ -22,15 +22,12 @@ namespace Blackjack
     public partial class MainWindow : Window
     {
         Storyboard mystoryboard;
-        int cardHeight = 112;
-        int cardWidth = 80;
-        
+
         public MainWindow()
         {
             InitializeComponent();
             Bj_interaction.instance().yo();
             set_datacontext();
-         
         }
 
         /****************************************
@@ -147,6 +144,9 @@ namespace Blackjack
             int decksize = Bj_interaction.instance().deck_size();
             double[] startCoords = Bj_interaction.instance().deck_get_start_coordinates();
             double[] endCoords = Bj_interaction.instance().deck_get_end_coordinates();
+            double cardHeight = canvas1.ActualHeight / 6;
+            double cardWidth = cardHeight / 1.5;
+
             Uri src;
 
             for (int i = 0; i < decksize; i++)
@@ -172,41 +172,16 @@ namespace Blackjack
             }
 
             load_back_of_card();
-            //src = new Uri("pack://application:,,,/Images/Deck/brv.png");
-
-            //BitmapImage startimg = new BitmapImage(src);
-            //Image startcard = new Image();
-            //startcard.Source = startimg;
-            //startcard.Name = "startpile";
-            //this.RegisterName(startcard.Name, startcard);
-            //startcard.Width = cardWidth;
-            //startcard.Height = cardHeight;
-            //startcard.Visibility = Visibility.Visible;
-            //Canvas.SetZIndex(startcard, (decksize + 2));
-            //canvas1.Children.Add(startcard);
-            //Canvas.SetLeft(startcard, startCoords[0]);
-            //Canvas.SetTop(startcard, startCoords[1]);
-
-            //BitmapImage endimg = new BitmapImage(src);
-            //Image endcard = new Image();
-            //endcard.Source = endimg;
-            //endcard.Name = "throwpile";
-            //this.RegisterName(endcard.Name, endcard);
-            //endcard.Width = cardWidth;
-            //endcard.Height = cardHeight;
-            //endcard.Visibility = Visibility.Visible;
-            //Canvas.SetZIndex(endcard, (decksize + 2));
-            //canvas1.Children.Add(endcard);
-            //Canvas.SetLeft(endcard, endCoords[0]);
-            //Canvas.SetTop(endcard, endCoords[1]);
-
         }
 
         private void load_back_of_card()
         {
             double[] startCoords = Bj_interaction.instance().deck_get_start_coordinates();
             double[] endCoords = Bj_interaction.instance().deck_get_end_coordinates();
-        
+
+            double cardHeight = canvas1.ActualHeight / 6;
+            double cardWidth = cardHeight / 1.5;
+
             Uri src = new Uri("pack://application:,,,/Images/Deck/brv.png");
 
             BitmapImage startimg = new BitmapImage(src);
@@ -237,9 +212,14 @@ namespace Blackjack
         }
         private void load_animation()
         {
-            foreach(Card c in Bj_interaction.instance().deck.OnTable)
+            double cardHeight = canvas1.ActualHeight / 6;
+            double cardWidth = cardHeight / 1.5;
+
+            foreach (Card c in Bj_interaction.instance().deck.OnTable)
             {
                 Image i = c.Card_Image;
+                i.Height = cardHeight;
+                i.Width = cardWidth;
                 this.RegisterName(i.Name, i);
                 i.Visibility = Visibility.Visible;
                 canvas1.Children.Add(i);
@@ -248,6 +228,8 @@ namespace Blackjack
             foreach (Card c in Bj_interaction.instance().deck.Deck)
             {
                 Image i = c.Card_Image;
+                i.Height = cardHeight;
+                i.Width = cardWidth;
                 this.RegisterName(i.Name, i);
                 i.Visibility = Visibility.Visible;
                 canvas1.Children.Add(i);
@@ -256,6 +238,8 @@ namespace Blackjack
             foreach (Card c in Bj_interaction.instance().deck.Discard)
             {
                 Image i = c.Card_Image;
+                i.Height = cardHeight;
+                i.Width = cardWidth;
                 this.RegisterName(i.Name, i);
                 i.Visibility = Visibility.Visible;
                 canvas1.Children.Add(i);
@@ -265,7 +249,7 @@ namespace Blackjack
         private void change_player()
         {
 
-            if(!Bj_interaction.instance().player_change())           
+            if (!Bj_interaction.instance().player_change())
             {
                 /*
                  * else dealer_logic()
@@ -288,62 +272,62 @@ namespace Blackjack
         private void set_datacontext()
         {
 
-                    deal.DataContext = Bj_interaction.instance();
-                    done.DataContext = Bj_interaction.instance();
-                    p_moves.DataContext = Bj_interaction.instance();
-                    dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
+            deal.DataContext = Bj_interaction.instance();
+            done.DataContext = Bj_interaction.instance();
+            p_moves.DataContext = Bj_interaction.instance();
+            dealer_hand.DataContext = Bj_interaction.instance().get_dealer();
 
-                    p1_betting.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_add.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_money.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_name.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_bet.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_hand.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_hand1.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_hand2.DataContext = Bj_interaction.instance().player_get_player(0);
-                    p1_hand3.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_betting.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_add.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_money.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_name.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_bet.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_hand.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_hand1.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_hand2.DataContext = Bj_interaction.instance().player_get_player(0);
+            p1_hand3.DataContext = Bj_interaction.instance().player_get_player(0);
 
-                    p2_betting.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_add.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_money.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_name.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_bet.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_hand.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_hand1.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_hand2.DataContext = Bj_interaction.instance().player_get_player(1);
-                    p2_hand3.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_betting.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_add.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_money.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_name.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_bet.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_hand.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_hand1.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_hand2.DataContext = Bj_interaction.instance().player_get_player(1);
+            p2_hand3.DataContext = Bj_interaction.instance().player_get_player(1);
 
 
-                    p3_betting.DataContext = Bj_interaction.instance().player_get_player(2);
-                    p3_add.DataContext = Bj_interaction.instance().player_get_player(2); 
-                    p3_money.DataContext = Bj_interaction.instance().player_get_player(2);
-                    p3_name.DataContext = Bj_interaction.instance().player_get_player(2);
-                    p3_bet.DataContext = Bj_interaction.instance().player_get_player(2);
-                    p3_hand.DataContext = Bj_interaction.instance().player_get_player(2);
-                    p3_hand1.DataContext = Bj_interaction.instance().player_get_player(2);
-                    p3_hand2.DataContext = Bj_interaction.instance().player_get_player(2);
-                    p3_hand3.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_betting.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_add.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_money.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_name.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_bet.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_hand.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_hand1.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_hand2.DataContext = Bj_interaction.instance().player_get_player(2);
+            p3_hand3.DataContext = Bj_interaction.instance().player_get_player(2);
 
-                    p4_betting.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_add.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_money.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_name.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_bet.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_hand.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_hand1.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_hand2.DataContext = Bj_interaction.instance().player_get_player(3);
-                    p4_hand3.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_betting.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_add.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_money.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_name.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_bet.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_hand.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_hand1.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_hand2.DataContext = Bj_interaction.instance().player_get_player(3);
+            p4_hand3.DataContext = Bj_interaction.instance().player_get_player(3);
 
-                    p5_betting.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_add.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_money.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_name.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_bet.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_hand.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_hand1.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_hand2.DataContext = Bj_interaction.instance().player_get_player(4);
-                    p5_hand3.DataContext = Bj_interaction.instance().player_get_player(4);
-        
+            p5_betting.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_add.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_money.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_name.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_bet.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_hand.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_hand1.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_hand2.DataContext = Bj_interaction.instance().player_get_player(4);
+            p5_hand3.DataContext = Bj_interaction.instance().player_get_player(4);
+
 
         }
 
@@ -353,12 +337,11 @@ namespace Blackjack
         private void deal_Click(object sender, RoutedEventArgs e)
         {
             Bj_interaction.instance().deal();
-            Bj_interaction.instance().player_set_coordinates(1600, 900);
-           
+
             deal_animation();
 
             //will work once blackjack_logic works
-           if (Bj_interaction.instance().blackjack_logic())
+            if (Bj_interaction.instance().blackjack_logic())
             {
                 show_dealer_hidden();
                 Bj_interaction.instance().Done_Button_Visibility = true;
@@ -468,192 +451,182 @@ namespace Blackjack
 
 
         }
-
         /*
-         * Leave_Click event handlers
-        */
-        private void p1_leave_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_remove(0);
-        }
-
-        private void p2_leave_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_remove(1);
-        }
-
-        private void p3_leave_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_remove(2);
-        }
-
-        private void p4_leave_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_remove(3);
-        }
-
-        private void p5_leave_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_remove(4);
-        }
-
-        /*
-         * Add_Click event handlers
+         * Add_Click event handler
          */
-        private void p1_add_Click(object sender, RoutedEventArgs e)
+        private void add_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_create(0);
-        }
-        private void p2_add_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_create(1);
+            FrameworkElement feSource = e.Source as FrameworkElement;
+            switch (feSource.Name)
+            {
+                case "p1_add":
+                    Bj_interaction.instance().player_create(0);
+                    break;
+                case "p2_add":
+                    Bj_interaction.instance().player_create(1);
+                    break;
+                case "p3_add":
+                    Bj_interaction.instance().player_create(2);
+                    break;
+                case "p4_add":
+                    Bj_interaction.instance().player_create(3);
+                    break;
+                case "p5_add":
+                    Bj_interaction.instance().player_create(4);
+                    break;
+            }
         }
 
-        private void p3_add_Click(object sender, RoutedEventArgs e)
+        /*
+         * Leave_Click event handler
+        */
+        private void leave_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_create(2);
-        }
-
-        private void p4_add_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_create(3);
-        }
-
-        private void p5_add_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_create(4);
+            FrameworkElement feSource = e.Source as FrameworkElement;
+            switch (feSource.Name)
+            {
+                case "p1_leave":
+                    Bj_interaction.instance().player_remove(0);
+                    break;
+                case "p2_leave":
+                    Bj_interaction.instance().player_remove(1);
+                    break;
+                case "p3_leave":
+                    Bj_interaction.instance().player_remove(2);
+                    break;
+                case "p4_leave":
+                    Bj_interaction.instance().player_remove(3);
+                    break;
+                case "p5_leave":
+                    Bj_interaction.instance().player_remove(4);
+                    break;
+            }
         }
 
         /*
          * Betting  event handlers
          */
         // Bet 5
-        private void p1_five_Click(object sender, RoutedEventArgs e)
+        private void five_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_update_bet(0, 5);
-        }
-
-        private void p2_five_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(1, 5);
-        }
-
-        private void p3_five_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(2, 5);
-        }
-        private void p4_five_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(3, 5);
-        }
-
-        private void p5_five_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(4, 5);
+            FrameworkElement feSource = e.Source as FrameworkElement;
+            switch (feSource.Name)
+            {
+                case "p1_five":
+                    Bj_interaction.instance().player_update_bet(0, 5);
+                    break;
+                case "p2_five":
+                    Bj_interaction.instance().player_update_bet(1, 5);
+                    break;
+                case "p3_five":
+                    Bj_interaction.instance().player_update_bet(2, 5);
+                    break;
+                case "p4_five":
+                    Bj_interaction.instance().player_update_bet(3, 5);
+                    break;
+                case "p5_five":
+                    Bj_interaction.instance().player_update_bet(4, 5);
+                    break;
+            }
         }
         // Bet 10
-        private void p1_ten_Click(object sender, RoutedEventArgs e)
+        private void ten_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_update_bet(0, 10);
-        }
-        private void p2_ten_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(1, 10);
-        }
-        private void p3_ten_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(2, 10);
+            FrameworkElement feSource = e.Source as FrameworkElement;
+            switch (feSource.Name)
+            {
+                case "p1_ten":
+                    Bj_interaction.instance().player_update_bet(0, 10);
+                    break;
+                case "p2_ten":
+                    Bj_interaction.instance().player_update_bet(1, 10);
+                    break;
+                case "p3_ten":
+                    Bj_interaction.instance().player_update_bet(2, 10);
+                    break;
+                case "p4_ten":
+                    Bj_interaction.instance().player_update_bet(3, 10);
+                    break;
+                case "p5_ten":
+                    Bj_interaction.instance().player_update_bet(4, 10);
+                    break;
+            }
         }
 
-        private void p4_ten_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(3, 10);
-        }
-
-        private void p5_ten_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(4, 10);
-        }
         // Bet 20
-        private void p1_twenty_Click(object sender, RoutedEventArgs e)
+        private void twenty_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_update_bet(0, 20);
-        }
-
-        private void p2_twenty_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(1, 20);
-        }
-        private void p3_twenty_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(2, 20);
-        }
-
-        private void p4_twenty_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(3, 20);
-        }
-
-        private void p5_twenty_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_update_bet(4, 20);
-
-        }
-
-        /*
-         * Clear Bet event handlers
-         */
-        private void p1_clear_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_clear_bet(0);
-        }
-
-        private void p2_clear_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_clear_bet(1);
-        }
-
-        private void p3_clear_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_clear_bet(2);
-        }
-
-        private void p4_clear_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_clear_bet(3);
-        }
-
-        private void p5_clear_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_clear_bet(4);
+            FrameworkElement feSource = e.Source as FrameworkElement;
+            switch (feSource.Name)
+            {
+                case "p1_twenty":
+                    Bj_interaction.instance().player_update_bet(0, 20);
+                    break;
+                case "p2_twenty":
+                    Bj_interaction.instance().player_update_bet(1, 20);
+                    break;
+                case "p3_twenty":
+                    Bj_interaction.instance().player_update_bet(2, 20);
+                    break;
+                case "p4_twenty":
+                    Bj_interaction.instance().player_update_bet(3, 20);
+                    break;
+                case "p5_twenty":
+                    Bj_interaction.instance().player_update_bet(4, 20);
+                    break;
+            }
         }
 
         /*
-         * Place Bet event handlers
+         * Clear Bet event handler
          */
-        private void p1_place_bet_Click(object sender, RoutedEventArgs e)
+        private void clear_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet(0);
+            FrameworkElement feSource = e.Source as FrameworkElement;
+            switch (feSource.Name)
+            {
+                case "p1_clear_bet":
+                    Bj_interaction.instance().player_clear_bet(0);
+                    break;
+                case "p2_clear_bet":
+                    Bj_interaction.instance().player_clear_bet(1);
+                    break;
+                case "p3_clear_bet":
+                    Bj_interaction.instance().player_clear_bet(2);
+                    break;
+                case "p4_clear_bet":
+                    Bj_interaction.instance().player_clear_bet(3);
+                    break;
+                case "p5_clear_bet":
+                    Bj_interaction.instance().player_clear_bet(4);
+                    break;
+            }
         }
 
-        private void p2_place_bet_Click(object sender, RoutedEventArgs e)
+        /*
+         * Place Bet event handler
+         */
+        private void place_bet_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().player_place_bet(1);
-        }
-
-        private void p3_place_bet_Click(object sender, RoutedEventArgs e)
-        {           
-            Bj_interaction.instance().player_place_bet(2);
-        }
-
-        private void p4_place_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_place_bet(3);
-        }
-
-        private void p5_place_bet_Click(object sender, RoutedEventArgs e)
-        {
-            Bj_interaction.instance().player_place_bet(4);
+            FrameworkElement feSource = e.Source as FrameworkElement;
+            switch (feSource.Name)
+            {
+                case "p1_place_bet":
+                    Bj_interaction.instance().player_place_bet(0);
+                    break;
+                case "p2_place_bet":
+                    Bj_interaction.instance().player_place_bet(1);
+                    break;
+                case "p3_place_bet":
+                    Bj_interaction.instance().player_place_bet(2);
+                    break;
+                case "p4_place_bet":
+                    Bj_interaction.instance().player_place_bet(3);
+                    break;
+                case "p5_place_bet":
+                    Bj_interaction.instance().player_place_bet(4);
+                    break;
+            }
         }
 
         /*
@@ -662,10 +635,10 @@ namespace Blackjack
 
         private void New_Game_Click(object sender, RoutedEventArgs e)
         {
-            Bj_interaction.instance().new_game(); 
-         
+            Bj_interaction.instance().new_game(canvas1.ActualWidth, canvas1.ActualHeight);
+
             foreach (Image i in canvas1.Children)
-            {                
+            {
                 this.UnregisterName(i.Name);
             }
             canvas1.Children.Clear();
@@ -689,10 +662,10 @@ namespace Blackjack
                 canvas1.Children.Clear();
 
                 Bj_interaction.instance().reset_game();
-                Bj_interaction.instance().load_game();
+                Bj_interaction.instance().load_game(canvas1.ActualWidth, canvas1.ActualHeight);
                 load_animation();
             }
-            
+
         }
 
         private void Save_Game_Click(object sender, RoutedEventArgs e)

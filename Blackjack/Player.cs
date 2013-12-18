@@ -33,16 +33,16 @@ namespace Blackjack
         private int bet;                  //show to player
         public int[] bets;               //keep track of bets made per hand
 
-        private double Xcord;
-        private double Ycord;
-        private const double Xoffset = 30;
-        private const double Yoffset = 110;
+        private double x_coord;
+        private double y_coord;
+        private double x_offset;
+        private double y_offset;
 
         // Visibility bools
         private bool money_bet_name_visibility;
         private bool bet_grid_visibility;
         private bool add_button_visibility;
-               
+
         private bool hand_visibility1;
         private bool hand_visibility2;
         private bool hand_visibility3;
@@ -58,7 +58,7 @@ namespace Blackjack
             hand = new List<Card>[4];
             hand[0] = new List<Card>();
             hand_value = new int[4];
-            bets = new int[] {0,0,0,0};
+            bets = new int[] { 0, 0, 0, 0 };
             blackjack = false;
             is_active = false;
 
@@ -73,7 +73,7 @@ namespace Blackjack
             this.money = 100;
             this.name = "Player";
             this.bet = 0;
-            this.Ycord = 600;
+            this.y_coord = 600;
 
         }
         public List<Card> get_hand(int s)
@@ -83,7 +83,7 @@ namespace Blackjack
 
         public void set_hand(List<Card> l, int s)
         {
-            hand[s]= l;
+            hand[s] = l;
         }
         public int get_bet(int s)
         {
@@ -111,7 +111,7 @@ namespace Blackjack
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
-        
+
         public int Active_Hand
         {
             get { return active_hand; }
@@ -120,7 +120,7 @@ namespace Blackjack
         public int[] Hand_Value
         {
             get { return hand_value; }
-           // set { hand_value = value; }
+            // set { hand_value = value; }
         }
 
         public bool Is_Active
@@ -321,32 +321,41 @@ namespace Blackjack
 
         public void set_Xcord(double x)
         {
-            Xcord = x;
+            x_coord = x;
         }
         public void set_Ycord(double y)
         {
-            Ycord = y;
+            y_coord = y;
         }
         public double Player_Xcord
         {
-            get { return Xcord; }
+            get { return x_coord; }
             set
             {
-                Xcord = value;
+                x_coord = value;
                 OnPropertyChanged("Player_Ycord");
             }
         }
 
         public double Player_Ycord
         {
-            get { return Xcord; }
+            get { return y_coord; }
             set
             {
-                Xcord = value;
+                y_coord = value;
                 //OnPropertyChanged("Player_Xcord");
             }
         }
-
+        public double Player_Yoffset
+        {
+            get { return y_offset; }
+            set { y_offset = value; }
+        }
+        public double Player_Xoffset
+        {
+            get { return x_offset; }
+            set { x_offset = value; }
+        }
         /*
          * Functions
          */
@@ -382,7 +391,7 @@ namespace Blackjack
                     Hand_Status3 = "";
                     Player_Blackjack = false;
                     clear_bet();
-                    
+
                 }
             }
         }
@@ -397,10 +406,10 @@ namespace Blackjack
 
         public void activate()
         {
-           Is_Active = true;
-           Money_Bet_Name_Visibility = true;
-           Add_Button_Visibility = false;
-           Bet_Grid_Visibility = true;
+            Is_Active = true;
+            Money_Bet_Name_Visibility = true;
+            Add_Button_Visibility = false;
+            Bet_Grid_Visibility = true;
         }
 
         public void reset()
@@ -477,8 +486,8 @@ namespace Blackjack
         {
             double[] tmp = new double[2];
 
-            tmp[0] = (Xcord + (hand[active_hand].Count * Xoffset));
-            tmp[1] = (Ycord - (active_hand * Yoffset));
+            tmp[0] = (x_coord + (hand[active_hand].Count * x_offset));
+            tmp[1] = (y_coord - (active_hand * y_offset));
 
             return tmp;
         }
@@ -486,8 +495,8 @@ namespace Blackjack
         internal double[] split_coordinates()
         {
             double[] tmp = new double[2];
-            tmp[0] = Xcord;
-            tmp[1] = (Ycord - (nr_of_hands * Yoffset));
+            tmp[0] = x_coord;
+            tmp[1] = (y_coord - (nr_of_hands * y_offset));
 
             return tmp;
         }
@@ -513,7 +522,7 @@ namespace Blackjack
                 hand[active_hand + (nr_of_hands - active_hand)] = new List<Card>();
                 hand[active_hand + (nr_of_hands - active_hand)].Add(tmp);
                 hand[active_hand].Remove(tmp);
-                //hand[active_hand].RemoveAt(i);
+
                 set_value();
 
                 return true;
@@ -529,10 +538,6 @@ namespace Blackjack
          */
         public bool double_down_logic()
         {
-
-            //update_bet(bets[active_hand]);
-
-
             set_value();
             //save our highest handvalue and set status
             if ((ace_high_value >= BUST) && (hand_value[active_hand] >= BUST))
@@ -610,18 +615,6 @@ namespace Blackjack
         {
 
             set_value();
-            //if ((ace_high_value == 21) || (hand_value[active_hand] == 21))
-            //{
-            //    set_hand_status("21");
-            //    if (nr_of_hands > active_hand)
-            //    {
-            //        active_hand++;
-            //        set_value();
-            //        return true;
-            //    }
-            //    else
-            //        return false;
-            //}
 
             if ((ace_high_value >= BUST) && (hand_value[active_hand] >= BUST))
             {
@@ -710,7 +703,7 @@ namespace Blackjack
         public void loss()
         {
             Player_Bet -= bets[0];
-            bets[0] = 0;            
+            bets[0] = 0;
         }
         public void blackjack_win()
         {
@@ -732,7 +725,7 @@ namespace Blackjack
                 {
                     Player_Bet -= bets[s];
                     total_bet = Player_Bet;
-                    bets[s] = 0;                   
+                    bets[s] = 0;
                 }
 
                 else if (hand_value[s] > 21)
@@ -747,16 +740,16 @@ namespace Blackjack
                     {
                         Player_Bet += bets[s];
                         total_bet = Player_Bet;
-                        
+
                         bets[s] = 0;
                     }
-                    else if(dealer_hand > hand_value[s])
+                    else if (dealer_hand > hand_value[s])
                     {
                         Player_Bet -= bets[s];
                         total_bet = Player_Bet;
                         bets[s] = 0;
                     }
-                    else 
+                    else
                     {
                         bets[s] = 0;
                     }
