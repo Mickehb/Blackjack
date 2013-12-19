@@ -49,9 +49,9 @@
         </Grid.Background>
         <Button x:Name="load_button" Style="{StaticResource buttonstyle1}" Margin ="0,0,20,10" Content="Load" Click="load_button_Click"/>
         <Button x:Name="cancel_button" Style="{StaticResource buttonstyle1}" Margin ="0,0,20,10" Content="Cancel" HorizontalAlignment="Left" Click="cancel_button_Click"/>
-        <TextBox x:Name="filename" Style="{StaticResource textboxstyle1}" TextWrapping="Wrap" HorizontalAlignment="Right" Text="{Binding Path=Save_Name, UpdateSourceTrigger=Explicit}"/>
+        <TextBox x:Name="filename" Style="{StaticResource textboxstyle1}" TextWrapping="Wrap" HorizontalAlignment="Right" Text="{Binding Path=Save_Name}"/>
         <Label Style="{StaticResource labelstyle1}" Content="Previous Saves:" VerticalAlignment="Top" Margin="0,0,0,0"/>
         <ListBox x:Name="save_list" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="173" Margin="0,34,0,0" VerticalAlignment="Top" Width="292"
-                 PreviewMouseDown="save_list_PreviewMouseDown"/>        
+                 PreviewMouseDown="save_list_PreviewMouseDown" PreviewMouseDoubleClick="save_list_PreviewMouseDoubleClick"/>        
     </Grid>
 </Window>

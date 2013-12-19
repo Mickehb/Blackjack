@@ -20,12 +20,12 @@ namespace Blackjack
     /// </summary>
     public partial class save_window : Window
     {
-        public ObservableCollection<string> saves { get; set; }
+        ObservableCollection<string> saves { get; set; }
         public save_window()
         {
             InitializeComponent();
-            
-            
+
+            Bj_interaction.instance().Save_Name = "";
 
             saves = new ObservableCollection<string>();
             save_list.DataContext = saves;
@@ -53,15 +53,15 @@ namespace Blackjack
         {
             /*
              * check for unique filename 
-            */           
-           
-            BindingExpression be = filename.GetBindingExpression(TextBox.TextProperty);
-            be.UpdateSource();
+            */
 
-            Bj_interaction.instance().save_game();
-            
-            this.Close();
-            
+            if (!saves.Contains(filename.Text))
+            {
+                BindingExpression be = filename.GetBindingExpression(TextBox.TextProperty);
+                be.UpdateSource();
+                Bj_interaction.instance().save_game();
+                this.Close();
+            }
         }
     }
 }

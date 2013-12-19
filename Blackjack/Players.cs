@@ -247,6 +247,7 @@ namespace Blackjack
         internal void reset()
         {
             active_players = 0;
+            active_player = 0;
             foreach (Player p in players)
             {
                 p.reset();

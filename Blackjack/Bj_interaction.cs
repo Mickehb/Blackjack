@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
@@ -14,13 +15,13 @@ namespace Blackjack
 
     class Bj_interaction : INotifyPropertyChanged
     {
-        int s_id;
-        int p_id;
-        int p_nr;
+        int s_id; //save id rowguid for current game being saved or loaded
+        int p_id; //player id rowguid for current player being saved or loaded
+        int p_nr; //player number for which player is being saved or loaded  
 
         public int bets_placed;
         private Players players;
-        public CardDeck deck;               // Warning Puclic
+        public CardDeck deck { get; set; }               // Warning Puclic
         private Dealer dealer;
         private static Bj_interaction instance_variable;
 
@@ -477,6 +478,16 @@ namespace Blackjack
             Done_Button_Visibility = false;
             players.add_visibility();
         }
+        internal void save_game()
+        {
+            save_Saves_DB();
+            save_Deck_DB();
+            save_Discard_DB();
+            save_Ontable_DB();
+            save_Dealer_DB();
+            save_Player_DB();
+        }
+
         internal void load_game(double canvas_width, double canvas_height)
         {
 
@@ -506,9 +517,26 @@ namespace Blackjack
             load_Players_DB();
             load_Dealer_DB();
             set_coordinates(canvas_width, canvas_height);
-            player_set_coordinates(canvas_width, canvas_height);
+            player_set_coordinates(canvas_width, canvas_height);            
+            set_visibility();
+
             if (Move_Visibility == true || Done_Button_Visibility == true)
-                set_visibility();
+                set_active_player();
+        }
+
+        internal void set_visibility()
+        {
+            
+            for (int i = 0; i < 5; ++i)
+            {
+                players.get_player(i).Add_Button_Visibility = false;
+                if (players.get_player(i).Is_Active && i <= players.Active_Player)
+                {
+                    for (int j = 0; j <= players.get_player(i).Active_Hand; ++j)
+                        players.get_player(i).set_value();
+                }
+            }
+
         }
 
         internal void load_Dealer_DB()
@@ -538,19 +566,7 @@ namespace Blackjack
             }
         }
 
-        internal void set_visibility()
-        {
-            for (int i = 0; i < 5; ++i)
-            {
-                players.get_player(i).Add_Button_Visibility = false;
-                if (players.get_player(i).Is_Active && i <= players.Active_Player)
-                {
-                    for (int j = 0; j <= players.get_player(i).Active_Hand; ++j)
-                        players.get_player(i).set_value();
-                }
-            }
-
-        }
+        
         internal void load_Players_DB()
         {
 
@@ -686,19 +702,17 @@ namespace Blackjack
             }
         }
 
-        internal void save_game()
+        internal void save_Saves_DB()
         {
-
-
             using (var db = new Blackjack_DBEntities1())
             {
-                int save = (from s in db.Saves_DB
+                s_id = (from s in db.Saves_DB
                             select s).Count();
 
                 Saves_DB new_save = new Saves_DB()
                 {
                     save_name = Save_Name,
-                    id = save,
+                    id = s_id,
                     active_player = players.Active_Player,
                     active_players = players.Active_Players,
                     deal_visibility = Deal_Button_Visibility,
@@ -708,17 +722,41 @@ namespace Blackjack
 
                 db.Saves_DB.Add(new_save);
 
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
 
+                }
+            }
+        }
+
+        internal void save_Deck_DB()
+        {
+            int a = s_id;
+            using (var db = new Blackjack_DBEntities1())
+            {
                 int pk = (from s in db.Deck_DB
                           select s).Count();
                 Deck_DB deck_db;
                 foreach (Card c in deck.Deck)
                 {
-
                     deck_db = new Deck_DB()
                     {
                         Id = pk,
-                        save_id = save,
+                        save_id = s_id,
                         image_name = c.Card_Image.Name,
                         c_value = c.Card_Value,
                         fname = c.Card_Filename,
@@ -730,16 +768,40 @@ namespace Blackjack
                     pk++;
                 }
 
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
 
-                pk = (from s in db.Discard_DB
-                      select s).Count();
+                }
+            }
+        }
+
+        internal void save_Discard_DB()
+        {            
+            using (var db = new Blackjack_DBEntities1())
+            {
+                int pk = (from s in db.Discard_DB
+                          select s).Count();
                 Discard_DB discard_db;
                 foreach (Card c in deck.Discard)
                 {
                     discard_db = new Discard_DB()
                     {
                         Id = pk,
-                        save_id = save,
+                        save_id = s_id,
                         image_name = c.Card_Image.Name,
                         c_value = c.Card_Value,
                         fname = c.Card_Filename,
@@ -751,15 +813,42 @@ namespace Blackjack
                     pk++;
                 }
 
-                pk = (from s in db.Ontable_DB
-                      select s).Count();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        internal void save_Ontable_DB()
+        {
+            int a = s_id;
+            using (var db = new Blackjack_DBEntities1())
+            {
+                int pk = (from s in db.Ontable_DB
+                          select s).Count();
                 Ontable_DB ontable_db;
                 foreach (Card c in deck.OnTable)
                 {
                     ontable_db = new Ontable_DB()
                     {
                         Id = pk,
-                        save_id = save,
+                        save_id = s_id,
                         image_name = c.Card_Image.Name,
                         c_value = c.Card_Value,
                         fname = c.Card_Filename,
@@ -771,12 +860,38 @@ namespace Blackjack
                     pk++;
                 }
 
-                pk = (from s in db.Dealer_DB
-                      select s).Count();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        internal void save_Dealer_DB()
+        {
+            using (var db = new Blackjack_DBEntities1())
+            {
+                int pk = (from s in db.Dealer_DB
+                          select s).Count();
                 Dealer_DB dealer_db = new Dealer_DB()
                 {
                     Id = pk,
-                    save_id = save,
+                    save_id = s_id,
                     hand_value = dealer.Hand_Value,
                     x_offset = dealer.Xoffset
                 };
@@ -798,12 +913,33 @@ namespace Blackjack
                     db.Dealer_Hand_DB.Add(dealer_hand_db);
                 }
 
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
 
+                }
+            }
+        }
 
-                db.SaveChanges();
-
-                pk = (from s in db.Player_hands_DB
-                      select s).Count();
+        internal void save_Player_DB()
+        {
+            using (var db = new Blackjack_DBEntities1())
+            {
+                int pk = (from s in db.Player_hands_DB
+                          select s).Count();
 
                 Players_DB players_db;
                 Player_hands_DB player_hands_db;
@@ -813,12 +949,12 @@ namespace Blackjack
                 {
                     if (players.is_active(i))
                     {
-                        player_rowguid = save.ToString() + i.ToString();
+                        player_rowguid = s_id.ToString() + i.ToString();
                         int p_id = Convert.ToInt32(player_rowguid);
                         players_db = new Players_DB()
                         {
                             player_id = p_id,
-                            save_id = save,
+                            save_id = s_id,
                             name = players.get_player(i).Player_Name,
                             money = players.get_player(i).Player_Money,
                             total_bet = players.get_player(i).Player_Bet,
@@ -828,7 +964,7 @@ namespace Blackjack
                             bet3 = players.get_player(i).get_bet(3),
                             active_hand = players.get_player(i).Active_Hand,
                             nr_of_hands = players.get_player(i).nr_of_hands,
-                            player_nr = (int)i
+                            player_nr = i
 
                         };
                         db.Players_DB.Add(players_db);
@@ -853,9 +989,6 @@ namespace Blackjack
 
                 }
 
-
-
-
                 try
                 {
                     db.SaveChanges();
@@ -874,8 +1007,15 @@ namespace Blackjack
                     }
 
                 }
+                catch(DbUpdateException e)
+                {
+                    Console.WriteLine("Exception: ", e.Message);
+                    Console.WriteLine("Inner exception: ", e.InnerException);                    
+                }
 
             }
+
         }
+        
     }
 }

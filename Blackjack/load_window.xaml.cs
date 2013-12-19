@@ -20,8 +20,8 @@ namespace Blackjack
     /// </summary>
     public partial class load_window : Window
     {
-        public ObservableCollection<string> saves { get; set; }
-        ListBoxItem load_item;
+        ObservableCollection<string> saves { get; set; }
+        
         public load_window()
         {
             InitializeComponent();
@@ -51,16 +51,23 @@ namespace Blackjack
 
         private void load_button_Click(object sender, RoutedEventArgs e)
         {
-            if (Bj_interaction.instance().Save_Name != "")        
+            
+            if (Bj_interaction.instance().Save_Name != null)
                 this.Close();
+            
             
         }
 
         private void save_list_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            load_item = ItemsControl.ContainerFromElement(save_list, e.OriginalSource as DependencyObject) as ListBoxItem;
-            if (Bj_interaction.instance().Save_Name != "")   
-                Bj_interaction.instance().Save_Name = load_item.Content.ToString();         
+
+            if ((Bj_interaction.instance().Save_Name = (save_list.SelectedItem as string)) != null) ;              
+        }
+
+        private void save_list_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (Bj_interaction.instance().Save_Name != null)
+                this.Close();
         }
     }
 }

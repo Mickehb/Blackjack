@@ -152,13 +152,14 @@ namespace Blackjack
 
             for (int i = 0; i < decksize; i++)
             {
-                string filename = Bj_interaction.instance().deck_get_image_name((int)i);
+                string filename = Bj_interaction.instance().deck_get_image_name(i);
                 src = new Uri("pack://application:,,,/Images/Deck/" + filename);
                 BitmapImage img = new BitmapImage(src);
 
                 Image card = new Image();
                 card.Source = img;
-                card.Name = "Cardname" + i.ToString();
+                //card.Name = "Cardname" + i.ToString();
+                card.Name = filename.Substring(0, filename.Length - 4);
                 this.RegisterName(card.Name, card);
                 card.Width = cardWidth;
                 card.Height = cardHeight;
@@ -215,19 +216,11 @@ namespace Blackjack
         {
             double cardHeight = canvas1.ActualHeight / 6;
             double cardWidth = cardHeight / 1.5;
-
-            foreach (Card c in Bj_interaction.instance().deck.OnTable)
-            {
-                Image i = c.Card_Image;
-                i.Height = cardHeight;
-                i.Width = cardWidth;
-                this.RegisterName(i.Name, i);
-                i.Visibility = Visibility.Visible;
-                canvas1.Children.Add(i);
-            }
+            int count = 0;
 
             foreach (Card c in Bj_interaction.instance().deck.Deck)
             {
+                ++count;
                 Image i = c.Card_Image;
                 i.Height = cardHeight;
                 i.Width = cardWidth;
@@ -235,9 +228,24 @@ namespace Blackjack
                 i.Visibility = Visibility.Visible;
                 canvas1.Children.Add(i);
             }
+            count = 0;
+            
+            foreach (Card c in Bj_interaction.instance().deck.OnTable)
+            {
+                ++count;
+                Image i = c.Card_Image;
+                i.Height = cardHeight;
+                i.Width = cardWidth;
+                this.RegisterName(i.Name, i);
+                i.Visibility = Visibility.Visible;
+                canvas1.Children.Add(i);
+            }
+    
+            count = 0;
 
             foreach (Card c in Bj_interaction.instance().deck.Discard)
             {
+                ++count;
                 Image i = c.Card_Image;
                 i.Height = cardHeight;
                 i.Width = cardWidth;
@@ -652,12 +660,13 @@ namespace Blackjack
         {
             load_window load = new load_window();
             load.ShowDialog();
-
+            int count = 0;
             if (Bj_interaction.instance().Save_Name != "")
             {
                 //ska endast göras när vi faktiskt ska ladda!
                 foreach (Image i in canvas1.Children)
                 {
+                    ++count;
                     this.UnregisterName(i.Name);
                 }
                 canvas1.Children.Clear();
