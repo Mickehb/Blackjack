@@ -210,7 +210,7 @@ namespace Blackjack
                 
             }
 
-            active_player = -1;
+            //active_player = -1;
             return false;
         }
 
